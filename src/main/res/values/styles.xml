@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="None">
+  </style>
+
+  <style name="__U2020_Base" parent="android:Theme.Holo.NoActionBar">
+  </style>
+
+  <style name="Theme.U2020" parent="__U2020_Base">
+    <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
+  </style>
+
+
+  <style name="Widget.U2020.ProgressBar" parent="None">
+    <item name="android:indeterminateDrawable">@drawable/progress_indeterminate</item>
+    <item name="android:indeterminateOnly">true</item>
+    <item name="android:indeterminateBehavior">repeat</item>
+    <item name="android:indeterminateDuration">900</item>
+    <item name="android:minWidth">40dip</item>
+    <item name="android:maxWidth">40dip</item>
+    <item name="android:minHeight">40dip</item>
+    <item name="android:maxHeight">40dip</item>
+  </style>
+</resources>

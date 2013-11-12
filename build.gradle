@@ -1,0 +1,81 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.6.+'
+  }
+}
+
+// Manifest version information!
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+apply plugin: 'android'
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  compile 'com.android.support:support-v4:19.0.+'
+
+  compile 'com.squareup.dagger:dagger:1.0.1'
+  compile 'com.squareup.okhttp:okhttp:1.2.1'
+  compile 'com.squareup.picasso:picasso:2.1.1'
+  compile 'com.squareup.retrofit:retrofit:1.2.3-SNAPSHOT'
+  debugCompile 'com.squareup.retrofit:retrofit-mock:1.2.3-SNAPSHOT'
+
+  compile 'com.jakewharton:butterknife:3.0.0'
+  compile 'com.jakewharton.timber:timber:2.0.0'
+
+  compile 'com.netflix.rxjava:rxjava-core:0.14.9'
+  compile 'com.netflix.rxjava:rxjava-android:0.14.9'
+
+  instrumentTestCompile 'com.squareup.spoon:spoon-client:1.0.5'
+  instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
+  instrumentTestCompile 'com.squareup:fest-android:1.0.7'
+}
+
+def gitSha() {
+  return 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+}
+
+def buildTime() {
+  return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+  compileSdkVersion 19
+  buildToolsVersion "19.0.0"
+
+  defaultConfig {
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    buildConfig """\
+      public static final String GIT_SHA = "${gitSha()}";
+      public static final String BUILD_TIME = "${buildTime()}";
+      public static final String VERSION_NAME = "${versionName}";
+      public static final int VERSION_CODE = ${versionCode};
+    """
+  }
+
+  buildTypes {
+    debug {
+      packageNameSuffix '.dev'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.8'
+}

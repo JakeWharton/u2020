@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jakewharton.u2020">
+
+  <uses-sdk
+      android:minSdkVersion="14"
+      android:targetSdkVersion="19"/>
+
+  <application
+      android:allowBackup="true"
+      android:icon="@drawable/app_icon"
+      android:label="@string/application_name"
+      android:theme="@style/Theme.U2020"
+      android:name=".U2020App"
+      >
+    <activity
+        android:name=".ui.MainActivity"
+        android:label="@string/launcher_name"
+        >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

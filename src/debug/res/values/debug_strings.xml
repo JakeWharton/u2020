@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+  <string name="development_settings">Development Settings</string>
+  <string name="debug_drawer_network_endpoint_description">Enter the URL of the server to which you want to connect.\n\ne.g., https://bob-loblaw.local/1.0/</string>
+  <string name="debug_drawer_network_proxy_description">Enter the host of the server through which you want to proxy.\n\ne.g., 12.34.56.78:9000</string>
+</resources>
