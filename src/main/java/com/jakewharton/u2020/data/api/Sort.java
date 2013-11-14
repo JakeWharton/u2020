@@ -2,7 +2,7 @@ package com.jakewharton.u2020.data.api;
 
 public enum Sort {
   VIRAL("viral"),
-  SORT("sort");
+  TIME("time");
 
   private final String value;
 

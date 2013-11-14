@@ -1,413 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<GridLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:columnCount="2"
+    android:paddingTop="@dimen/system_notification_height"
+    android:paddingBottom="@dimen/system_navigation_height"
     >
-  <LinearLayout
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:orientation="horizontal"
-      >
+  <!--
+    - Outer FrameLayout is used for additional, optional padding. Margins can't be used on the
+    - GridView because it is contained inside of a ScrollView.
+    -->
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="12dp"
+      android:columnCount="2"
+      tools:ignore="UselessParent">
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:layout_marginRight="8dp"
-        android:gravity="center_vertical|right"
-        android:orientation="vertical"
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:orientation="horizontal"
         >
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/launcher_name"
-          style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title"
-          />
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/development_settings"
-          style="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle"
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="48dp"
+          android:layout_weight="1"
+          android:layout_marginRight="8dp"
+          android:gravity="center_vertical|right"
+          android:orientation="vertical"
+          >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/launcher_name"
+            style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/development_settings"
+            style="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle"
+            />
+      </LinearLayout>
+      <ImageView
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:src="@drawable/app_icon"
           />
     </LinearLayout>
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/app_icon"
+
+    <!-- CONTEXTUAL SECTION -->
+
+    <TextView
+        android:id="@+id/debug_contextual_title"
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Contextual Actions"
+        android:visibility="gone"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
         />
-  </LinearLayout>
 
-  <!-- CONTEXTUAL SECTION -->
-
-  <TextView
-      android:id="@+id/debug_contextual_title"
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Contextual Actions"
-      android:visibility="gone"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
-
-  <LinearLayout
-      android:id="@+id/debug_contextual_list"
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:visibility="gone"
-      />
-
-  <!-- NETWORK SECTION -->
-
-  <TextView
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Network"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
-
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Endpoint"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <LinearLayout
-      android:orientation="horizontal"
-      android:layout_gravity="start|end|center_vertical"
-      android:gravity="center_vertical"
-      >
-    <Spinner
-        android:id="@+id/debug_network_endpoint"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        />
-    <ImageButton
-        android:id="@+id/debug_network_endpoint_edit"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:src="@drawable/debug_drawer_icon_edit"
-        android:background="?android:attr/actionBarItemBackground"
+    <LinearLayout
+        android:id="@+id/debug_contextual_list"
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
         android:visibility="gone"
         />
-  </LinearLayout>
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Delay"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_network_delay"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <!-- NETWORK SECTION -->
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Variance"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_network_variance"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Network"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Error"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_network_error"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Endpoint"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="start|end|center_vertical"
+        android:gravity="center_vertical"
+        >
+      <Spinner
+          android:id="@+id/debug_network_endpoint"
+          android:layout_height="wrap_content"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          />
+      <ImageButton
+          android:id="@+id/debug_network_endpoint_edit"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:layout_marginLeft="4dp"
+          android:src="@drawable/debug_drawer_icon_edit"
+          android:background="?android:attr/actionBarItemBackground"
+          android:visibility="gone"
+          />
+    </LinearLayout>
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Proxy"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_network_proxy"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Delay"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_network_delay"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Logging"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_network_logging"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Variance"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_network_variance"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <!-- ANIMATION SECTION -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Error"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_network_error"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <TextView
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Animation"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Proxy"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_network_proxy"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Speed"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Spinner
-      android:id="@+id/debug_animation_speed"
-      android:layout_gravity="start|end|center_vertical"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Logging"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_network_logging"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <!-- BUILD INFORMATION SECTION -->
+    <!-- ANIMATION SECTION -->
 
-  <TextView
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Build Information"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Animation"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Name"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_build_name"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Speed"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Spinner
+        android:id="@+id/debug_animation_speed"
+        android:layout_gravity="start|end|center_vertical"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Code"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_build_code"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <!-- BUILD INFORMATION SECTION -->
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="SHA"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_build_sha"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Build Information"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Date"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_build_date"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Name"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_build_name"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <!-- DEVICE INFORMATION SECTION -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Code"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_build_code"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Device Information"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="SHA"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_build_sha"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Make"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_make"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Date"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_build_date"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Model"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_model"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <!-- DEVICE INFORMATION SECTION -->
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Resolution"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_resolution"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Device Information"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Density"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_density"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Make"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_make"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Release"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_release"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Model"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_model"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="API"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_device_api"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Resolution"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_resolution"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <!-- PICASSO SECTION -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Density"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_density"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_columnSpan="2"
-      android:layout_gravity="start|end"
-      android:text="Picasso"
-      style="@style/Widget.Wallet.DebugDrawer.Header"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Release"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_release"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Indicators"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <Switch
-      android:id="@+id/debug_picasso_indicators"
-      android:layout_gravity="start|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowWidget"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="API"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_device_api"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Cache"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_cache_size"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <!-- PICASSO SECTION -->
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Hits"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_cache_hit"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Picasso"
+        style="@style/Widget.Wallet.DebugDrawer.Header"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Misses"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_cache_miss"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Indicators"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Switch
+        android:id="@+id/debug_picasso_indicators"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowWidget"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Decoded"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_decoded"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Cache"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_cache_size"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Total"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_decoded_total"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Hits"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_cache_hit"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Average"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_decoded_avg"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Misses"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_cache_miss"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="Transformed"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_transformed"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Decoded"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_decoded"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Total"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_transformed_total"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Total"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_decoded_total"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="   Average"
-      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
-      />
-  <TextView
-      android:id="@+id/debug_picasso_transformed_avg"
-      android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.Wallet.DebugDrawer.RowValue"
-      />
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Average"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_decoded_avg"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
 
-</GridLayout>
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Transformed"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_transformed"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
+
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Total"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_transformed_total"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
+
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="   Average"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <TextView
+        android:id="@+id/debug_picasso_transformed_avg"
+        android:layout_gravity="start|end|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowValue"
+        />
+
+  </GridLayout>
+</FrameLayout>

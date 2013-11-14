@@ -10,7 +10,6 @@
     <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
   </style>
 
-
   <style name="Widget.U2020.ProgressBar" parent="None">
     <item name="android:indeterminateDrawable">@drawable/progress_indeterminate</item>
     <item name="android:indeterminateOnly">true</item>
@@ -20,5 +19,10 @@
     <item name="android:maxWidth">40dip</item>
     <item name="android:minHeight">40dip</item>
     <item name="android:maxHeight">40dip</item>
+  </style>
+
+  <style name="Widget.U2020.GalleryImage" parent="None">
+    <item name="android:textColor">#fff</item>
+    <item name="android:textSize">15sp</item>
   </style>
 </resources>

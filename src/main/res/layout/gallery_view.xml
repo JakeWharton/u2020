@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ViewAnimator
+<com.jakewharton.u2020.ui.gallery.GalleryView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -14,4 +13,18 @@
       android:layout_gravity="center"
       />
 
-</ViewAnimator>
+  <GridView
+      android:id="@+id/gallery_grid"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingTop="@dimen/system_notification_height"
+      android:paddingBottom="@dimen/system_navigation_height"
+      android:clipToPadding="false"
+      android:numColumns="2"
+      android:horizontalSpacing="1px"
+      android:verticalSpacing="1px"
+      android:layout_marginRight="-1px"
+      android:listSelector="@android:color/transparent"
+      />
+
+</com.jakewharton.u2020.ui.gallery.GalleryView>

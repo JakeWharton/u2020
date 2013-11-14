@@ -1,6 +1,7 @@
 package com.jakewharton.u2020;
 
 import android.app.Application;
+import android.content.Context;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
 import dagger.ObjectGraph;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +40,11 @@ public class U2020App extends Application {
     Timber.i("Global object graph creation took %sms", diff);
   }
 
-  public ObjectGraph getObjectGraph() {
-    return objectGraph;
+  public void inject(Object o) {
+    objectGraph.inject(o);
+  }
+
+  public static U2020App get(Context context) {
+    return (U2020App) context.getApplicationContext();
   }
 }

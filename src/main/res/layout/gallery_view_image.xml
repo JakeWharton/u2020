@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.jakewharton.u2020.ui.misc.SquaredFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <com.jakewharton.u2020.ui.misc.ForegroundImageView
+      android:id="@+id/gallery_image_image"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:foreground="@drawable/gallery_image_overlay"
+      tools:src="#f00"
+      />
+  <TextView
+      android:id="@+id/gallery_image_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:padding="10dp"
+      android:singleLine="true"
+      android:ellipsize="end"
+      tools:text="This Is The Title"
+      style="@style/Widget.U2020.GalleryImage"
+      />
+</com.jakewharton.u2020.ui.misc.SquaredFrameLayout>
