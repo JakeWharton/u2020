@@ -8,6 +8,8 @@ import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
 import java.security.cert.CertificateException;
@@ -17,6 +19,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import retrofit.MockRestAdapter;
 
 @Module(
     addsTo = DebugU2020Module.class,
@@ -55,6 +58,17 @@ public class DebugDataModule {
   @Provides @Singleton @PicassoDebugging
   BooleanPreference providePicassoDebugging(SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
+  }
+
+  @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,
+      @IsMockMode boolean isMockMode, Application app) {
+    Picasso.Builder builder = new Picasso.Builder(app);
+    if (isMockMode) {
+      builder.downloader(new MockDownloader(mockRestAdapter, app.getAssets()));
+    } else {
+      builder.downloader(new OkHttpDownloader(client));
+    }
+    return builder.build();
   }
 
   private static SSLSocketFactory createBadSslSocketFactory() {
