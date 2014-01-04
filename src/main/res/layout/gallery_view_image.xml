@@ -5,20 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/gallery_item_background"
     >
   <com.jakewharton.u2020.ui.misc.ForegroundImageView
       android:id="@+id/gallery_image_image"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:foreground="@drawable/gallery_image_overlay"
+      android:foreground="@drawable/image_overlay"
       tools:src="#f00"
       />
   <TextView
       android:id="@+id/gallery_image_title"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="48dp"
       android:layout_gravity="bottom"
-      android:padding="10dp"
+      android:gravity="bottom"
+      android:background="@drawable/gradient_overlay"
+      android:padding="6dp"
       android:singleLine="true"
       android:ellipsize="end"
       tools:text="This Is The Title"

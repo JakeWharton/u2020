@@ -6,6 +6,7 @@
   <style name="Theme.U2020" parent="android:Theme.Holo.NoActionBar">
     <item name="android:windowContentOverlay">@null</item>
     <item name="android:windowActionBarOverlay">true</item>
+    <item name="android:windowBackground">@drawable/content_background</item>
     <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
   </style>
 
