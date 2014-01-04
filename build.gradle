@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.6.+'
+    classpath 'com.android.tools.build:gradle:0.7.+'
   }
 }
 
@@ -56,12 +56,8 @@ android {
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-    buildConfig """\
-      public static final String GIT_SHA = "${gitSha()}";
-      public static final String BUILD_TIME = "${buildTime()}";
-      public static final String VERSION_NAME = "${versionName}";
-      public static final int VERSION_CODE = ${versionCode};
-    """
+    buildConfigField "String", "GIT_SHA", "\"${gitSha()}\""
+    buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
   }
 
   buildTypes {
@@ -74,8 +70,4 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_7
     targetCompatibility JavaVersion.VERSION_1_7
   }
-}
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.8'
 }
