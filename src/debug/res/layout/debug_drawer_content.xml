@@ -155,23 +155,45 @@
         android:layout_gravity="start|end|center_vertical"
         />
 
-    <!-- ANIMATION SECTION -->
+    <!-- USER INTERFACE SECTION -->
 
     <TextView
         android:layout_columnSpan="2"
         android:layout_gravity="start|end"
-        android:text="Animation"
+        android:text="User Interface"
         style="@style/Widget.Wallet.DebugDrawer.Header"
         />
 
     <TextView
         android:layout_gravity="start|end|center_vertical"
-        android:text="Speed"
+        android:text="Animations"
         style="@style/Widget.Wallet.DebugDrawer.RowTitle"
         />
     <Spinner
-        android:id="@+id/debug_animation_speed"
+        android:id="@+id/debug_ui_animation_speed"
         android:layout_gravity="start|end|center_vertical"
+        />
+
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Pixel Grid"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Switch
+        android:id="@+id/debug_ui_pixel_grid"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowWidget"
+        />
+
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="Pixel Scale"
+        style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+        />
+    <Switch
+        android:id="@+id/debug_ui_pixel_ratio"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.Wallet.DebugDrawer.RowWidget"
         />
 
     <!-- BUILD INFORMATION SECTION -->

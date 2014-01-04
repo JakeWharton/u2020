@@ -36,6 +36,7 @@ dependencies {
 
   compile 'com.jakewharton:butterknife:4.0.1'
   compile 'com.jakewharton.timber:timber:2.1.0'
+  debugCompile 'com.jakewharton.madge:madge:1.1.1'
 
   compile 'com.netflix.rxjava:rxjava-core:0.15.1'
   compile 'com.netflix.rxjava:rxjava-android:0.15.1'

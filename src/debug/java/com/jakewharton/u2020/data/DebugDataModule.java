@@ -29,6 +29,8 @@ import retrofit.MockRestAdapter;
 public class DebugDataModule {
   private static final int DEFAULT_ANIMATION_SPEED = 1; // 1x (normal) speed.
   private static final boolean DEFAULT_PICASSO_DEBUGGING = false; // Debug indicators displayed
+  private static final boolean DEFAULT_PIXEL_GRID_ENABLED = false; // No pixel grid overlay.
+  private static final boolean DEFAULT_PIXEL_RATIO_ENABLED = false; // No pixel ratio overlay.
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
@@ -58,6 +60,18 @@ public class DebugDataModule {
   @Provides @Singleton @PicassoDebugging
   BooleanPreference providePicassoDebugging(SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
+  }
+
+  @Provides @Singleton @PixelGridEnabled
+  BooleanPreference providePixelGridEnabled(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_pixel_grid_enabled",
+        DEFAULT_PIXEL_GRID_ENABLED);
+  }
+
+  @Provides @Singleton @PixelRatioEnabled
+  BooleanPreference providePixelRatioEnabled(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_pixel_ratio_enabled",
+        DEFAULT_PIXEL_RATIO_ENABLED);
   }
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,
