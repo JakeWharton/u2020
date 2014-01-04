@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <dimen name="system_notification_height">25dp</dimen>
-  <dimen name="system_navigation_height">50dp</dimen>
-</resources>

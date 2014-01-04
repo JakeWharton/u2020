@@ -3,11 +3,9 @@
   <style name="None">
   </style>
 
-  <style name="__U2020_Base" parent="android:Theme.Holo">
-  </style>
-
-  <style name="Theme.U2020" parent="__U2020_Base">
+  <style name="Theme.U2020" parent="android:Theme.Holo">
     <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowActionBarOverlay">true</item>
     <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
     <item name="android:actionBarStyle">@style/Widget.U2020.ActionBar</item>
   </style>
