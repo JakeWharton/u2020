@@ -3,7 +3,6 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import com.jakewharton.u2020.U2020Module;
 import com.jakewharton.u2020.data.api.ApiModule;
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
@@ -19,8 +18,9 @@ import timber.log.Timber;
 import static android.content.Context.MODE_PRIVATE;
 
 @Module(
-    addsTo = U2020Module.class,
-    includes = ApiModule.class
+    includes = ApiModule.class,
+    complete = false,
+    library = true
 )
 public class DataModule {
   private static final int CACHE_SIZE = 30 * 1024 * 1024; // 30MB

@@ -9,7 +9,9 @@ import javax.inject.Singleton;
     injects = {
         MainActivity.class,
         GalleryView.class,
-    }
+    },
+    complete = false,
+    library = true
 )
 public class UiModule {
   @Provides @Singleton AppContainer provideAppContainer() {

@@ -8,7 +8,9 @@ import dagger.Module;
     includes = {
         DebugUiModule.class,
         DebugDataModule.class
-    }
+    },
+    complete = false,
+    library = true
 )
 public class DebugU2020Module {
 }

@@ -1,6 +1,5 @@
 package com.jakewharton.u2020.data.api;
 
-import com.jakewharton.u2020.data.DataModule;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
@@ -11,7 +10,8 @@ import retrofit.client.Client;
 import retrofit.client.OkClient;
 
 @Module(
-    addsTo = DataModule.class //
+    complete = false,
+    library = true
 )
 public class ApiModule {
   public static final String PRODUCTION_API_URL = "https://api.imgur.com/3/";

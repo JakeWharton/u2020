@@ -1,7 +1,6 @@
 package com.jakewharton.u2020.data.api;
 
 import android.content.SharedPreferences;
-import com.jakewharton.u2020.data.DebugDataModule;
 import com.jakewharton.u2020.data.IsMockMode;
 import dagger.Module;
 import dagger.Provides;
@@ -11,7 +10,8 @@ import retrofit.RestAdapter;
 import retrofit.android.AndroidMockValuePersistence;
 
 @Module(
-    addsTo = DebugDataModule.class,
+    complete = false,
+    library = true,
     overrides = true
 )
 public class DebugApiModule {

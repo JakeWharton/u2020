@@ -2,7 +2,6 @@ package com.jakewharton.u2020.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import com.jakewharton.u2020.DebugU2020Module;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
@@ -22,8 +21,9 @@ import javax.net.ssl.X509TrustManager;
 import retrofit.MockRestAdapter;
 
 @Module(
-    addsTo = DebugU2020Module.class,
     includes = DebugApiModule.class,
+    complete = false,
+    library = true,
     overrides = true
 )
 public class DebugDataModule {
