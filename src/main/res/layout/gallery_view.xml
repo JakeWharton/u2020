@@ -2,6 +2,7 @@
 
 <com.jakewharton.u2020.ui.gallery.GalleryView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -13,17 +14,15 @@
       android:layout_gravity="center"
       />
 
-  <GridView
+  <com.etsy.android.grid.StaggeredGridView
       android:id="@+id/gallery_grid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_marginRight="-1px"
       android:paddingTop="?android:attr/actionBarSize"
       android:clipToPadding="false"
-      android:numColumns="2"
-      android:horizontalSpacing="1px"
-      android:verticalSpacing="1px"
-      android:layout_marginRight="-1px"
       android:listSelector="@android:color/transparent"
+      app:item_margin="8dp"
       />
 
 </com.jakewharton.u2020.ui.gallery.GalleryView>

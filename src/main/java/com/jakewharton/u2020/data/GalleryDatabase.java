@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.concurrency.AndroidSchedulers;
 import rx.concurrency.Schedulers;
 import rx.subjects.PublishSubject;
+import rx.util.functions.Func1;
 
 /** Poor-man's in-memory cache of responses. Must be accessed on the main thread. */
 @Singleton
@@ -29,6 +31,7 @@ public class GalleryDatabase {
     this.galleryService = galleryService;
   }
 
+  // TODO pull underlying logic into a re-usable component for debouncing and caching last value.
   public Subscription loadGallery(final Section section, Observer<List<Image>> observer) {
     List<Image> images = galleryCache.get(section);
     if (images != null) {
@@ -47,7 +50,16 @@ public class GalleryDatabase {
 
     Subscription subscription = galleryRequest.subscribe(observer);
 
-    galleryRequest.subscribe(new EndObserver<List<Image>>() {
+    // Warning: Gross shit follows!
+    galleryRequest.mapMany(new Func1<List<Image>, Observable<Image>>() {
+      @Override public Observable<Image> call(List<Image> images) {
+        return Observable.from(images);
+      }
+    }).filter(new Func1<Image, Boolean>() {
+      @Override public Boolean call(Image image) {
+        return !image.is_album; // No albums.
+      }
+    }).toList().subscribe(new EndObserver<List<Image>>() {
       @Override public void onEnd() {
         galleryRequests.remove(section);
       }

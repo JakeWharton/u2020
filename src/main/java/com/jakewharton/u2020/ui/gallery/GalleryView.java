@@ -2,9 +2,9 @@ package com.jakewharton.u2020.ui.gallery;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.GridView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.etsy.android.grid.StaggeredGridView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.GalleryDatabase;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import rx.Subscription;
 
 public class GalleryView extends BetterViewAnimator {
-  @InjectView(R.id.gallery_grid) GridView galleryView;
+  @InjectView(R.id.gallery_grid) StaggeredGridView galleryView;
 
   @Inject Picasso picasso;
   @Inject GalleryDatabase galleryDatabase;

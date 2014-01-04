@@ -41,6 +41,8 @@ dependencies {
   compile 'com.netflix.rxjava:rxjava-core:0.15.1'
   compile 'com.netflix.rxjava:rxjava-android:0.15.1'
 
+  compile 'com.etsy.android.grid:library:1.0.2'
+
   instrumentTestCompile 'com.squareup.spoon:spoon-client:1.0.5'
   instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
   instrumentTestCompile 'com.squareup:fest-android:1.0.7'

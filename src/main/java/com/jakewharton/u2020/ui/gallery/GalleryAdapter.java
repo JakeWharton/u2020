@@ -4,10 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Image;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
@@ -43,28 +39,10 @@ public class GalleryAdapter extends BindableAdapter<Image> {
   }
 
   @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-    View view = inflater.inflate(R.layout.gallery_view_image, container, false);
-    view.setTag(new Holder(view));
-    return view;
+    return inflater.inflate(R.layout.gallery_view_image, container, false);
   }
 
   @Override public void bindView(Image item, int position, View view) {
-    Holder holder = (Holder) view.getTag();
-
-    holder.title.setText(item.title);
-
-    picasso.load(item.link)
-        .fit()
-        .centerCrop()
-        .into(holder.image);
-  }
-
-  static class Holder {
-    @InjectView(R.id.gallery_image_image) ImageView image;
-    @InjectView(R.id.gallery_image_title) TextView title;
-
-    public Holder(View view) {
-      ButterKnife.inject(this, view);
-    }
+    ((GalleryItemView) view).bindTo(item, picasso);
   }
 }
