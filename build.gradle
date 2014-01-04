@@ -31,8 +31,8 @@ dependencies {
   compile 'com.jakewharton:butterknife:4.0.1'
   compile 'com.jakewharton.timber:timber:2.1.0'
 
-  compile 'com.netflix.rxjava:rxjava-core:0.14.9'
-  compile 'com.netflix.rxjava:rxjava-android:0.14.9'
+  compile 'com.netflix.rxjava:rxjava-core:0.15.1'
+  compile 'com.netflix.rxjava:rxjava-android:0.15.1'
 
   instrumentTestCompile 'com.squareup.spoon:spoon-client:1.0.5'
   instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
