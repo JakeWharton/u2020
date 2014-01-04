@@ -19,8 +19,6 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginRight="-1px"
-      android:paddingTop="?android:attr/actionBarSize"
-      android:clipToPadding="false"
       android:listSelector="@android:color/transparent"
       app:item_margin="8dp"
       />
