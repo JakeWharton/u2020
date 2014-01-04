@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -34,6 +35,7 @@ import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
 import com.jakewharton.u2020.data.PixelRatioEnabled;
+import com.jakewharton.u2020.data.SeenDebugDrawer;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
@@ -83,6 +85,7 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference picassoDebugging;
   private final BooleanPreference pixelGridEnabled;
   private final BooleanPreference pixelRatioEnabled;
+  private final BooleanPreference seenDebugDrawer;
   private final RestAdapter restAdapter;
   private final MockRestAdapter mockRestAdapter;
 
@@ -95,11 +98,13 @@ public class DebugAppContainer implements AppContainer {
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
-      @PixelRatioEnabled BooleanPreference pixelRatioEnabled, RestAdapter restAdapter,
+      @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
+      @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
       MockRestAdapter mockRestAdapter) {
     this.client = client;
     this.picasso = picasso;
     this.networkEndpoint = networkEndpoint;
+    this.seenDebugDrawer = seenDebugDrawer;
     this.mockRestAdapter = mockRestAdapter;
     this.networkProxy = networkProxy;
     this.animationSpeed = animationSpeed;
@@ -150,7 +155,7 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
   @InjectView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
-  @Override public ViewGroup get(Activity activity, U2020App app) {
+  @Override public ViewGroup get(final Activity activity, U2020App app) {
     this.app = app;
     this.activity = activity;
     drawerContext = activity;
@@ -175,6 +180,17 @@ public class DebugAppContainer implements AppContainer {
         refreshPicassoStats();
       }
     });
+
+    // If you have not seen the debug drawer before, show it with a message
+    if (!seenDebugDrawer.get()) {
+      drawerLayout.postDelayed(new Runnable() {
+        @Override public void run() {
+          drawerLayout.openDrawer(Gravity.END);
+          Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+        }
+      }, 1000);
+      seenDebugDrawer.set(true);
+    }
 
     setupNetworkSection();
     setupUserInterfaceSection();
@@ -338,7 +354,8 @@ public class DebugAppContainer implements AppContainer {
     final AnimationSpeedAdapter speedAdapter = new AnimationSpeedAdapter(activity);
     uiAnimationSpeedView.setAdapter(speedAdapter);
     final int animationSpeedValue = animationSpeed.get();
-    uiAnimationSpeedView.setSelection(AnimationSpeedAdapter.getPositionForValue(animationSpeedValue));
+    uiAnimationSpeedView.setSelection(
+        AnimationSpeedAdapter.getPositionForValue(animationSpeedValue));
     uiAnimationSpeedView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -489,8 +506,7 @@ public class DebugAppContainer implements AppContainer {
     final int originalSelection = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
-    final EditText host =
-        (EditText) view.findViewById(R.id.debug_drawer_network_proxy_host);
+    final EditText host = (EditText) view.findViewById(R.id.debug_drawer_network_proxy_host);
 
     new AlertDialog.Builder(activity) //
         .setTitle("Set Network Proxy")
@@ -528,10 +544,8 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void showCustomEndpointDialog(final int originalSelection, String defaultUrl) {
-    View view =
-        LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_endpoint, null);
-    final EditText url =
-        (EditText) view.findViewById(R.id.debug_drawer_network_endpoint_url);
+    View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_endpoint, null);
+    final EditText url = (EditText) view.findViewById(R.id.debug_drawer_network_endpoint_url);
     url.setText(defaultUrl);
     url.setSelection(url.length());
 
