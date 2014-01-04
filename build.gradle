@@ -4,6 +4,7 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:0.7.+'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
   }
 }
 
@@ -14,6 +15,7 @@ def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'android'
+apply plugin: 'hugo'
 
 repositories {
   mavenCentral()
