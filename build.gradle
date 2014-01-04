@@ -30,7 +30,7 @@ dependencies {
   debugCompile 'com.squareup.retrofit:retrofit-mock:1.2.3-SNAPSHOT'
 
   compile 'com.jakewharton:butterknife:4.0.1'
-  compile 'com.jakewharton.timber:timber:2.0.0'
+  compile 'com.jakewharton.timber:timber:2.1.0'
 
   compile 'com.netflix.rxjava:rxjava-core:0.14.9'
   compile 'com.netflix.rxjava:rxjava-android:0.14.9'
