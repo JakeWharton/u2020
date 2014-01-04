@@ -9,8 +9,8 @@ import java.io.IOException;
 import retrofit.MockRestAdapter;
 
 /**
- * A Picasso {@link com.squareup.picasso.Downloader} which loads images from assets but attempts to emulate the
- * subtleties of a real HTTP client and its disk cache.
+ * A Picasso {@link com.squareup.picasso.Downloader} which loads images from assets but attempts to
+ * emulate the subtleties of a real HTTP client and its disk cache.
  * <p>
  * Images <em>must</em> be in the form {@code mock:///path/to/asset.png}.
  */
@@ -37,7 +37,7 @@ public class MockDownloader implements Downloader {
     if (!"mock".equals(uri.getScheme())) {
       throw new RuntimeException("Attempted to download non-mock image ("
           + uri
-          + ") using the mock downloader. Mock URLs must be prefixed with 'mock'.");
+          + ") using the mock downloader. Mock URLs must use scheme 'mock'.");
     }
 
     String imagePath = uri.getPath().substring(1); // Grab only the path sans leading slash.

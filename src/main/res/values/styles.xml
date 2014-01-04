@@ -3,11 +3,17 @@
   <style name="None">
   </style>
 
-  <style name="__U2020_Base" parent="android:Theme.Holo.NoActionBar">
+  <style name="__U2020_Base" parent="android:Theme.Holo">
   </style>
 
   <style name="Theme.U2020" parent="__U2020_Base">
+    <item name="android:windowContentOverlay">@null</item>
     <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
+    <item name="android:actionBarStyle">@style/Widget.U2020.ActionBar</item>
+  </style>
+
+  <style name="Widget.U2020.ActionBar" parent="android:Widget.Holo.ActionBar.Solid">
+    <item name="android:background">#80000000</item>
   </style>
 
   <style name="Widget.U2020.ProgressBar" parent="None">
@@ -15,10 +21,10 @@
     <item name="android:indeterminateOnly">true</item>
     <item name="android:indeterminateBehavior">repeat</item>
     <item name="android:indeterminateDuration">900</item>
-    <item name="android:minWidth">40dip</item>
-    <item name="android:maxWidth">40dip</item>
-    <item name="android:minHeight">40dip</item>
-    <item name="android:maxHeight">40dip</item>
+    <item name="android:minWidth">40dp</item>
+    <item name="android:maxWidth">40dp</item>
+    <item name="android:minHeight">40dp</item>
+    <item name="android:maxHeight">40dp</item>
   </style>
 
   <style name="Widget.U2020.GalleryImage" parent="None">
