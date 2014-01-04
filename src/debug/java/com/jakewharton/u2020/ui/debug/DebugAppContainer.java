@@ -20,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.Views;
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
@@ -151,7 +151,7 @@ public class DebugAppContainer implements AppContainer {
     LayoutInflater.from(drawerContext).inflate(R.layout.debug_drawer_content, drawer);
 
     // Inject after inflating the drawer layout so its views are available to inject.
-    Views.inject(this, activity);
+    ButterKnife.inject(this, activity);
 
     // Set up the contextual actions to watch views coming in and out of the content area.
     Set<ContextualDebugActions.DebugAction<?>> debugActions = Collections.emptySet();

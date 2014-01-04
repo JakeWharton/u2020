@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Image;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
@@ -64,7 +64,7 @@ public class GalleryAdapter extends BindableAdapter<Image> {
     @InjectView(R.id.gallery_image_title) TextView title;
 
     public Holder(View view) {
-      Views.inject(this, view);
+      ButterKnife.inject(this, view);
     }
   }
 }

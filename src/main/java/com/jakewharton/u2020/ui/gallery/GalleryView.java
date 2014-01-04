@@ -3,8 +3,8 @@ package com.jakewharton.u2020.ui.gallery;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.GalleryDatabase;
@@ -37,7 +37,7 @@ public class GalleryView extends BetterViewAnimator {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    Views.inject(this);
+    ButterKnife.inject(this);
 
     galleryView.setAdapter(adapter);
   }
