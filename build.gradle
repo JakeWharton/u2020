@@ -4,7 +4,7 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:0.7.+'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
   }
 }
