@@ -186,6 +186,28 @@
       style="@style/Widget.Wallet.DebugDrawer.RowWidget"
       />
 
+  <TextView
+      android:layout_gravity="start|end|center_vertical"
+      android:text="Scalpel"
+      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+      />
+  <Switch
+      android:id="@+id/debug_ui_scalpel"
+      android:layout_gravity="start|center_vertical"
+      style="@style/Widget.Wallet.DebugDrawer.RowWidget"
+      />
+
+  <TextView
+      android:layout_gravity="start|end|center_vertical"
+      android:text="Wireframe"
+      style="@style/Widget.Wallet.DebugDrawer.RowTitle"
+      />
+  <Switch
+      android:id="@+id/debug_ui_scalpel_wireframe"
+      android:layout_gravity="start|center_vertical"
+      style="@style/Widget.Wallet.DebugDrawer.RowWidget"
+      />
+
   <!-- BUILD INFORMATION SECTION -->
 
   <TextView

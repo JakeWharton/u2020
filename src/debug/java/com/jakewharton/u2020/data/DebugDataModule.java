@@ -31,6 +31,8 @@ public class DebugDataModule {
   private static final boolean DEFAULT_PICASSO_DEBUGGING = false; // Debug indicators displayed
   private static final boolean DEFAULT_PIXEL_GRID_ENABLED = false; // No pixel grid overlay.
   private static final boolean DEFAULT_PIXEL_RATIO_ENABLED = false; // No pixel ratio overlay.
+  private static final boolean DEFAULT_SCALPEL_ENABLED = false; // No crazy 3D view tree.
+  private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
@@ -78,6 +80,17 @@ public class DebugDataModule {
   @Provides @Singleton @SeenDebugDrawer
   BooleanPreference provideSeenDebugDrawer(SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_seen_debug_drawer", DEFAULT_SEEN_DEBUG_DRAWER);
+  }
+
+  @Provides @Singleton @ScalpelEnabled
+  BooleanPreference provideScalpelEnabled(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
+  }
+
+  @Provides @Singleton @ScalpelWireframeEnabled
+  BooleanPreference provideScalpelWireframeEnabled(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_scalpel_wireframe_drawer",
+        DEFAULT_SCALPEL_WIREFRAME_ENABLED);
   }
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,

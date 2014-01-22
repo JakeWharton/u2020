@@ -50,16 +50,7 @@ public class GalleryDatabase {
 
     Subscription subscription = galleryRequest.subscribe(observer);
 
-    // Warning: Gross shit follows!
-    galleryRequest.mapMany(new Func1<List<Image>, Observable<Image>>() {
-      @Override public Observable<Image> call(List<Image> images) {
-        return Observable.from(images);
-      }
-    }).filter(new Func1<Image, Boolean>() {
-      @Override public Boolean call(Image image) {
-        return !image.is_album; // No albums.
-      }
-    }).toList().subscribe(new EndObserver<List<Image>>() {
+    galleryRequest.subscribe(new EndObserver<List<Image>>() {
       @Override public void onEnd() {
         galleryRequests.remove(section);
       }
@@ -69,8 +60,20 @@ public class GalleryDatabase {
       }
     });
 
+    // Warning: Gross shit follows! Where you at Java 8?
     galleryService.listGallery(section, Sort.VIRAL, 1)
         .map(new GalleryToImageList())
+        .mapMany(new Func1<List<Image>, Observable<Image>>() {
+          @Override public Observable<Image> call(List<Image> images) {
+            return Observable.from(images);
+          }
+        })
+        .filter(new Func1<Image, Boolean>() {
+          @Override public Boolean call(Image image) {
+            return !image.is_album; // No albums.
+          }
+        })
+        .toList()
         .subscribeOn(Schedulers.threadPoolForIO())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(galleryRequest);

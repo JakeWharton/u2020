@@ -6,10 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
   <com.jakewharton.madge.MadgeFrameLayout
-      android:id="@+id/debug_content"
+      android:id="@+id/madge_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      />
+      >
+    <com.jakewharton.scalpel.ScalpelFrameLayout
+        android:id="@+id/debug_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+  </com.jakewharton.madge.MadgeFrameLayout>
   <ScrollView
       android:id="@+id/debug_drawer"
       android:layout_width="290dp"

@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.jakewharton.madge.MadgeFrameLayout;
+import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
@@ -35,6 +36,8 @@ import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
 import com.jakewharton.u2020.data.PixelRatioEnabled;
+import com.jakewharton.u2020.data.ScalpelEnabled;
+import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
@@ -85,6 +88,8 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference picassoDebugging;
   private final BooleanPreference pixelGridEnabled;
   private final BooleanPreference pixelRatioEnabled;
+  private final BooleanPreference scalpelEnabled;
+  private final BooleanPreference scalpelWireframeEnabled;
   private final BooleanPreference seenDebugDrawer;
   private final RestAdapter restAdapter;
   private final MockRestAdapter mockRestAdapter;
@@ -99,11 +104,15 @@ public class DebugAppContainer implements AppContainer {
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
+      @ScalpelEnabled BooleanPreference scalpelEnabled,
+      @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
       @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
       MockRestAdapter mockRestAdapter) {
     this.client = client;
     this.picasso = picasso;
     this.networkEndpoint = networkEndpoint;
+    this.scalpelEnabled = scalpelEnabled;
+    this.scalpelWireframeEnabled = scalpelWireframeEnabled;
     this.seenDebugDrawer = seenDebugDrawer;
     this.mockRestAdapter = mockRestAdapter;
     this.networkProxy = networkProxy;
@@ -115,7 +124,10 @@ public class DebugAppContainer implements AppContainer {
   }
 
   @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.debug_content) MadgeFrameLayout content;
+  @InjectView(R.id.debug_content) ViewGroup content;
+
+  @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
+  @InjectView(R.id.debug_content) ScalpelFrameLayout scalpelFrameLayout;
 
   @InjectView(R.id.debug_contextual_title) View contextualTitleView;
   @InjectView(R.id.debug_contextual_list) LinearLayout contextualListView;
@@ -131,6 +143,8 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
   @InjectView(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
   @InjectView(R.id.debug_ui_pixel_ratio) Switch uiPixelRatioView;
+  @InjectView(R.id.debug_ui_scalpel) Switch uiScalpelView;
+  @InjectView(R.id.debug_ui_scalpel_wireframe) Switch uiScalpelWireframeView;
 
   @InjectView(R.id.debug_build_name) TextView buildNameView;
   @InjectView(R.id.debug_build_code) TextView buildCodeView;
@@ -380,26 +394,50 @@ public class DebugAppContainer implements AppContainer {
     });
 
     boolean gridEnabled = pixelGridEnabled.get();
-    content.setOverlayEnabled(gridEnabled);
+    madgeFrameLayout.setOverlayEnabled(gridEnabled);
     uiPixelGridView.setChecked(gridEnabled);
     uiPixelRatioView.setEnabled(gridEnabled);
     uiPixelGridView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Timber.d("Setting pixel grid overlay enabled to " + isChecked);
         pixelGridEnabled.set(isChecked);
-        content.setOverlayEnabled(isChecked);
+        madgeFrameLayout.setOverlayEnabled(isChecked);
         uiPixelRatioView.setEnabled(isChecked);
       }
     });
 
     boolean ratioEnabled = pixelRatioEnabled.get();
-    content.setOverlayRatioEnabled(ratioEnabled);
+    madgeFrameLayout.setOverlayRatioEnabled(ratioEnabled);
     uiPixelRatioView.setChecked(ratioEnabled);
     uiPixelRatioView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Timber.d("Setting pixel scale overlay enabled to " + isChecked);
         pixelRatioEnabled.set(isChecked);
-        content.setOverlayRatioEnabled(isChecked);
+        madgeFrameLayout.setOverlayRatioEnabled(isChecked);
+      }
+    });
+
+    boolean scalpel = scalpelEnabled.get();
+    scalpelFrameLayout.setLayerInteractionEnabled(scalpel);
+    uiScalpelView.setChecked(scalpel);
+    uiScalpelWireframeView.setEnabled(scalpel);
+    uiScalpelView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Timber.d("Setting scalpel interaction enabled to " + isChecked);
+        scalpelEnabled.set(isChecked);
+        scalpelFrameLayout.setLayerInteractionEnabled(isChecked);
+        uiScalpelWireframeView.setEnabled(isChecked);
+      }
+    });
+
+    boolean wireframe = scalpelWireframeEnabled.get();
+    scalpelFrameLayout.setDrawViews(!wireframe);
+    uiScalpelWireframeView.setChecked(wireframe);
+    uiScalpelWireframeView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Timber.d("Setting scalpel wireframe enabled to " + isChecked);
+        scalpelWireframeEnabled.set(isChecked);
+        scalpelFrameLayout.setDrawViews(!isChecked);
       }
     });
   }
