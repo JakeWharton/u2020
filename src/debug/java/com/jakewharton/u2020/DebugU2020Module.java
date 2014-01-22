@@ -12,5 +12,5 @@ import dagger.Module;
     },
     overrides = true
 )
-public class DebugU2020Module {
+public final class DebugU2020Module {
 }

@@ -39,8 +39,8 @@ dependencies {
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.0.0'
 
-  compile 'com.netflix.rxjava:rxjava-core:0.15.1'
-  compile 'com.netflix.rxjava:rxjava-android:0.15.1'
+  compile 'com.netflix.rxjava:rxjava-core:0.16.1'
+  compile 'com.netflix.rxjava:rxjava-android:0.16.1'
 
   compile 'com.etsy.android.grid:library:1.0.3'
 }

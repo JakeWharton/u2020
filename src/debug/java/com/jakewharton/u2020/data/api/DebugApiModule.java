@@ -14,7 +14,7 @@ import retrofit.android.AndroidMockValuePersistence;
     library = true,
     overrides = true
 )
-public class DebugApiModule {
+public final class DebugApiModule {
   @Provides @Singleton
   MockRestAdapter provideMockRestAdapter(RestAdapter restAdapter, SharedPreferences preferences) {
     MockRestAdapter mockRestAdapter = MockRestAdapter.from(restAdapter);

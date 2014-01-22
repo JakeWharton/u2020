@@ -26,7 +26,7 @@ import retrofit.MockRestAdapter;
     library = true,
     overrides = true
 )
-public class DebugDataModule {
+public final class DebugDataModule {
   private static final int DEFAULT_ANIMATION_SPEED = 1; // 1x (normal) speed.
   private static final boolean DEFAULT_PICASSO_DEBUGGING = false; // Debug indicators displayed
   private static final boolean DEFAULT_PIXEL_GRID_ENABLED = false; // No pixel grid overlay.

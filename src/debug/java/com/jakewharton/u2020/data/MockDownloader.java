@@ -14,7 +14,7 @@ import retrofit.MockRestAdapter;
  * <p>
  * Images <em>must</em> be in the form {@code mock:///path/to/asset.png}.
  */
-public class MockDownloader implements Downloader {
+public final class MockDownloader implements Downloader {
   private static final int DISK_CACHE_SIZE_MB = 30 * 1024 * 1024; // 30MB
 
   private final MockRestAdapter mockRestAdapter;
