@@ -58,6 +58,9 @@ android {
   }
 
   defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 19
+
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -68,6 +71,7 @@ android {
   buildTypes {
     debug {
       packageNameSuffix '.dev'
+      versionNameSuffix '-dev'
     }
   }
 
