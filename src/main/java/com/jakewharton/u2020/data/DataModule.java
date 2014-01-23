@@ -23,7 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
     library = true
 )
 public class DataModule {
-  private static final int CACHE_SIZE = 30 * 1024 * 1024; // 30MB
+  private static final int CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
