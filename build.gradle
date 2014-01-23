@@ -50,7 +50,7 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 
 android {
   compileSdkVersion 19
-  buildToolsVersion "19.0.0"
+  buildToolsVersion "19.0.1"
 
   defaultConfig {
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
