@@ -52,6 +52,11 @@ android {
   compileSdkVersion 19
   buildToolsVersion "19.0.1"
 
+  dexOptions {
+    // Skip pre-dexing when running on Travis CI.
+    preDexLibraries = !"true".equals(System.getenv("TRAVIS"))
+  }
+
   defaultConfig {
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
