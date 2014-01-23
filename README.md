@@ -57,6 +57,7 @@ To Do
 -----
 
  * Something with animations to showcase animation control.
+ * Network errors probably crash the app.
  * Pressed state no longer works thanks to Etsy.
  * Toss column count into dimen and scale appropriately.
  * Controls to change which gallery we're looking at?
