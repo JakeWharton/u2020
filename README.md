@@ -18,6 +18,13 @@ features to the app which are presented in the Debug Drawer™. The drawer is op
 swipe from the right of the screen. From here you can change and view all of the developer options
 of the application.
 
+The drawer is provided by the simple interface `AppContainer`. This is an indirection that the
+single activity uses to fetch its container into which it can place its content. The default
+implementation returns the Android-provided content view. The 'debug' version overrides this with
+`DebugAppContainer` which is responsible for creating the drawer, adding it to the activity, and
+returning its content view group. It also injects all of the developer objects and binds them to
+controls in the drawer.
+
 The most notable feature the 'debug' version exposes is the concept of endpoints. Using the spinner
 at the top of the drawer, you can change the endpoint to which the app communicates. We also expose
 a false endpoint named "Mock Mode" which simulates an in-memory server inside the app. This "Mock
@@ -27,11 +34,27 @@ against.
 "Mock Mode" can be queried when modules are configuring their dependencies which is what allows
 simulating the remote server in-memory.
 ```java
-@Provides @Singleton Foo provideFoo(@IsMockMode boolean isMockMode) {
-  return isMockMode ? return new MockFoo() : new RealFoo();
+public class MockFoo() {
+  @Inject MockFoo() {}
+  // ...
+}
+```
+```java
+@Provides @Singleton Foo provideFoo(@IsMockMode boolean isMockMode, MockFoo mockFoo) {
+  return isMockMode ? return mockFoo : new RealFoo();
 }
 ```
 See `DebugDataModule` and `DebugApiModule` to see this in action in the real app.
+
+The mock implementations of these types are some of those injected into the `DebugAppContainer` for
+binding in the drawer. This allows us to do things like control their fake network behavior and
+alter their behavior.
+
+In order to keep the shared state which represents the server-side data we use a `ServerDatabase`
+singleton. At present this is only done with a combination of in-memory collections and images in
+the `debug/assets/`. In a more complex app you could even use a full database. This class is
+injected into each mock service which uses its methods to query and mutate state
+(e.g., `MockGalleryService`).
 
 ![Debug drawer](u2020.gif)
 
