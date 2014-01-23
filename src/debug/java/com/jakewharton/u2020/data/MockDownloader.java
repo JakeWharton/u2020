@@ -9,8 +9,8 @@ import java.io.IOException;
 import retrofit.MockRestAdapter;
 
 /**
- * A Picasso {@link com.squareup.picasso.Downloader} which loads images from assets but attempts to
- * emulate the subtleties of a real HTTP client and its disk cache.
+ * A Picasso {@link Downloader} which loads images from assets but attempts to emulate the
+ * subtleties of a real HTTP client and its disk cache.
  * <p>
  * Images <em>must</em> be in the form {@code mock:///path/to/asset.png}.
  */

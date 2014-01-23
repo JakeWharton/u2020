@@ -1,6 +1,6 @@
 package com.jakewharton.u2020.data.api.model;
 
-public class Image {
+public final class Image {
   public final String id;
 
   public final String link;

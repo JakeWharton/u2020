@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import retrofit.RequestInterceptor;
 
 @Singleton
-public class ApiHeaders implements RequestInterceptor {
+public final class ApiHeaders implements RequestInterceptor {
   private static final String AUTHORIZATION_PREFIX = "Client-ID";
 
   private final String authorizationValue;

@@ -16,7 +16,7 @@ import javax.inject.Singleton;
         U2020App.class
     }
 )
-public class U2020Module {
+public final class U2020Module {
   private final U2020App app;
 
   public U2020Module(U2020App app) {

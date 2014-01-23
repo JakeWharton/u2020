@@ -13,7 +13,7 @@ import retrofit.client.OkClient;
     complete = false,
     library = true
 )
-public class ApiModule {
+public final class ApiModule {
   public static final String PRODUCTION_API_URL = "https://api.imgur.com/3/";
   private static final String CLIENT_ID = "3436c108ccc17d3";
 

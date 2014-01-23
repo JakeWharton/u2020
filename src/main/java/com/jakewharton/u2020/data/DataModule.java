@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
     complete = false,
     library = true
 )
-public class DataModule {
+public final class DataModule {
   static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
