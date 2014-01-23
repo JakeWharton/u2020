@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 import retrofit.RestAdapter;
 
+import static butterknife.ButterKnife.findById;
+
 class LoggingLevelAdapter extends BindableAdapter<RestAdapter.LogLevel> {
   LoggingLevelAdapter(Context context) {
     super(context);
@@ -30,7 +32,7 @@ class LoggingLevelAdapter extends BindableAdapter<RestAdapter.LogLevel> {
   }
 
   @Override public void bindView(RestAdapter.LogLevel item, int position, View view) {
-    TextView tv = (TextView) view.findViewById(android.R.id.text1);
+    TextView tv = findById(view, android.R.id.text1);
     tv.setText(item.toString());
   }
 

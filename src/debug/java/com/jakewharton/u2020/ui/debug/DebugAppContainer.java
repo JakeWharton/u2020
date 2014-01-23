@@ -69,6 +69,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static butterknife.ButterKnife.findById;
 import static java.net.Proxy.Type.HTTP;
 import static retrofit.RestAdapter.LogLevel;
 
@@ -177,7 +178,7 @@ public class DebugAppContainer implements AppContainer {
     activity.setContentView(R.layout.debug_activity_frame);
 
     // Manually find the debug drawer and inflate the drawer layout inside of it.
-    ViewGroup drawer = (ViewGroup) activity.findViewById(R.id.debug_drawer);
+    ViewGroup drawer = findById(activity, R.id.debug_drawer);
     LayoutInflater.from(drawerContext).inflate(R.layout.debug_drawer_content, drawer);
 
     // Inject after inflating the drawer layout so its views are available to inject.
@@ -544,7 +545,7 @@ public class DebugAppContainer implements AppContainer {
     final int originalSelection = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
-    final EditText host = (EditText) view.findViewById(R.id.debug_drawer_network_proxy_host);
+    final EditText host = findById(view, R.id.debug_drawer_network_proxy_host);
 
     new AlertDialog.Builder(activity) //
         .setTitle("Set Network Proxy")
@@ -583,7 +584,7 @@ public class DebugAppContainer implements AppContainer {
 
   private void showCustomEndpointDialog(final int originalSelection, String defaultUrl) {
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_endpoint, null);
-    final EditText url = (EditText) view.findViewById(R.id.debug_drawer_network_endpoint_url);
+    final EditText url = findById(view, R.id.debug_drawer_network_endpoint_url);
     url.setText(defaultUrl);
     url.setSelection(url.length());
 

@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.jakewharton.u2020.data.Endpoints;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 
+import static butterknife.ButterKnife.findById;
+
 class ServerEndpointAdapter extends BindableAdapter<Endpoints> {
   ServerEndpointAdapter(Context context) {
     super(context);
@@ -30,7 +32,7 @@ class ServerEndpointAdapter extends BindableAdapter<Endpoints> {
   }
 
   @Override public void bindView(Endpoints item, int position, View view) {
-    TextView tv = (TextView) view.findViewById(android.R.id.text1);
+    TextView tv = findById(view, android.R.id.text1);
     tv.setText(item.name);
   }
 
