@@ -15,14 +15,12 @@ import retrofit.MockRestAdapter;
  * Images <em>must</em> be in the form {@code mock:///path/to/asset.png}.
  */
 public final class MockDownloader implements Downloader {
-  private static final int DISK_CACHE_SIZE_MB = 30 * 1024 * 1024; // 30MB
-
   private final MockRestAdapter mockRestAdapter;
   private final AssetManager assetManager;
 
   /** Emulate the disk cache by storing the URLs in an LRU using its size as the value. */
   private final LruCache<String, Long> emulatedDiskCache =
-      new LruCache<String, Long>(DISK_CACHE_SIZE_MB) {
+      new LruCache<String, Long>(DataModule.DISK_CACHE_SIZE) {
         @Override protected int sizeOf(String key, Long value) {
           return (int) Math.min(value.longValue(), Integer.MAX_VALUE);
         }

@@ -23,7 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
     library = true
 )
 public class DataModule {
-  private static final int CACHE_SIZE = 50 * 1024 * 1024; // 50MB
+  static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
@@ -50,7 +50,7 @@ public class DataModule {
     // Install an HTTP cache in the application cache directory.
     try {
       File cacheDir = new File(app.getCacheDir(), "http");
-      HttpResponseCache cache = new HttpResponseCache(cacheDir, CACHE_SIZE);
+      HttpResponseCache cache = new HttpResponseCache(cacheDir, DISK_CACHE_SIZE);
       client.setResponseCache(cache);
     } catch (IOException e) {
       Timber.e(e, "Unable to install disk cache.");
