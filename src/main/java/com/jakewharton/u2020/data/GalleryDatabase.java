@@ -14,8 +14,8 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.concurrency.AndroidSchedulers;
-import rx.concurrency.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.util.functions.Func1;
 
@@ -63,7 +63,7 @@ public class GalleryDatabase {
     // Warning: Gross shit follows! Where you at Java 8?
     galleryService.listGallery(section, Sort.VIRAL, 1)
         .map(new GalleryToImageList())
-        .mapMany(new Func1<List<Image>, Observable<Image>>() {
+        .flatMap(new Func1<List<Image>, Observable<Image>>() {
           @Override public Observable<Image> call(List<Image> images) {
             return Observable.from(images);
           }
@@ -74,7 +74,7 @@ public class GalleryDatabase {
           }
         })
         .toList()
-        .subscribeOn(Schedulers.threadPoolForIO())
+        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(galleryRequest);
 
