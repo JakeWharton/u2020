@@ -3,7 +3,6 @@ package com.jakewharton.u2020.data.api.model;
 import android.app.Application;
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
-import java.io.InputStream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -15,19 +14,17 @@ public final class MockImageLoader {
     assetManager = application.getAssets();
   }
 
-  /** A filename like {@code abc123.jpg} inside the {@code mock/images} asset folder. */
+  /** A filename like {@code abc123.jpg} inside the {@code mock/images/} asset folder. */
   public ImageBuilder newImage(String filename) {
     String path = "mock/images/" + filename;
 
     int width;
     int height;
     try {
-      InputStream open = assetManager.open(path);
-
       BitmapFactory.Options options = new BitmapFactory.Options();
       options.inJustDecodeBounds = true;
 
-      BitmapFactory.decodeStream(open, null, options);
+      BitmapFactory.decodeStream(assetManager.open(path), null, options);
 
       width = options.outWidth;
       height = options.outHeight;

@@ -41,7 +41,8 @@ public final class ServerDatabase {
         .title("Omg Scalpel") //
         .build());
     hotImages.add(mockImageLoader.newImage("e3LxhEC.jpg") //
-        .title("Open Source Amaze").build());
+        .title("Open Source Amaze") //
+        .build());
     hotImages.add(mockImageLoader.newImage("p3jUQjI.jpg") //
         .title("So RxJava") //
         .views(2000) //

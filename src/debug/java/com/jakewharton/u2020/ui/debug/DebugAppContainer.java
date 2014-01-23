@@ -218,7 +218,8 @@ public class DebugAppContainer implements AppContainer {
 
   private void setupNetworkSection() {
     final Endpoints currentEndpoint = Endpoints.from(networkEndpoint.get());
-    final ServerEndpointAdapter endpointAdapter = new ServerEndpointAdapter(drawerContext);
+    final EnumAdapter<Endpoints> endpointAdapter =
+        new EnumAdapter<>(drawerContext, Endpoints.class);
     endpointView.setAdapter(endpointAdapter);
     endpointView.setSelection(currentEndpoint.ordinal());
     endpointView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -339,7 +340,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     // We use the JSON rest adapter as the source of truth for the log level.
-    final LoggingLevelAdapter loggingAdapter = new LoggingLevelAdapter(activity);
+    final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(activity, LogLevel.class);
     networkLoggingView.setAdapter(loggingAdapter);
     networkLoggingView.setSelection(restAdapter.getLogLevel().ordinal());
     networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

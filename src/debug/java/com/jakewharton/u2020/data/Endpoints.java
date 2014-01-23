@@ -16,6 +16,10 @@ public enum Endpoints {
     this.url = url;
   }
 
+  @Override public String toString() {
+    return name;
+  }
+
   public static Endpoints from(String endpoint) {
     for (Endpoints value : values()) {
       if (value.url != null && value.url.equals(endpoint)) {
