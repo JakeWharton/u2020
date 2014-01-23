@@ -1,5 +1,5 @@
-u2020
-=====
+U+2020
+======
 
 A sample Android app which showcases advanced usage of Dagger among other open source libraries.
 
