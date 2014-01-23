@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import timber.log.Timber;
 
 @Singleton
 public final class ServerDatabase {
@@ -22,10 +23,22 @@ public final class ServerDatabase {
     return Long.toHexString(nextId());
   }
 
+  private final MockImageLoader mockImageLoader;
+
   // TODO maybe id->image map and section->id multimap so we can re-use images?
   private final Map<Section, List<Image>> imagesBySection = new LinkedHashMap<>();
 
+  private boolean initialized;
+
   @Inject public ServerDatabase(MockImageLoader mockImageLoader) {
+    this.mockImageLoader = mockImageLoader;
+  }
+
+  private synchronized void initializeMockData() {
+    if (initialized) return;
+    initialized = true;
+    Timber.d("Initializing mock data...");
+
     List<Image> hotImages = new ArrayList<>();
     imagesBySection.put(Section.HOT, hotImages);
 
@@ -68,6 +81,7 @@ public final class ServerDatabase {
   }
 
   public List<Image> getImagesForSection(Section section) {
+    initializeMockData();
     return imagesBySection.get(section);
   }
 }
