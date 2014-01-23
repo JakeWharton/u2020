@@ -34,7 +34,7 @@ against.
 "Mock Mode" can be queried when modules are configuring their dependencies which is what allows
 simulating the remote server in-memory.
 ```java
-public class MockFoo() {
+@Singleton class MockFoo() {
   @Inject MockFoo() {}
   // ...
 }
