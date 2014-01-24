@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.7.+'
+    classpath 'com.android.tools.build:gradle:0.8.+'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
   }
