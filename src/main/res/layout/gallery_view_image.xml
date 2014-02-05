@@ -12,6 +12,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:foreground="@drawable/image_overlay"
+      android:clickable="true"
       tools:src="#f00"
       />
   <TextView
