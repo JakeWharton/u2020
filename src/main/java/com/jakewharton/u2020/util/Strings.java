@@ -5,7 +5,7 @@ public final class Strings {
     // No instances.
   }
 
-  public static boolean isBlank(CharSequence string){
+  public static boolean isBlank(CharSequence string) {
     return (string == null || string.toString().trim().length() == 0);
   }
 

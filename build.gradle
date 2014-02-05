@@ -27,6 +27,10 @@ dependencies {
   compile 'com.squareup.dagger:dagger:1.2.0'
   provided 'com.squareup.dagger:dagger-compiler:1.2.0'
 
+  compile("com.squareup.mortar:mortar:0.7") {
+    exclude module: 'dagger-compiler'
+  }
+
   compile 'com.squareup.okhttp:okhttp:1.3.0'
   compile 'com.squareup.picasso:picasso:2.2.0'
   compile 'com.squareup.retrofit:retrofit:1.4.1'
