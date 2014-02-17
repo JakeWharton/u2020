@@ -24,8 +24,8 @@ repositories {
 dependencies {
   compile 'com.android.support:support-v4:19.0.+'
 
-  compile 'com.squareup.dagger:dagger:1.2.0'
-  provided 'com.squareup.dagger:dagger-compiler:1.2.0'
+  compile 'com.squareup.dagger:dagger:1.2.1'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.1'
 
   compile 'com.squareup.okhttp:okhttp:1.3.0'
   compile 'com.squareup.picasso:picasso:2.2.0'
