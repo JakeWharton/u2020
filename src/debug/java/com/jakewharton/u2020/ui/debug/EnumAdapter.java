@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
+import butterknife.ButterKnife;
 
 class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
   private final T[] enumConstants;
@@ -44,7 +45,7 @@ class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
   }
 
   @Override public final void bindView(T item, int position, View view) {
-    TextView tv = (TextView) view.findViewById(android.R.id.text1);
+    TextView tv = ButterKnife.findById(view, android.R.id.text1);
     tv.setText(getName(item));
   }
 
