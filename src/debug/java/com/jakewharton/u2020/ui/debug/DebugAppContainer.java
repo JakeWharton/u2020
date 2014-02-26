@@ -30,8 +30,8 @@ import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.AnimationSpeed;
-import com.jakewharton.u2020.data.Endpoint;
-import com.jakewharton.u2020.data.Endpoints;
+import com.jakewharton.u2020.data.ApiEndpoint;
+import com.jakewharton.u2020.data.ApiEndpoints;
 import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
@@ -100,7 +100,7 @@ public class DebugAppContainer implements AppContainer {
   Context drawerContext;
 
   @Inject public DebugAppContainer(OkHttpClient client, Picasso picasso,
-      @Endpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
+      @ApiEndpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
@@ -217,17 +217,17 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupNetworkSection() {
-    final Endpoints currentEndpoint = Endpoints.from(networkEndpoint.get());
-    final EnumAdapter<Endpoints> endpointAdapter =
-        new EnumAdapter<>(drawerContext, Endpoints.class);
+    final ApiEndpoints currentEndpoint = ApiEndpoints.from(networkEndpoint.get());
+    final EnumAdapter<ApiEndpoints> endpointAdapter =
+        new EnumAdapter<>(drawerContext, ApiEndpoints.class);
     endpointView.setAdapter(endpointAdapter);
     endpointView.setSelection(currentEndpoint.ordinal());
     endpointView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        Endpoints selected = endpointAdapter.getItem(position);
+        ApiEndpoints selected = endpointAdapter.getItem(position);
         if (selected != currentEndpoint) {
-          if (selected == Endpoints.CUSTOM) {
+          if (selected == ApiEndpoints.CUSTOM) {
             Timber.d("Custom network endpoint selected. Prompting for URL.");
             showCustomEndpointDialog(currentEndpoint.ordinal(), "http://");
           } else {
@@ -326,9 +326,9 @@ public class DebugAppContainer implements AppContainer {
     });
 
     // Only show the endpoint editor when a custom endpoint is in use.
-    endpointEditView.setVisibility(currentEndpoint == Endpoints.CUSTOM ? VISIBLE : GONE);
+    endpointEditView.setVisibility(currentEndpoint == ApiEndpoints.CUSTOM ? VISIBLE : GONE);
 
-    if (currentEndpoint == Endpoints.MOCK_MODE) {
+    if (currentEndpoint == ApiEndpoints.MOCK_MODE) {
       // Disable network proxy if we are in mock mode.
       networkProxyView.setEnabled(false);
       networkLoggingView.setEnabled(false);

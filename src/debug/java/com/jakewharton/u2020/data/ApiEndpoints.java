@@ -2,7 +2,7 @@ package com.jakewharton.u2020.data;
 
 import com.jakewharton.u2020.data.api.ApiModule;
 
-public enum Endpoints {
+public enum ApiEndpoints {
   PRODUCTION("Production", ApiModule.PRODUCTION_API_URL),
   // STAGING("Staging", "https://api.staging.imgur.com/3/"),
   MOCK_MODE("Mock Mode", "mock://"),
@@ -11,7 +11,7 @@ public enum Endpoints {
   public final String name;
   public final String url;
 
-  Endpoints(String name, String url) {
+  ApiEndpoints(String name, String url) {
     this.name = name;
     this.url = url;
   }
@@ -20,8 +20,8 @@ public enum Endpoints {
     return name;
   }
 
-  public static Endpoints from(String endpoint) {
-    for (Endpoints value : values()) {
+  public static ApiEndpoints from(String endpoint) {
+    for (ApiEndpoints value : values()) {
       if (value.url != null && value.url.equals(endpoint)) {
         return value;
       }

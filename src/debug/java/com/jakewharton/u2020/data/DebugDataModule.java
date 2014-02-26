@@ -41,13 +41,13 @@ public final class DebugDataModule {
     return client;
   }
 
-  @Provides @Singleton @Endpoint
+  @Provides @Singleton @ApiEndpoint
   StringPreference provideEndpointPreference(SharedPreferences preferences) {
-    return new StringPreference(preferences, "debug_endpoint", Endpoints.MOCK_MODE.url);
+    return new StringPreference(preferences, "debug_endpoint", ApiEndpoints.MOCK_MODE.url);
   }
 
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@Endpoint StringPreference endpoint) {
-    return Endpoints.isMockMode(endpoint.get());
+  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
+    return ApiEndpoints.isMockMode(endpoint.get());
   }
 
   @Provides @Singleton @NetworkProxy
