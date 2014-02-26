@@ -4,8 +4,9 @@ import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import retrofit.Endpoint;
+import retrofit.Endpoints;
 import retrofit.RestAdapter;
-import retrofit.Server;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
 
@@ -21,8 +22,8 @@ public final class ApiModule {
     return CLIENT_ID;
   }
 
-  @Provides @Singleton Server provideServer() {
-    return new Server(PRODUCTION_API_URL);
+  @Provides @Singleton Endpoint provideEndpoint() {
+    return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
   }
 
   @Provides @Singleton Client provideClient(OkHttpClient client) {
@@ -30,10 +31,10 @@ public final class ApiModule {
   }
 
   @Provides @Singleton
-  RestAdapter provideRestAdapter(Server server, Client client, ApiHeaders headers) {
+  RestAdapter provideRestAdapter(Endpoint endpoint, Client client, ApiHeaders headers) {
     return new RestAdapter.Builder() //
         .setClient(client) //
-        .setServer(server) //
+        .setEndpoint(endpoint) //
         .setRequestInterceptor(headers) //
         .build();
   }
