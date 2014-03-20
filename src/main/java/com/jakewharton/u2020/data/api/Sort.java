@@ -1,16 +1,8 @@
 package com.jakewharton.u2020.data.api;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum Sort {
-  VIRAL("viral"),
-  TIME("time");
-
-  private final String value;
-
-  Sort(String value) {
-    this.value = value;
-  }
-
-  @Override public String toString() {
-    return value;
-  }
+  @SerializedName("viral") VIRAL,
+  @SerializedName("time") TIME;
 }
