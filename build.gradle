@@ -33,7 +33,7 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.0'
   compile 'com.squareup.picasso:picasso:2.3.2'
   compile 'com.squareup.retrofit:retrofit:1.6.0'
-  debugCompile 'com.squareup.retrofit:retrofit-mock:1.5.1'
+  debugCompile 'com.squareup.retrofit:retrofit-mock:1.6.0'
 
   compile 'com.jakewharton:butterknife:5.1.0'
   compile 'com.jakewharton.timber:timber:2.3.0'
