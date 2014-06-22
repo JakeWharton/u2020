@@ -314,11 +314,6 @@ public class DebugAppContainer implements AppContainer {
           networkProxy.delete();
           client.setProxy(null);
         } else if (networkProxy.isSet() && position == ProxyAdapter.PROXY) {
-          String[] parts = networkProxy.get().split(":", 2);
-          SocketAddress address =
-              InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
-
-          client.setProxy(new Proxy(HTTP, address));
           Timber.d("Ignoring re-selection of network proxy %s", networkProxy.get());
         } else {
           Timber.d("New network proxy selected. Prompting for host.");
@@ -329,6 +324,13 @@ public class DebugAppContainer implements AppContainer {
       @Override public void onNothingSelected(AdapterView<?> adapterView) {
       }
     });
+    if (networkProxy.isSet() && currentProxyPosition == ProxyAdapter.PROXY) {
+      String[] parts = networkProxy.get().split(":", 2);
+      SocketAddress address =
+          InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
+
+      client.setProxy(new Proxy(HTTP, address));
+    }
 
     // Only show the endpoint editor when a custom endpoint is in use.
     endpointEditView.setVisibility(currentEndpoint == ApiEndpoints.CUSTOM ? VISIBLE : GONE);
