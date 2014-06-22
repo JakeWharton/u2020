@@ -324,13 +324,6 @@ public class DebugAppContainer implements AppContainer {
       @Override public void onNothingSelected(AdapterView<?> adapterView) {
       }
     });
-    if (networkProxy.isSet() && currentProxyPosition == ProxyAdapter.PROXY) {
-      String[] parts = networkProxy.get().split(":", 2);
-      SocketAddress address =
-          InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
-
-      client.setProxy(new Proxy(HTTP, address));
-    }
 
     // Only show the endpoint editor when a custom endpoint is in use.
     endpointEditView.setVisibility(currentEndpoint == ApiEndpoints.CUSTOM ? VISIBLE : GONE);
