@@ -74,6 +74,7 @@ Libraries
  * Scalpel - http://github.com/JakeWharton/scalpel
  * Hugo - https://github.com/JakeWharton/hugo
  * StaggeredGrid - https://github.com/etsy/AndroidStaggeredGrid
+ * SDK Manager Plugin - https://github.com/JakeWharton/sdk-manager-plugin
 
 
 
