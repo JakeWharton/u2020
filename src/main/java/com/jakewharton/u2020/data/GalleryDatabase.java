@@ -15,9 +15,9 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
-import rx.util.functions.Func1;
 
 /** Poor-man's in-memory cache of responses. Must be accessed on the main thread. */
 @Singleton
