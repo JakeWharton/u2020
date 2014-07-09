@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.9.+'
+    classpath 'com.android.tools.build:gradle:0.12.+'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
     classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
   }
@@ -53,7 +53,7 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
   compileSdkVersion 19
-  buildToolsVersion "19.0.1"
+  buildToolsVersion "19.1.0"
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -73,7 +73,7 @@ android {
 
   buildTypes {
     debug {
-      packageNameSuffix '.dev'
+      applicationIdSuffix '.dev'
       versionNameSuffix '-dev'
     }
   }
