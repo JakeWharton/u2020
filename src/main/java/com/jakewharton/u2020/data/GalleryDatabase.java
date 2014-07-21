@@ -5,24 +5,19 @@ import com.jakewharton.u2020.data.api.Section;
 import com.jakewharton.u2020.data.api.Sort;
 import com.jakewharton.u2020.data.api.model.Image;
 import com.jakewharton.u2020.data.api.transforms.GalleryToImageList;
-
+import com.jakewharton.u2020.data.rx.EndObserver;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import rx.Notification;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+import rx.util.functions.Func1;
 
 /** Poor-man's in-memory cache of responses. Must be accessed on the main thread. */
 @Singleton
@@ -38,7 +33,7 @@ public class GalleryDatabase {
 
   // TODO pull underlying logic into a re-usable component for debouncing and caching last value.
   public Subscription loadGallery(final Section section, Observer<List<Image>> observer) {
-    final List<Image> images = galleryCache.get(section);
+    List<Image> images = galleryCache.get(section);
     if (images != null) {
       // We have a cached value. Emit it immediately.
       observer.onNext(images);
@@ -55,16 +50,12 @@ public class GalleryDatabase {
 
     Subscription subscription = galleryRequest.subscribe(observer);
 
-    galleryRequest.doOnTerminate(new Action0() {
-      @Override
-      public void call() {
+    galleryRequest.subscribe(new EndObserver<List<Image>>() {
+      @Override public void onEnd() {
         galleryRequests.remove(section);
       }
-    });
 
-    galleryRequest.doOnEach(new Action1<Notification<? super List<Image>>>() {
-      @Override
-      public void call(Notification<? super List<Image>> notification) {
+      @Override public void onNext(List<Image> images) {
         galleryCache.put(section, images);
       }
     });
