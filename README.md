@@ -109,4 +109,4 @@ License
 
 
  [parleys]: http://parleys.com/play/529bde2ce4b0e619540cc3ae
- [slides]: https://speakerdeck.com/jakewharton/android-apps-with-dagger
+ [slides]: https://speakerdeck.com/jakewharton/android-apps-with-dagger-devoxx-2013
