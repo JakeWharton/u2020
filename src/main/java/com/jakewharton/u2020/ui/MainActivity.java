@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
     U2020App app = U2020App.get(this);
     app.inject(this);
 
-    container = appContainer.get(this, app);
+    container = appContainer.get(this);
 
     getLayoutInflater().inflate(R.layout.gallery_view, container);
   }

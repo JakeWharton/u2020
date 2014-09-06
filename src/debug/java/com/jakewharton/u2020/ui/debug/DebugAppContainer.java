@@ -3,6 +3,7 @@ package com.jakewharton.u2020.ui.debug;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -94,8 +95,8 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference seenDebugDrawer;
   private final RestAdapter restAdapter;
   private final MockRestAdapter mockRestAdapter;
+  private final Application app;
 
-  U2020App app;
   Activity activity;
   Context drawerContext;
 
@@ -108,7 +109,7 @@ public class DebugAppContainer implements AppContainer {
       @ScalpelEnabled BooleanPreference scalpelEnabled,
       @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
       @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
-      MockRestAdapter mockRestAdapter) {
+      MockRestAdapter mockRestAdapter, Application app) {
     this.client = client;
     this.picasso = picasso;
     this.networkEndpoint = networkEndpoint;
@@ -122,6 +123,7 @@ public class DebugAppContainer implements AppContainer {
     this.pixelGridEnabled = pixelGridEnabled;
     this.pixelRatioEnabled = pixelRatioEnabled;
     this.restAdapter = restAdapter;
+    this.app = app;
   }
 
   @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
@@ -170,8 +172,7 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
   @InjectView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
-  @Override public ViewGroup get(final Activity activity, U2020App app) {
-    this.app = app;
+  @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
     drawerContext = activity;
 
@@ -623,6 +624,6 @@ public class DebugAppContainer implements AppContainer {
     Intent newApp = new Intent(app, MainActivity.class);
     newApp.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
     app.startActivity(newApp);
-    app.buildObjectGraphAndInject();
+    U2020App.get(app).buildObjectGraphAndInject();
   }
 }
