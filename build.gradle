@@ -3,9 +3,9 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.13.2'
-    classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
-    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
+    classpath 'com.android.tools.build:gradle:0.13.3'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
   }
 }
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:19.0.+'
+  compile 'com.android.support:support-v4:21.0.0'
 
   compile 'com.squareup.dagger:dagger:1.2.1'
   provided 'com.squareup.dagger:dagger-compiler:1.2.1'
@@ -52,8 +52,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-  compileSdkVersion 19
-  buildToolsVersion "19.1.0"
+  compileSdkVersion 21
+  buildToolsVersion "21.0.2"
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -62,7 +62,7 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 19
+    targetSdkVersion 21
 
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
