@@ -9,9 +9,9 @@ The `ObjectGraph` is created in the `U2020App`'s `onCreate` method. The `Modules
 single method, `list`, which returns the list of module instances to use.
 
 In order to add functionality in the 'debug' version of the app, this class is only present in the
-`release/` and `debug/` flavor folders. The 'release' version only includes the `U2020Module` while
+`release/` and `debug/` build type folders. The 'release' version only includes the `U2020Module` while
 the 'debug' version includes both `U2020Module` and `DebugU2020Module`, the latter of which is only
-present in the `debug/` flavor folder and is an override module.
+present in the `debug/` build type folder and is an override module.
 
 Through the use of Dagger overrides, the 'debug' version of the app adds a slew of debugging
 features to the app which are presented in the Debug Drawer™. The drawer is opened by a bezel
