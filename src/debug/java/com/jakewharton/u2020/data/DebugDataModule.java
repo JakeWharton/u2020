@@ -20,12 +20,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import retrofit.MockRestAdapter;
 
-@Module(
-    includes = DebugApiModule.class,
-    complete = false,
-    library = true,
-    overrides = true
-)
+@Module(includes = { DataModule.class, DebugApiModule.class })
 public final class DebugDataModule {
   private static final int DEFAULT_ANIMATION_SPEED = 1; // 1x (normal) speed.
   private static final boolean DEFAULT_PICASSO_DEBUGGING = false; // Debug indicators displayed
@@ -93,7 +88,8 @@ public final class DebugDataModule {
         DEFAULT_SCALPEL_WIREFRAME_ENABLED);
   }
 
-  @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,
+  @Provides @Singleton Picasso providePicasso(
+      OkHttpClient client, MockRestAdapter mockRestAdapter,
       @IsMockMode boolean isMockMode, Application app) {
     Picasso.Builder builder = new Picasso.Builder(app);
     if (isMockMode) {
