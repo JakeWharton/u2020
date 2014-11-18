@@ -39,7 +39,7 @@ dependencies {
   compile 'com.squareup.retrofit:retrofit:1.4.1'
   debugCompile 'com.squareup.retrofit:retrofit-mock:1.4.1'
 
-  compile 'com.jakewharton:butterknife:6.0.1-SNAPSHOT'
+  compile 'com.jakewharton:butterknife:6.0.0'
   compile 'com.jakewharton.timber:timber:2.2.2'
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
