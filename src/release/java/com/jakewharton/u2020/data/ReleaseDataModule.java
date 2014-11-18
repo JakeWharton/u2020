@@ -3,7 +3,7 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import com.jakewharton.u2020.data.api.ApiModule;
+import com.jakewharton.u2020.data.api.ReleaseApiModule;
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -26,7 +26,7 @@ public final class ReleaseDataModule {
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
-    return createOkHttpClient(app);
+    return DataModule.createOkHttpClient(app);
   }
 
   @Provides @Singleton Picasso providePicasso(

@@ -6,7 +6,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module
-public class UiModule {
+public class ReleaseUiModule {
   @Provides @Singleton AppContainer provideAppContainer() {
     return AppContainer.DEFAULT;
   }
