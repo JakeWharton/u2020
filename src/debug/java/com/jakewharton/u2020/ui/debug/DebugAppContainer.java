@@ -127,7 +127,6 @@ public class DebugAppContainer implements AppContainer {
   }
 
   @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.debug_content) ViewGroup content;
 
   @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
   @InjectView(R.id.debug_content) ScalpelFrameLayout scalpelFrameLayout;
@@ -188,7 +187,8 @@ public class DebugAppContainer implements AppContainer {
     // Set up the contextual actions to watch views coming in and out of the content area.
     Set<ContextualDebugActions.DebugAction<?>> debugActions = Collections.emptySet();
     ContextualDebugActions contextualActions = new ContextualDebugActions(this, debugActions);
-    content.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(contextualActions));
+    scalpelFrameLayout.setOnHierarchyChangeListener(
+        HierarchyTreeChangeListener.wrap(contextualActions));
 
     drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
     drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -214,7 +214,7 @@ public class DebugAppContainer implements AppContainer {
     setupDeviceSection();
     setupPicassoSection();
 
-    return content;
+    return scalpelFrameLayout;
   }
 
   private void setupNetworkSection() {
@@ -390,7 +390,7 @@ public class DebugAppContainer implements AppContainer {
       }
     });
     // Ensure the animation speed value is always applied across app restarts.
-    content.post(new Runnable() {
+    scalpelFrameLayout.post(new Runnable() {
       @Override public void run() {
         applyAnimationSpeed(animationSpeedValue);
       }
@@ -624,6 +624,6 @@ public class DebugAppContainer implements AppContainer {
     Intent newApp = new Intent(app, MainActivity.class);
     newApp.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
     app.startActivity(newApp);
-    U2020App.get(app).buildObjectGraphAndInject();
+    U2020App.get(app).buildComponentAndInject();
   }
 }

@@ -13,11 +13,7 @@ import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import retrofit.android.AndroidMockValuePersistence;
 
-@Module(
-    complete = false,
-    library = true,
-    overrides = true
-)
+@Module(includes = ApiModule.class)
 public final class DebugApiModule {
 
   @Provides @Singleton

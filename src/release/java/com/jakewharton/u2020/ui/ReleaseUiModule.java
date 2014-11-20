@@ -5,15 +5,8 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(
-    injects = {
-        MainActivity.class,
-        GalleryView.class,
-    },
-    complete = false,
-    library = true
-)
-public class UiModule {
+@Module
+public class ReleaseUiModule {
   @Provides @Singleton AppContainer provideAppContainer() {
     return AppContainer.DEFAULT;
   }

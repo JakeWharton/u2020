@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
 
     U2020App app = U2020App.get(this);
-    app.inject(this);
+    app.component().inject(this);
 
     container = appContainer.get(this);
 

@@ -30,7 +30,7 @@ public class GalleryView extends BetterViewAnimator {
 
   public GalleryView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    U2020App.get(context).inject(this);
+    U2020App.get(context).component().inject(this);
 
     adapter = new GalleryAdapter(context, picasso);
   }

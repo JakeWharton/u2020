@@ -3,7 +3,6 @@ package com.jakewharton.u2020;
 import android.app.Application;
 import android.content.Context;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
-import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -11,7 +10,7 @@ import timber.log.Timber;
 import static timber.log.Timber.DebugTree;
 
 public class U2020App extends Application {
-  private ObjectGraph objectGraph;
+  private U2020Graph component;
 
   @Inject ActivityHierarchyServer activityHierarchyServer;
 
@@ -25,19 +24,19 @@ public class U2020App extends Application {
       // TODO Timber.plant(new CrashlyticsTree());
     }
 
-    buildObjectGraphAndInject();
+    buildComponentAndInject();
 
     registerActivityLifecycleCallbacks(activityHierarchyServer);
   }
 
-  @DebugLog
-  public void buildObjectGraphAndInject() {
-    objectGraph = ObjectGraph.create(Modules.list(this));
-    objectGraph.inject(this);
+  @DebugLog // Extracted for debugging.
+  public void buildComponentAndInject() {
+    component = U2020Component.Initializer.init(this);
+    component.inject(this);
   }
 
-  public void inject(Object o) {
-    objectGraph.inject(o);
+  public U2020Graph component() {
+    return component;
   }
 
   public static U2020App get(Context context) {
