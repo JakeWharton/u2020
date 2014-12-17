@@ -68,7 +68,7 @@ Libraries
  * Retrofit - http://square.github.io/retrofit
  * Picasso - http://square.github.io/picasso
  * OkHttp - http://square.github.io/okhttp
- * RxJava - http://github.com/Netflix/RxJava
+ * RxJava - https://github.com/ReactiveX/RxJava
  * Timber - http://github.com/JakeWharton/timber
  * Madge - http://github.com/JakeWharton/madge
  * Scalpel - http://github.com/JakeWharton/scalpel
