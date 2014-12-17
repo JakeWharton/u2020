@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
 import dagger.ObjectGraph;
-import hugo.weaving.DebugLog;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -30,7 +29,6 @@ public class U2020App extends Application {
     registerActivityLifecycleCallbacks(activityHierarchyServer);
   }
 
-  @DebugLog
   public void buildObjectGraphAndInject() {
     objectGraph = ObjectGraph.create(Modules.list(this));
     objectGraph.inject(this);

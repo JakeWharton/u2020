@@ -63,11 +63,14 @@ public final class MockDownloader implements Downloader {
     // We aren't throwing a network error so fake a round trip delay.
     SystemClock.sleep(mockRestAdapter.calculateDelayForCall());
 
-    // Since we cache missed, load the file size and put it in the LRU.
+    // Since we cache missed put it in the LRU.
     long size = assetManager.openFd(imagePath).getLength();
     emulatedDiskCache.put(imagePath, size);
 
     // Grab the image stream and return it.
     return new Response(assetManager.open(imagePath), false);
+  }
+
+  @Override public void shutdown() {
   }
 }

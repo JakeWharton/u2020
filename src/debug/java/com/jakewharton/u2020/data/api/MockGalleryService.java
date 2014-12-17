@@ -22,13 +22,13 @@ final class MockGalleryService implements GalleryService {
     // Fetch desired section.
     List<Image> images = serverDatabase.getImagesForSection(section);
     if (images == null) {
-      return Observable.from(BAD_REQUEST);
+      return Observable.just(BAD_REQUEST);
     }
 
     // Figure out proper list subset.
     int pageStart = (page - 1) * PAGE_SIZE;
     if (pageStart >= images.size() || pageStart < 0) {
-      return Observable.from(BAD_REQUEST);
+      return Observable.just(BAD_REQUEST);
     }
     int pageEnd = Math.min(pageStart + PAGE_SIZE, images.size());
 
@@ -36,6 +36,6 @@ final class MockGalleryService implements GalleryService {
     SortUtil.sort(images, sort);
     images = images.subList(pageStart, pageEnd);
 
-    return Observable.from(new Gallery(200, true, images));
+    return Observable.just(new Gallery(200, true, images));
   }
 }

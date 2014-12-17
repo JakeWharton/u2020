@@ -1,8 +1,16 @@
-language: java
+language: android
 
-before_install:
-  - export TERM=dumb
-  - sudo apt-get install -qq libstdc++6:i386 lib32z1
+jdk:
+ - oraclejdk7
+ - oraclejdk8
+
+android:
+  components:
+    - build-tools-21.1.1
+    - android-21
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-5be876d5
 
 notifications:
   email: false
