@@ -2,6 +2,7 @@ package com.jakewharton.u2020.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
@@ -19,6 +20,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import retrofit.MockRestAdapter;
+import timber.log.Timber;
 
 @Module(
     includes = DebugApiModule.class,
@@ -95,12 +97,15 @@ public final class DebugDataModule {
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,
       @IsMockMode boolean isMockMode, Application app) {
-    Picasso.Builder builder = new Picasso.Builder(app);
+    Picasso.Builder builder = new Picasso.Builder(app).downloader(new OkHttpDownloader(client));
     if (isMockMode) {
-      builder.downloader(new MockDownloader(mockRestAdapter, app.getAssets()));
-    } else {
-      builder.downloader(new OkHttpDownloader(client));
+      builder.addRequestHandler(new MockRequestHandler(mockRestAdapter, app.getAssets()));
     }
+    builder.listener(new Picasso.Listener() {
+      @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+        Timber.e(exception, "Error while loading image " + uri);
+      }
+    });
     return builder.build();
   }
 
