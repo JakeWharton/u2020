@@ -1,10 +1,10 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
-    }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.0.0'
+  }
 }
 
 // Manifest version information!
@@ -16,30 +16,30 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 apply plugin: 'com.android.application'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
+  compile 'com.android.support:support-v4:21.0.3'
 
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.squareup.retrofit:retrofit:1.8.0'
-    debugCompile 'com.squareup.retrofit:retrofit-mock:1.8.0'
+  compile 'com.squareup.okhttp:okhttp:2.1.0'
+  compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+  compile 'com.squareup.picasso:picasso:2.4.0'
+  compile 'com.squareup.retrofit:retrofit:1.8.0'
+  debugCompile 'com.squareup.retrofit:retrofit-mock:1.8.0'
 
-    compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.jakewharton.timber:timber:2.5.0'
-    debugCompile 'com.jakewharton.madge:madge:1.1.1'
-    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
+  compile 'com.jakewharton:butterknife:6.0.0'
+  compile 'com.jakewharton.timber:timber:2.5.0'
+  debugCompile 'com.jakewharton.madge:madge:1.1.1'
+  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 
-    compile 'io.reactivex:rxjava:1.0.3'
-    compile 'io.reactivex:rxandroid:0.23.0'
+  compile 'io.reactivex:rxjava:1.0.3'
+  compile 'io.reactivex:rxandroid:0.23.0'
 
-    compile 'com.etsy.android.grid:library:1.0.3'
+  compile 'com.etsy.android.grid:library:1.0.3'
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -49,38 +49,38 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+  compileSdkVersion 21
+  buildToolsVersion '21.1.2'
 
-    dexOptions {
-        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        preDexLibraries = preDexEnabled && !isTravis
+  dexOptions {
+    // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+    preDexLibraries = preDexEnabled && !isTravis
+  }
+
+  defaultConfig {
+    minSdkVersion 15
+    targetSdkVersion 21
+
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix '.dev'
+      versionNameSuffix '-dev'
     }
+  }
 
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 21
+  lintOptions {
+    abortOnError false
+  }
 
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-
-        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
-        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix '.dev'
-            versionNameSuffix '-dev'
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
 }
