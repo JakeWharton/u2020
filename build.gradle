@@ -50,7 +50,7 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
   compileSdkVersion 21
-  buildToolsVersion '21.1.1'
+  buildToolsVersion '21.1.2'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
