@@ -5,6 +5,7 @@ import android.content.Context;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
+import net.danlew.android.joda.JodaTimeAndroid;
 import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
@@ -16,6 +17,7 @@ public class U2020App extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
+    JodaTimeAndroid.init(this);
 
     if (BuildConfig.DEBUG) {
       Timber.plant(new DebugTree());
