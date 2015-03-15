@@ -25,11 +25,10 @@ dependencies {
   compile 'com.squareup.dagger:dagger:1.2.2'
   provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-  compile 'com.squareup.okhttp:okhttp:2.1.0'
-  compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-  compile 'com.squareup.picasso:picasso:2.4.0'
-  compile 'com.squareup.retrofit:retrofit:1.8.0'
-  debugCompile 'com.squareup.retrofit:retrofit-mock:1.8.0'
+  compile 'com.squareup.okhttp:okhttp:2.2.0'
+  compile 'com.squareup.picasso:picasso:2.5.0'
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+  debugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
 
   compile 'com.jakewharton:butterknife:6.0.0'
   compile 'com.jakewharton.timber:timber:2.5.0'
@@ -39,6 +38,7 @@ dependencies {
   compile 'io.reactivex:rxjava:1.0.3'
   compile 'io.reactivex:rxandroid:0.23.0'
 
+  compile 'net.danlew:android.joda:2.7.1'
   compile 'com.etsy.android.grid:library:1.0.3'
 }
 

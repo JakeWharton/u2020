@@ -39,8 +39,8 @@ public final class MockRequestHandler extends RequestHandler {
     return "mock".equals(data.uri.getScheme());
   }
 
-  @Override public Result load(Request data) throws IOException {
-    String imagePath = data.uri.getPath().substring(1); // Grab only the path sans leading slash.
+  @Override public Result load(Request request, int networkPolicy) throws IOException {
+    String imagePath = request.uri.getPath().substring(1); // Grab only the path sans leading slash.
 
     // Check the disk cache for the image. A non-null return value indicates a hit.
     boolean cacheHit = emulatedDiskCache.get(imagePath) != null;

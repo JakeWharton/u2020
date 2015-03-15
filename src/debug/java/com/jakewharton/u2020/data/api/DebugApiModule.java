@@ -33,11 +33,11 @@ public final class DebugApiModule {
   }
 
   @Provides @Singleton
-  GalleryService provideGalleryService(RestAdapter restAdapter, MockRestAdapter mockRestAdapter,
-      @IsMockMode boolean isMockMode, MockGalleryService mockService) {
+  GithubService provideGithubService(RestAdapter restAdapter, MockRestAdapter mockRestAdapter,
+      @IsMockMode boolean isMockMode, MockGithubService mockService) {
     if (isMockMode) {
-      return mockRestAdapter.create(GalleryService.class, mockService);
+      return mockRestAdapter.create(GithubService.class, mockService);
     }
-    return restAdapter.create(GalleryService.class);
+    return restAdapter.create(GithubService.class);
   }
 }
