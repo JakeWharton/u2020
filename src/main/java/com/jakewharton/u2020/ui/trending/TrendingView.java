@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.jakewharton.u2020.R;
@@ -24,7 +25,8 @@ import org.joda.time.DateTime;
 
 import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
-public final class TrendingView extends BetterViewAnimator {
+public final class TrendingView extends LinearLayout {
+  @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
   @InjectView(R.id.trending_list) RecyclerView trendingView;
 
   @Inject GithubService githubService;
@@ -43,16 +45,17 @@ public final class TrendingView extends BetterViewAnimator {
         getResources().getDimensionPixelSize(R.dimen.trending_divider_padding_start);
 
     adapter = new TrendingAdapter(picasso);
-    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-      @Override public void onChanged() {
-        setDisplayedChildId(R.id.trending_list);
-      }
-    });
   }
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
+
+    adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      @Override public void onChanged() {
+        animatorView.setDisplayedChildId(R.id.trending_list);
+      }
+    });
 
     trendingView.setLayoutManager(new LinearLayoutManager(getContext()));
     trendingView.addItemDecoration(
