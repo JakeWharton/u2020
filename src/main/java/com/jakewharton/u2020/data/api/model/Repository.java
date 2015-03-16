@@ -1,16 +1,19 @@
 package com.jakewharton.u2020.data.api.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 
 import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
 
 public final class Repository {
-  public final String name;
-  public final User owner;
-  public final String description;
+  @NonNull public final String name;
+  @NonNull public final User owner;
+  @Nullable public final String description;
+
+  @SerializedName("watchers")
   public final long stars;
-  public final long watchers;
   public final long forks;
 
   @SerializedName("html_url")
@@ -24,7 +27,6 @@ public final class Repository {
     this.owner = checkNotNull(builder.owner, "owner == null");
     this.description = builder.description;
     this.stars = checkNotNull(builder.stars, "stars == null");
-    this.watchers = checkNotNull(builder.watchers, "watchers == null");
     this.forks = checkNotNull(builder.forks, "forks == null");
     this.htmlUrl = checkNotNull(builder.htmlUrl, "htmlUrl == null");
     this.updatedAt = checkNotNull(builder.updatedAt, "updatedAt == null");
@@ -36,7 +38,6 @@ public final class Repository {
         ", owner=" + owner +
         ", description='" + description + '\'' +
         ", stars=" + stars +
-        ", watchers=" + watchers +
         ", forks=" + forks +
         ", htmlUrl='" + htmlUrl + '\'' +
         ", updatedAt=" + updatedAt +
@@ -48,7 +49,6 @@ public final class Repository {
     private User owner;
     private String description;
     private long stars;
-    private long watchers;
     private long forks;
     private String htmlUrl;
     private DateTime updatedAt;
@@ -70,11 +70,6 @@ public final class Repository {
 
     public Builder stars(long stars) {
       this.stars = stars;
-      return this;
-    }
-
-    public Builder watchers(long watchers) {
-      this.watchers = watchers;
       return this;
     }
 
