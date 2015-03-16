@@ -33,6 +33,7 @@ import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.AnimationSpeed;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.ApiEndpoints;
+import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
@@ -40,6 +41,8 @@ import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
+import com.jakewharton.u2020.data.api.MockGithubService;
+import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
@@ -84,6 +87,7 @@ public class DebugAppContainer implements AppContainer {
 
   private final OkHttpClient client;
   private final Picasso picasso;
+  private final boolean isMockMode;
   private final StringPreference networkEndpoint;
   private final StringPreference networkProxy;
   private final IntPreference animationSpeed;
@@ -95,23 +99,31 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference seenDebugDrawer;
   private final RestAdapter restAdapter;
   private final MockRestAdapter mockRestAdapter;
+  private final MockGithubService mockGithubService;
   private final Application app;
 
   Activity activity;
   Context drawerContext;
 
-  @Inject public DebugAppContainer(OkHttpClient client, Picasso picasso,
-      @ApiEndpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
+  @Inject public DebugAppContainer(OkHttpClient client,
+      Picasso picasso,
+      @IsMockMode boolean isMockMode,
+      @ApiEndpoint StringPreference networkEndpoint,
+      @NetworkProxy StringPreference networkProxy,
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
       @ScalpelEnabled BooleanPreference scalpelEnabled,
       @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
-      MockRestAdapter mockRestAdapter, Application app) {
+      @SeenDebugDrawer BooleanPreference seenDebugDrawer,
+      RestAdapter restAdapter,
+      MockRestAdapter mockRestAdapter,
+      MockGithubService mockGithubService,
+      Application app) {
     this.client = client;
     this.picasso = picasso;
+    this.isMockMode = isMockMode;
     this.networkEndpoint = networkEndpoint;
     this.scalpelEnabled = scalpelEnabled;
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
@@ -123,6 +135,7 @@ public class DebugAppContainer implements AppContainer {
     this.pixelGridEnabled = pixelGridEnabled;
     this.pixelRatioEnabled = pixelRatioEnabled;
     this.restAdapter = restAdapter;
+    this.mockGithubService = mockGithubService;
     this.app = app;
   }
 
@@ -140,6 +153,8 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_network_error) Spinner networkErrorView;
   @InjectView(R.id.debug_network_proxy) Spinner networkProxyView;
   @InjectView(R.id.debug_network_logging) Spinner networkLoggingView;
+
+  @InjectView(R.id.debug_repositories_response) Spinner repositoriesResponseView;
 
   @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
   @InjectView(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
@@ -207,6 +222,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     setupNetworkSection();
+    setupMockBehaviorSection();
     setupUserInterfaceSection();
     setupBuildSection();
     setupDeviceSection();
@@ -363,6 +379,37 @@ public class DebugAppContainer implements AppContainer {
     Timber.d("Prompting to edit custom endpoint URL.");
     // Pass in the currently selected position since we are merely editing.
     showCustomEndpointDialog(endpointView.getSelectedItemPosition(), networkEndpoint.get());
+  }
+
+  private void setupMockBehaviorSection() {
+    configureResponseSpinner(repositoriesResponseView, MockRepositoriesResponse.class);
+  }
+
+  /**
+   * Populates a {@code Spinner} with the values of an {@code enum} and binds it to the value set in
+   * the mock service.
+   */
+  private <T extends Enum<T>> void configureResponseSpinner(Spinner spinner,
+      final Class<T> responseClass) {
+    final EnumAdapter<T> adapter = new EnumAdapter<>(drawerContext, responseClass);
+    spinner.setEnabled(isMockMode);
+    spinner.setAdapter(adapter);
+    spinner.setSelection(mockGithubService.getResponse(responseClass).ordinal());
+    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override public void onItemSelected(AdapterView<?> parent, View view, int position,
+          long id) {
+        T selected = adapter.getItem(position);
+        if (selected != mockGithubService.getResponse(responseClass)) {
+          Timber.d("Setting %s to %s", responseClass.getSimpleName(), selected);
+          mockGithubService.setResponse(responseClass, selected);
+        } else {
+          Timber.d("Ignoring re-selection of %s %s", responseClass.getSimpleName(), selected);
+        }
+      }
+
+      @Override public void onNothingSelected(AdapterView<?> parent) {
+      }
+    });
   }
 
   private void setupUserInterfaceSection() {
