@@ -3,6 +3,8 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.u2020.data.api.ApiModule;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -13,6 +15,7 @@ import dagger.Provides;
 import java.io.File;
 import java.io.IOException;
 import javax.inject.Singleton;
+import org.joda.time.DateTime;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -27,6 +30,12 @@ public final class DataModule {
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
+  }
+
+  @Provides @Singleton Gson provideGson() {
+    GsonBuilder gson = new GsonBuilder();
+    gson.registerTypeAdapter(DateTime.class, new DateTimeConverter());
+    return gson.create();
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {

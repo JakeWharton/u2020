@@ -20,6 +20,6 @@ public class MainActivity extends Activity {
 
     container = appContainer.get(this);
 
-    getLayoutInflater().inflate(R.layout.gallery_view, container);
+    getLayoutInflater().inflate(R.layout.trending_view, container);
   }
 }

@@ -155,6 +155,27 @@
       android:layout_gravity="start|center_vertical|fill_horizontal"
       />
 
+  <!-- MOCK BEHAVIOR SECTION -->
+
+  <TextView
+      android:layout_columnSpan="2"
+      android:layout_width="0dp"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Mock Behavior"
+      style="@style/Widget.U2020.DebugDrawer.Header"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Repositories"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <Spinner
+      android:id="@+id/debug_repositories_response"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      />
+
   <!-- USER INTERFACE SECTION -->
 
   <TextView

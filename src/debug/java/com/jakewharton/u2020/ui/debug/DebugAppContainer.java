@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.AnimationSpeed;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.ApiEndpoints;
+import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
@@ -40,6 +42,8 @@ import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
+import com.jakewharton.u2020.data.api.MockGithubService;
+import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
@@ -84,6 +88,7 @@ public class DebugAppContainer implements AppContainer {
 
   private final OkHttpClient client;
   private final Picasso picasso;
+  private final boolean isMockMode;
   private final StringPreference networkEndpoint;
   private final StringPreference networkProxy;
   private final IntPreference animationSpeed;
@@ -95,23 +100,31 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference seenDebugDrawer;
   private final RestAdapter restAdapter;
   private final MockRestAdapter mockRestAdapter;
+  private final MockGithubService mockGithubService;
   private final Application app;
 
   Activity activity;
   Context drawerContext;
 
-  @Inject public DebugAppContainer(OkHttpClient client, Picasso picasso,
-      @ApiEndpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
+  @Inject public DebugAppContainer(OkHttpClient client,
+      Picasso picasso,
+      @IsMockMode boolean isMockMode,
+      @ApiEndpoint StringPreference networkEndpoint,
+      @NetworkProxy StringPreference networkProxy,
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
       @ScalpelEnabled BooleanPreference scalpelEnabled,
       @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
-      MockRestAdapter mockRestAdapter, Application app) {
+      @SeenDebugDrawer BooleanPreference seenDebugDrawer,
+      RestAdapter restAdapter,
+      MockRestAdapter mockRestAdapter,
+      MockGithubService mockGithubService,
+      Application app) {
     this.client = client;
     this.picasso = picasso;
+    this.isMockMode = isMockMode;
     this.networkEndpoint = networkEndpoint;
     this.scalpelEnabled = scalpelEnabled;
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
@@ -123,6 +136,7 @@ public class DebugAppContainer implements AppContainer {
     this.pixelGridEnabled = pixelGridEnabled;
     this.pixelRatioEnabled = pixelRatioEnabled;
     this.restAdapter = restAdapter;
+    this.mockGithubService = mockGithubService;
     this.app = app;
   }
 
@@ -140,6 +154,8 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_network_error) Spinner networkErrorView;
   @InjectView(R.id.debug_network_proxy) Spinner networkProxyView;
   @InjectView(R.id.debug_network_logging) Spinner networkLoggingView;
+
+  @InjectView(R.id.debug_repositories_response) Spinner repositoriesResponseView;
 
   @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
   @InjectView(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
@@ -172,7 +188,7 @@ public class DebugAppContainer implements AppContainer {
 
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
-    drawerContext = activity;
+    drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);;
 
     activity.setContentView(R.layout.debug_activity_frame);
 
@@ -200,13 +216,14 @@ public class DebugAppContainer implements AppContainer {
       drawerLayout.postDelayed(new Runnable() {
         @Override public void run() {
           drawerLayout.openDrawer(Gravity.END);
-          Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+          Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
         }
       }, 1000);
       seenDebugDrawer.set(true);
     }
 
     setupNetworkSection();
+    setupMockBehaviorSection();
     setupUserInterfaceSection();
     setupBuildSection();
     setupDeviceSection();
@@ -302,7 +319,7 @@ public class DebugAppContainer implements AppContainer {
     });
 
     int currentProxyPosition = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
-    final ProxyAdapter proxyAdapter = new ProxyAdapter(activity, networkProxy);
+    final ProxyAdapter proxyAdapter = new ProxyAdapter(drawerContext, networkProxy);
     networkProxyView.setAdapter(proxyAdapter);
     networkProxyView.setSelection(currentProxyPosition);
     networkProxyView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -339,7 +356,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     // We use the JSON rest adapter as the source of truth for the log level.
-    final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(activity, LogLevel.class);
+    final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(drawerContext, LogLevel.class);
     networkLoggingView.setAdapter(loggingAdapter);
     networkLoggingView.setSelection(restAdapter.getLogLevel().ordinal());
     networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -365,8 +382,39 @@ public class DebugAppContainer implements AppContainer {
     showCustomEndpointDialog(endpointView.getSelectedItemPosition(), networkEndpoint.get());
   }
 
+  private void setupMockBehaviorSection() {
+    configureResponseSpinner(repositoriesResponseView, MockRepositoriesResponse.class);
+  }
+
+  /**
+   * Populates a {@code Spinner} with the values of an {@code enum} and binds it to the value set in
+   * the mock service.
+   */
+  private <T extends Enum<T>> void configureResponseSpinner(Spinner spinner,
+      final Class<T> responseClass) {
+    final EnumAdapter<T> adapter = new EnumAdapter<>(drawerContext, responseClass);
+    spinner.setEnabled(isMockMode);
+    spinner.setAdapter(adapter);
+    spinner.setSelection(mockGithubService.getResponse(responseClass).ordinal());
+    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override public void onItemSelected(AdapterView<?> parent, View view, int position,
+          long id) {
+        T selected = adapter.getItem(position);
+        if (selected != mockGithubService.getResponse(responseClass)) {
+          Timber.d("Setting %s to %s", responseClass.getSimpleName(), selected);
+          mockGithubService.setResponse(responseClass, selected);
+        } else {
+          Timber.d("Ignoring re-selection of %s %s", responseClass.getSimpleName(), selected);
+        }
+      }
+
+      @Override public void onNothingSelected(AdapterView<?> parent) {
+      }
+    });
+  }
+
   private void setupUserInterfaceSection() {
-    final AnimationSpeedAdapter speedAdapter = new AnimationSpeedAdapter(activity);
+    final AnimationSpeedAdapter speedAdapter = new AnimationSpeedAdapter(drawerContext);
     uiAnimationSpeedView.setAdapter(speedAdapter);
     final int animationSpeedValue = animationSpeed.get();
     uiAnimationSpeedView.setSelection(
@@ -460,7 +508,7 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupDeviceSection() {
-    DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+    DisplayMetrics displayMetrics = drawerContext.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(displayMetrics);
     deviceMakeView.setText(Strings.truncateAt(Build.MANUFACTURER, 20));
     deviceModelView.setText(Strings.truncateAt(Build.MODEL, 20));
@@ -547,7 +595,7 @@ public class DebugAppContainer implements AppContainer {
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
     final EditText host = findById(view, R.id.debug_drawer_network_proxy_host);
 
-    new AlertDialog.Builder(activity) //
+    new AlertDialog.Builder(drawerContext) //
         .setTitle("Set Network Proxy")
         .setView(view)
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -588,7 +636,7 @@ public class DebugAppContainer implements AppContainer {
     url.setText(defaultUrl);
     url.setSelection(url.length());
 
-    new AlertDialog.Builder(activity) //
+    new AlertDialog.Builder(drawerContext) //
         .setTitle("Set Network Endpoint")
         .setView(view)
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

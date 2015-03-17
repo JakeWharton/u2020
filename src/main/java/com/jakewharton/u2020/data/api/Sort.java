@@ -1,8 +1,9 @@
 package com.jakewharton.u2020.data.api;
 
 public enum Sort {
-  VIRAL("viral"),
-  TIME("time");
+  STARS("stars"),
+  FORKS("forks"),
+  UPDATED("updated");
 
   private final String value;
 
