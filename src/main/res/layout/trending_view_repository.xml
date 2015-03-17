@@ -39,6 +39,8 @@
       android:layout_toRightOf="@id/trending_repository_avatar"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
+      android:maxLines="3"
+      android:ellipsize="end"
       tools:text="square — A sample Android app which showcases advanced usage of Dagger among other open source libraries."
       />
   <LinearLayout
