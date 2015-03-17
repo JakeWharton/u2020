@@ -3,6 +3,7 @@ package com.jakewharton.u2020.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import javax.inject.Inject;
 
@@ -18,5 +19,7 @@ public class MainActivity extends Activity {
     app.inject(this);
 
     container = appContainer.get(this);
+
+    getLayoutInflater().inflate(R.layout.trending_view, container);
   }
 }

@@ -3,11 +3,15 @@
   <style name="None">
   </style>
 
-  <style name="Theme.U2020" parent="android:Theme.Holo.NoActionBar">
+  <style name="Theme.U2020" parent="android:Theme.Holo.Light.NoActionBar">
+    <item name="android:textColorPrimary">@color/text_color_primary</item>
+    <item name="android:textColorSecondary">@color/text_color_secondary</item>
+
+    <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
+
     <item name="android:windowContentOverlay">@null</item>
     <item name="android:windowActionBarOverlay">true</item>
-    <item name="android:windowBackground">@drawable/content_background</item>
-    <item name="android:progressBarStyle">@style/Widget.U2020.ProgressBar</item>
+    <item name="android:windowBackground">@color/content_background</item>
   </style>
 
   <style name="Widget.U2020.ProgressBar" parent="None">

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -187,7 +188,7 @@ public class DebugAppContainer implements AppContainer {
 
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
-    drawerContext = activity;
+    drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);;
 
     activity.setContentView(R.layout.debug_activity_frame);
 
@@ -215,7 +216,7 @@ public class DebugAppContainer implements AppContainer {
       drawerLayout.postDelayed(new Runnable() {
         @Override public void run() {
           drawerLayout.openDrawer(Gravity.END);
-          Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+          Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
         }
       }, 1000);
       seenDebugDrawer.set(true);
@@ -318,7 +319,7 @@ public class DebugAppContainer implements AppContainer {
     });
 
     int currentProxyPosition = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
-    final ProxyAdapter proxyAdapter = new ProxyAdapter(activity, networkProxy);
+    final ProxyAdapter proxyAdapter = new ProxyAdapter(drawerContext, networkProxy);
     networkProxyView.setAdapter(proxyAdapter);
     networkProxyView.setSelection(currentProxyPosition);
     networkProxyView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -355,7 +356,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     // We use the JSON rest adapter as the source of truth for the log level.
-    final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(activity, LogLevel.class);
+    final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(drawerContext, LogLevel.class);
     networkLoggingView.setAdapter(loggingAdapter);
     networkLoggingView.setSelection(restAdapter.getLogLevel().ordinal());
     networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -413,7 +414,7 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupUserInterfaceSection() {
-    final AnimationSpeedAdapter speedAdapter = new AnimationSpeedAdapter(activity);
+    final AnimationSpeedAdapter speedAdapter = new AnimationSpeedAdapter(drawerContext);
     uiAnimationSpeedView.setAdapter(speedAdapter);
     final int animationSpeedValue = animationSpeed.get();
     uiAnimationSpeedView.setSelection(
@@ -507,7 +508,7 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupDeviceSection() {
-    DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+    DisplayMetrics displayMetrics = drawerContext.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(displayMetrics);
     deviceMakeView.setText(Strings.truncateAt(Build.MANUFACTURER, 20));
     deviceModelView.setText(Strings.truncateAt(Build.MODEL, 20));
@@ -594,7 +595,7 @@ public class DebugAppContainer implements AppContainer {
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
     final EditText host = findById(view, R.id.debug_drawer_network_proxy_host);
 
-    new AlertDialog.Builder(activity) //
+    new AlertDialog.Builder(drawerContext) //
         .setTitle("Set Network Proxy")
         .setView(view)
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -635,7 +636,7 @@ public class DebugAppContainer implements AppContainer {
     url.setText(defaultUrl);
     url.setSelection(url.length());
 
-    new AlertDialog.Builder(activity) //
+    new AlertDialog.Builder(drawerContext) //
         .setTitle("Set Network Endpoint")
         .setView(view)
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

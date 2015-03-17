@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <style name="Theme.U2020.Debug" parent="android:Theme.Holo.NoActionBar">
+  </style>
+
   <style name="Widget.U2020.DebugDrawer.Header" parent="None">
     <item name="android:paddingBottom">2dp</item>
     <item name="android:textColor">?android:attr/textColorSecondary</item>
