@@ -72,7 +72,6 @@ Libraries
  * Timber - http://github.com/JakeWharton/timber
  * Madge - http://github.com/JakeWharton/madge
  * Scalpel - http://github.com/JakeWharton/scalpel
- * StaggeredGrid - https://github.com/etsy/AndroidStaggeredGrid
 
 
 
@@ -81,10 +80,7 @@ To Do
 
  * Something with animations to showcase animation control.
  * Network errors probably crash the app.
- * Add another part of the app other than 'gallery' so we can demo child graphs.
- * Kill Etsy view in favor of RecyclerView
- * Toss column count into dimen and scale appropriately.
- * Controls to change which gallery we're looking at?
+ * Add another part of the app other than 'trending' so we can demo child graphs.
 
 
 
