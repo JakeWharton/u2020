@@ -13,7 +13,6 @@ import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
 import java.io.File;
-import java.io.IOException;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import timber.log.Timber;
@@ -57,13 +56,9 @@ public final class DataModule {
     OkHttpClient client = new OkHttpClient();
 
     // Install an HTTP cache in the application cache directory.
-    try {
-      File cacheDir = new File(app.getCacheDir(), "http");
-      Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-      client.setCache(cache);
-    } catch (IOException e) {
-      Timber.e(e, "Unable to install disk cache.");
-    }
+    File cacheDir = new File(app.getCacheDir(), "http");
+    Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
+    client.setCache(cache);
 
     return client;
   }

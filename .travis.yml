@@ -6,11 +6,9 @@ jdk:
 
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
+    - build-tools-22.0.0
+    - android-22
     - extra-android-m2repository
-  licenses:
-    - android-sdk-license-5be876d5
 
 notifications:
   email: false
