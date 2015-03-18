@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
@@ -70,10 +71,15 @@ import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import timber.log.Timber;
 
+import static android.content.Context.POWER_SERVICE;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP;
+import static android.os.PowerManager.FULL_WAKE_LOCK;
+import static android.os.PowerManager.ON_AFTER_RELEASE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 import static butterknife.ButterKnife.findById;
 import static java.net.Proxy.Type.HTTP;
 import static retrofit.RestAdapter.LogLevel;
@@ -189,6 +195,8 @@ public class DebugAppContainer implements AppContainer {
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
     drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);;
+
+    riseAndShine(activity);
 
     activity.setContentView(R.layout.debug_activity_frame);
 
@@ -671,5 +679,20 @@ public class DebugAppContainer implements AppContainer {
     newApp.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
     app.startActivity(newApp);
     U2020App.get(app).buildObjectGraphAndInject();
+  }
+
+  /**
+   * Show the activity over the lock-screen and wake up the device. If you launched the app manually
+   * both of these conditions are already true. If you deployed from the IDE, however, this will
+   * save you from hundreds of power button presses and pattern swiping per day!
+   */
+  public static void riseAndShine(Activity activity) {
+    activity.getWindow().addFlags(FLAG_SHOW_WHEN_LOCKED);
+
+    PowerManager power = (PowerManager) activity.getSystemService(POWER_SERVICE);
+    PowerManager.WakeLock lock =
+        power.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE, "wakeup!");
+    lock.acquire();
+    lock.release();
   }
 }
