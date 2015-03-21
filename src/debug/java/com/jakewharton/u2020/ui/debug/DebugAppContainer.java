@@ -53,6 +53,7 @@ import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.MainActivity;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Strings;
+import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
@@ -198,6 +199,12 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
   @InjectView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
+  @InjectView(R.id.debug_okhttp_cache_max_size) TextView okHttpCacheMaxSizeView;
+  @InjectView(R.id.debug_okhttp_cache_write_error) TextView okHttpCacheWriteErrorView;
+  @InjectView(R.id.debug_okhttp_cache_request_count) TextView okHttpCacheRequestCountView;
+  @InjectView(R.id.debug_okhttp_cache_network_count) TextView okHttpCacheNetworkCountView;
+  @InjectView(R.id.debug_okhttp_cache_hit_count) TextView okHttpCacheHitCountView;
+
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
     drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);;
@@ -222,6 +229,7 @@ public class DebugAppContainer implements AppContainer {
     drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
       @Override public void onDrawerOpened(View drawerView) {
         refreshPicassoStats();
+        refreshOkHttpCacheStats();
       }
     });
 
@@ -242,6 +250,7 @@ public class DebugAppContainer implements AppContainer {
     setupBuildSection();
     setupDeviceSection();
     setupPicassoSection();
+    setupOkHttpCacheSection();
 
     return content;
   }
@@ -570,6 +579,23 @@ public class DebugAppContainer implements AppContainer {
     picassoTransformedView.setText(String.valueOf(snapshot.transformedBitmapCount));
     picassoTransformedTotalView.setText(getSizeString(snapshot.totalTransformedBitmapSize));
     picassoTransformedAvgView.setText(getSizeString(snapshot.averageTransformedBitmapSize));
+  }
+
+  private void setupOkHttpCacheSection() {
+    Cache cache = client.getCache();
+    okHttpCacheMaxSizeView.setText(getSizeString(cache.getMaxSize()));
+
+    refreshOkHttpCacheStats();
+  }
+
+  private void refreshOkHttpCacheStats() {
+    Cache cache = client.getCache();
+    int writeTotal = cache.getWriteSuccessCount() + cache.getWriteAbortCount();
+    int percentage = (int) ((1f * cache.getWriteAbortCount() / writeTotal) * 100);
+    okHttpCacheWriteErrorView.setText(cache.getWriteAbortCount() + " / " + writeTotal + " (" + percentage + "%)");
+    okHttpCacheRequestCountView.setText(String.valueOf(cache.getRequestCount()));
+    okHttpCacheNetworkCountView.setText(String.valueOf(cache.getNetworkCount()));
+    okHttpCacheHitCountView.setText(String.valueOf(cache.getHitCount()));
   }
 
   private void applyAnimationSpeed(int multiplier) {
