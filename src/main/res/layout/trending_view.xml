@@ -51,10 +51,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/trending_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/trending_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/trending_list"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+    </android.support.v4.widget.SwipeRefreshLayout>
   </com.jakewharton.u2020.ui.misc.BetterViewAnimator>
 </com.jakewharton.u2020.ui.trending.TrendingView>
