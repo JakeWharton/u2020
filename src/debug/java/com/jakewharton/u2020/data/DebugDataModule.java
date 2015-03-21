@@ -57,6 +57,11 @@ public final class DebugDataModule {
     return new StringPreference(preferences, "debug_network_proxy");
   }
 
+  @Provides @Singleton @UseExternalApps
+  BooleanPreference provideUseEmailAppPreference(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_use_external_apps", true);
+  }
+
   @Provides @Singleton @AnimationSpeed
   IntPreference provideAnimationSpeed(SharedPreferences preferences) {
     return new IntPreference(preferences, "debug_animation_speed", DEFAULT_ANIMATION_SPEED);
@@ -107,6 +112,10 @@ public final class DebugDataModule {
       }
     });
     return builder.build();
+  }
+
+  @Provides @Singleton IntentFactory provideIntentFactory(DebugIntentFactory debugIntentFactory) {
+    return debugIntentFactory;
   }
 
   private static SSLSocketFactory createBadSslSocketFactory() {

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="External Intent"
+        tools:ignore="UnusedAttribute"
+        />
+
+    <TextView
+        style="@style/Widget.U2020.ExternalIntent.Header"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Action:"
+        tools:ignore="HardcodedText"
+        />
+    <TextView
+        android:id="@+id/action"
+        style="@style/Widget.U2020.ExternalIntent.Body"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        style="@style/Widget.U2020.ExternalIntent.Header"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Data:"
+        tools:ignore="HardcodedText"
+        />
+    <TextView
+        android:id="@+id/data"
+        style="@style/Widget.U2020.ExternalIntent.Body"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+
+    <TextView
+        style="@style/Widget.U2020.ExternalIntent.Header"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Extras:"
+        tools:ignore="HardcodedText"
+        />
+    <TextView
+        android:id="@+id/extras"
+        style="@style/Widget.U2020.ExternalIntent.Body"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+  </LinearLayout>
+</ScrollView>
