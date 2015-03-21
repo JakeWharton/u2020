@@ -3,6 +3,7 @@ package com.jakewharton.u2020.ui.trending;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -34,9 +35,11 @@ import timber.log.Timber;
 
 import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
-public final class TrendingView extends LinearLayout {
+public final class TrendingView extends LinearLayout
+    implements SwipeRefreshLayout.OnRefreshListener {
   @InjectView(R.id.trending_timespan) Spinner timespanView;
   @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
+  @InjectView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
   @InjectView(R.id.trending_list) RecyclerView trendingView;
 
   @Inject GithubService githubService;
@@ -69,9 +72,13 @@ public final class TrendingView extends LinearLayout {
     timespanView.setAdapter(timespanAdapter);
     timespanView.setSelection(TrendingTimespan.WEEK.ordinal());
 
+    swipeRefreshView.setColorSchemeResources(R.color.accent);
+    swipeRefreshView.setOnRefreshListener(this);
+
     trendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       @Override public void onChanged() {
-        animatorView.setDisplayedChildId(R.id.trending_list);
+        animatorView.setDisplayedChildId(R.id.trending_swipe_refresh);
+        swipeRefreshView.setRefreshing(false);
       }
     });
 
@@ -90,7 +97,7 @@ public final class TrendingView extends LinearLayout {
         trendingAdapter);
 
     // Load the default selection.
-    timespanSubject.onNext(timespanAdapter.getItem(timespanView.getSelectedItemPosition()));
+    onRefresh();
   }
 
   @Override protected void onDetachedFromWindow() {
@@ -100,6 +107,10 @@ public final class TrendingView extends LinearLayout {
 
   @OnItemSelected(R.id.trending_timespan) void timespanSelected(int position) {
     timespanSubject.onNext(timespanAdapter.getItem(position));
+  }
+
+  @Override public void onRefresh() {
+    timespanSelected(timespanView.getSelectedItemPosition());
   }
 
   private boolean safeIsRtl() {
@@ -126,6 +137,7 @@ public final class TrendingView extends LinearLayout {
   private final Action1<Throwable> trendingError = new Action1<Throwable>() {
     @Override public void call(Throwable throwable) {
       Timber.e(throwable, "Failed to get trending repositories");
+      swipeRefreshView.setRefreshing(false);
     }
   };
 }
