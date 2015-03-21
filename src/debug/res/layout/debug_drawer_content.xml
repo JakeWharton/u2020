@@ -167,6 +167,17 @@
 
   <TextView
       android:layout_gravity="start|center_vertical"
+      android:text="External apps"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <Switch
+      android:id="@+id/debug_use_external_apps"
+      android:layout_gravity="start|center_vertical"
+      style="@style/Widget.U2020.DebugDrawer.RowWidget"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
       android:text="Repositories"
       style="@style/Widget.U2020.DebugDrawer.RowTitle"
       />

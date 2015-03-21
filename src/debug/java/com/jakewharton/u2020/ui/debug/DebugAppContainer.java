@@ -43,6 +43,7 @@ import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
+import com.jakewharton.u2020.data.UseExternalApps;
 import com.jakewharton.u2020.data.api.MockGithubService;
 import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
@@ -102,6 +103,7 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference picassoDebugging;
   private final BooleanPreference pixelGridEnabled;
   private final BooleanPreference pixelRatioEnabled;
+  private final BooleanPreference useExternalApps;
   private final BooleanPreference scalpelEnabled;
   private final BooleanPreference scalpelWireframeEnabled;
   private final BooleanPreference seenDebugDrawer;
@@ -118,6 +120,7 @@ public class DebugAppContainer implements AppContainer {
       @IsMockMode boolean isMockMode,
       @ApiEndpoint StringPreference networkEndpoint,
       @NetworkProxy StringPreference networkProxy,
+      @UseExternalApps BooleanPreference useExternalApps,
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
@@ -133,6 +136,7 @@ public class DebugAppContainer implements AppContainer {
     this.picasso = picasso;
     this.isMockMode = isMockMode;
     this.networkEndpoint = networkEndpoint;
+    this.useExternalApps = useExternalApps;
     this.scalpelEnabled = scalpelEnabled;
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
     this.seenDebugDrawer = seenDebugDrawer;
@@ -162,6 +166,7 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_network_proxy) Spinner networkProxyView;
   @InjectView(R.id.debug_network_logging) Spinner networkLoggingView;
 
+  @InjectView(R.id.debug_use_external_apps) Switch useExternalAppsView;
   @InjectView(R.id.debug_repositories_response) Spinner repositoriesResponseView;
 
   @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
@@ -392,6 +397,15 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupMockBehaviorSection() {
+    useExternalAppsView.setEnabled(isMockMode);
+    useExternalAppsView.setChecked(useExternalApps.get());
+    useExternalAppsView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        Timber.d("Use external apps set to %s", b);
+        useExternalApps.set(b);
+      }
+    });
+
     configureResponseSpinner(repositoriesResponseView, MockRepositoriesResponse.class);
   }
 
