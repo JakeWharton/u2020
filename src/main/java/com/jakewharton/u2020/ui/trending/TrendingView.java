@@ -15,15 +15,18 @@ import butterknife.InjectView;
 import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
+import com.jakewharton.u2020.data.IntentFactory;
 import com.jakewharton.u2020.data.api.GithubService;
 import com.jakewharton.u2020.data.api.Order;
 import com.jakewharton.u2020.data.api.SearchQuery;
 import com.jakewharton.u2020.data.api.Sort;
 import com.jakewharton.u2020.data.api.model.RepositoriesResponse;
+import com.jakewharton.u2020.data.api.model.Repository;
 import com.jakewharton.u2020.data.api.transforms.SearchResultToRepositoryList;
 import com.jakewharton.u2020.ui.misc.BetterViewAnimator;
 import com.jakewharton.u2020.ui.misc.DividerItemDecoration;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
+import com.jakewharton.u2020.util.Intents;
 import com.jakewharton.u2020.util.ViewSubscriptions;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
@@ -36,7 +39,7 @@ import timber.log.Timber;
 import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
 public final class TrendingView extends LinearLayout
-    implements SwipeRefreshLayout.OnRefreshListener {
+    implements SwipeRefreshLayout.OnRefreshListener, TrendingAdapter.RepositoryClickListener {
   @InjectView(R.id.trending_timespan) Spinner timespanView;
   @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
   @InjectView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
@@ -44,6 +47,7 @@ public final class TrendingView extends LinearLayout
 
   @Inject GithubService githubService;
   @Inject Picasso picasso;
+  @Inject IntentFactory intentFactory;
   @Inject ViewSubscriptions subscriptions;
 
   private final float dividerPaddingStart;
@@ -62,7 +66,7 @@ public final class TrendingView extends LinearLayout
     timespanSubject = PublishSubject.create();
     timespanAdapter = new TrendingTimespanAdapter(
         new ContextThemeWrapper(getContext(), R.style.Theme_U2020_TrendingTimespan));
-    trendingAdapter = new TrendingAdapter(picasso);
+    trendingAdapter = new TrendingAdapter(picasso, this);
   }
 
   @Override protected void onFinishInflate() {
@@ -111,6 +115,10 @@ public final class TrendingView extends LinearLayout
 
   @Override public void onRefresh() {
     timespanSelected(timespanView.getSelectedItemPosition());
+  }
+
+  @Override public void onRepositoryClick(Repository repository) {
+    Intents.maybeStartActivity(getContext(), intentFactory.createUrlIntent(repository.htmlUrl));
   }
 
   private boolean safeIsRtl() {
