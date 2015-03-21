@@ -2,4 +2,8 @@
 <resources>
   <!-- Cheat by adding a trailing space to make the title and spinner look like one sentence. -->
   <string name="trending_title">Trending&#160;</string>
+
+  <string name="no_intent_handler">
+    There are no applications available to handle this action.
+  </string>
 </resources>

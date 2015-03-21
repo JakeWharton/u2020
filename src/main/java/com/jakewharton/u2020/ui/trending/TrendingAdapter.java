@@ -2,6 +2,7 @@ package com.jakewharton.u2020.ui.trending;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Repository;
@@ -12,12 +13,18 @@ import rx.functions.Action1;
 
 public final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder>
     implements Action1<List<Repository>> {
+  public interface RepositoryClickListener {
+    void onRepositoryClick(Repository repository);
+  }
+
   private final Picasso picasso;
+  private final RepositoryClickListener repositoryClickListener;
 
   private List<Repository> repositories = Collections.emptyList();
 
-  public TrendingAdapter(Picasso picasso) {
+  public TrendingAdapter(Picasso picasso, RepositoryClickListener repositoryClickListener) {
     this.picasso = picasso;
+    this.repositoryClickListener = repositoryClickListener;
   }
 
   @Override public void call(List<Repository> repositories) {
@@ -32,7 +39,7 @@ public final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.
   }
 
   @Override public void onBindViewHolder(ViewHolder viewHolder, int i) {
-    viewHolder.bindTo(repositories.get(i), picasso);
+    viewHolder.bindTo(repositories.get(i));
   }
 
   @Override public long getItemId(int position) {
@@ -43,16 +50,21 @@ public final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.
     return repositories.size();
   }
 
-  public static final class ViewHolder extends RecyclerView.ViewHolder {
+  public final class ViewHolder extends RecyclerView.ViewHolder {
     public final TrendingItemView itemView;
-    public Repository repository;
+    private Repository repository;
 
     public ViewHolder(TrendingItemView itemView) {
       super(itemView);
       this.itemView = itemView;
+      this.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          repositoryClickListener.onRepositoryClick(repository);
+        }
+      });
     }
 
-    public void bindTo(Repository repository, Picasso picasso) {
+    public void bindTo(Repository repository) {
       this.repository = repository;
       itemView.bindTo(repository, picasso);
     }
