@@ -18,6 +18,17 @@
     <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
   </style>
 
+  <style name="Theme.U2020.TrendingTimespan" parent="Theme.AppCompat.Light">
+    <item name="android:spinnerDropDownItemStyle">
+      @style/Widget.U2020.TrendingTimespan.DropDownItem
+    </item>
+  </style>
+
+  <style name="Widget.U2020.TrendingTimespan.DropDownItem"
+      parent="Widget.AppCompat.Light.DropDownItem.Spinner">
+    <item name="android:background">@drawable/selectable_item_background</item>
+  </style>
+
   <style name="Widget.U2020.ProgressBar" parent="None">
     <item name="android:indeterminateDrawable">@drawable/progress_indeterminate</item>
     <item name="android:indeterminateOnly">true</item>

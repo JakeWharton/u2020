@@ -49,6 +49,7 @@ import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.MainActivity;
+import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Strings;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
