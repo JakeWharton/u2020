@@ -1,23 +1,22 @@
-package com.jakewharton.u2020.ui.debug;
+package com.jakewharton.u2020.ui.misc;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.jakewharton.u2020.ui.misc.BindableAdapter;
 import butterknife.ButterKnife;
 
-class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
+public class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
   private final T[] enumConstants;
   private final boolean showNull;
   private final int nullOffset;
 
-  EnumAdapter(Context context, Class<T> enumType) {
+  public EnumAdapter(Context context, Class<T> enumType) {
     this(context, enumType, false);
   }
 
-  EnumAdapter(Context context, Class<T> enumType, boolean showNull) {
+  public EnumAdapter(Context context, Class<T> enumType, boolean showNull) {
     super(context);
     this.enumConstants = enumType.getEnumConstants();
     this.showNull = showNull;
@@ -40,7 +39,7 @@ class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
     return position;
   }
 
-  @Override public final View newView(LayoutInflater inflater, int position, ViewGroup container) {
+  @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
     return inflater.inflate(android.R.layout.simple_spinner_item, container, false);
   }
 

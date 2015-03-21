@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="trending_title">Trending last week</string>
+  <!-- Cheat by adding a trailing space to make the title and spinner look like one sentence. -->
+  <string name="trending_title">Trending&#160;</string>
 </resources>
