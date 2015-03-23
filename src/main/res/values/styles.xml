@@ -15,7 +15,8 @@
 
     <item name="colorAccent">@color/accent</item>
     <item name="colorPrimary">@color/accent</item>
-    <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
+    <item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:windowDrawsSystemBarBackgrounds" tools:ignore="NewApi">true</item>
   </style>
 
   <style name="Theme.U2020.TrendingTimespan" parent="Theme.AppCompat.Light">

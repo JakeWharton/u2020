@@ -6,8 +6,10 @@ import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import butterknife.ButterKnife;
@@ -40,6 +42,7 @@ import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
 public final class TrendingView extends LinearLayout
     implements SwipeRefreshLayout.OnRefreshListener, TrendingAdapter.RepositoryClickListener {
+  @InjectView(R.id.trending_toolbar) Toolbar toolbarView;
   @InjectView(R.id.trending_timespan) Spinner timespanView;
   @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
   @InjectView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
@@ -72,6 +75,13 @@ public final class TrendingView extends LinearLayout
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
+
+    toolbarView.setNavigationIcon(R.drawable.menu_icon);
+    toolbarView.setNavigationOnClickListener(new OnClickListener() {
+      @Override public void onClick(View v) {
+        // TODO bind to drawer with... injection?
+      }
+    });
 
     timespanView.setAdapter(timespanAdapter);
     timespanView.setSelection(TrendingTimespan.WEEK.ordinal());

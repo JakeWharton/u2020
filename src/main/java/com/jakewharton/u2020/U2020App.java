@@ -10,7 +10,7 @@ import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
 
-public class U2020App extends Application {
+public final class U2020App extends Application {
   private ObjectGraph objectGraph;
 
   @Inject ActivityHierarchyServer activityHierarchyServer;
