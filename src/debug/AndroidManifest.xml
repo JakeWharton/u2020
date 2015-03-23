@@ -9,7 +9,7 @@
   <application>
     <activity
         android:name="com.jakewharton.u2020.ui.ExternalIntentActivity"
-        android:theme="@style/Theme.U2020"
+        android:theme="@style/Theme.U2020.External"
         >
       <intent-filter>
         <action android:name="com.jakewharton.u2020.intent.EXTERNAL_INTENT"/>

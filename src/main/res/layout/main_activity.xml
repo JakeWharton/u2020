@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+  <FrameLayout
+      android:id="@+id/main_content"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+  <com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout
+      android:layout_width="300dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:background="#fff"
+      android:fitsSystemWindows="true"
+      app:insetForeground="#4000"
+      />
+</android.support.v4.widget.DrawerLayout>

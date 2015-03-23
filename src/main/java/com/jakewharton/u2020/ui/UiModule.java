@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
     complete = false,
     library = true
 )
-public class UiModule {
+public final class UiModule {
   @Provides @Singleton AppContainer provideAppContainer() {
     return AppContainer.DEFAULT;
   }
