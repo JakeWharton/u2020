@@ -37,6 +37,10 @@ public final class DataModule {
     return gson.create();
   }
 
+  @Provides @Singleton Clock provideClock() {
+    return new RealClock();
+  }
+
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
     return createOkHttpClient(app);
   }
