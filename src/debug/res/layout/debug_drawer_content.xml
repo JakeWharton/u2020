@@ -252,6 +252,24 @@
       style="@style/Widget.U2020.DebugDrawer.RowWidget"
       />
 
+  <!-- LOGGING SECTION -->
+
+  <TextView
+      android:layout_columnSpan="2"
+      android:layout_width="0dp"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Logs"
+      style="@style/Widget.U2020.DebugDrawer.Header"
+      />
+  <Button
+      android:id="@+id/debug_logs_show"
+      android:layout_columnSpan="2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Show logs"
+      />
+
   <!-- BUILD INFORMATION SECTION -->
 
   <TextView
