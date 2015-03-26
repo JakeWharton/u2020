@@ -38,7 +38,7 @@ public final class DataModule {
   }
 
   @Provides @Singleton Clock provideClock() {
-    return new RealClock();
+    return Clock.REAL;
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
