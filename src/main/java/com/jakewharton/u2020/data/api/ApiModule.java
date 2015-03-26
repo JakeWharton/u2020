@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import retrofit.Endpoint;
 import retrofit.Endpoints;
@@ -22,10 +23,14 @@ public final class ApiModule {
     return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
   }
 
-  @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint, OkHttpClient client,
-      Gson gson) {
+  @Provides @Singleton @Named("API") OkClient provideApiClient(OkHttpClient client) {
+    return new OkClient(client);
+  }
+
+  @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint,
+      @Named("API") OkClient client, Gson gson) {
     return new RestAdapter.Builder() //
-        .setClient(new OkClient(client)) //
+        .setClient(client) //
         .setEndpoint(endpoint) //
         .setConverter(new GsonConverter(gson)) //
         .build();
