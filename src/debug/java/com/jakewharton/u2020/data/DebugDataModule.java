@@ -36,7 +36,7 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SCALPEL_ENABLED = false; // No crazy 3D view tree.
   private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
-  private static final boolean DEFAULT_USE_EXTERNAL_APPS = false; // Capture external intents.
+  private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
@@ -58,9 +58,9 @@ public final class DebugDataModule {
     return new StringPreference(preferences, "debug_network_proxy");
   }
 
-  @Provides @Singleton @UseExternalApps
-  BooleanPreference provideUseEmailAppPreference(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_use_external_apps", DEFAULT_USE_EXTERNAL_APPS);
+  @Provides @Singleton @CaptureIntents
+  BooleanPreference provideCaptureIntentsPreference(SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_capture_intents", DEFAULT_CAPTURE_INTENTS);
   }
 
   @Provides @Singleton @AnimationSpeed
