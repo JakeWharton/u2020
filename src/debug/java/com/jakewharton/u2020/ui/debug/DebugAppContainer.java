@@ -36,6 +36,7 @@ import com.jakewharton.u2020.data.AnimationSpeed;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.ApiEndpoints;
 import com.jakewharton.u2020.data.IsMockMode;
+import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
@@ -51,6 +52,7 @@ import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.MainActivity;
+import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Strings;
 import com.squareup.okhttp.Cache;
@@ -97,6 +99,7 @@ public class DebugAppContainer implements AppContainer {
 
   private final OkHttpClient client;
   private final Picasso picasso;
+  private final LumberYard lumberYard;
   private final boolean isMockMode;
   private final StringPreference networkEndpoint;
   private final StringPreference networkProxy;
@@ -118,6 +121,7 @@ public class DebugAppContainer implements AppContainer {
 
   @Inject public DebugAppContainer(OkHttpClient client,
       Picasso picasso,
+      LumberYard lumberYard,
       @IsMockMode boolean isMockMode,
       @ApiEndpoint StringPreference networkEndpoint,
       @NetworkProxy StringPreference networkProxy,
@@ -135,6 +139,7 @@ public class DebugAppContainer implements AppContainer {
       Application app) {
     this.client = client;
     this.picasso = picasso;
+    this.lumberYard = lumberYard;
     this.isMockMode = isMockMode;
     this.networkEndpoint = networkEndpoint;
     this.useExternalApps = useExternalApps;
@@ -521,6 +526,11 @@ public class DebugAppContainer implements AppContainer {
         content.setDrawViews(!isChecked);
       }
     });
+  }
+
+  @OnClick(R.id.debug_logs_show) void showLogs() {
+    // Using activity here instead of drawerContext to get the light theme.
+    new LogsDialog(activity, lumberYard).show();
   }
 
   private void setupBuildSection() {

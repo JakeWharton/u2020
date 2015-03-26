@@ -2,6 +2,7 @@ package com.jakewharton.u2020;
 
 import android.app.Application;
 import android.content.Context;
+import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ public final class U2020App extends Application {
   private ObjectGraph objectGraph;
 
   @Inject ActivityHierarchyServer activityHierarchyServer;
+  @Inject LumberYard lumberYard;
 
   @Override public void onCreate() {
     super.onCreate();
@@ -28,6 +30,7 @@ public final class U2020App extends Application {
 
     buildObjectGraphAndInject();
 
+    Timber.plant(lumberYard.tree());
     registerActivityLifecycleCallbacks(activityHierarchyServer);
   }
 
