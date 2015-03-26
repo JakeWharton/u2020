@@ -1,7 +1,6 @@
 package com.jakewharton.u2020.ui.debug;
 
 import android.content.Context;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListen
   private final Map<DebugAction<? extends View>, View> buttonMap;
   private final Map<Class<? extends View>, List<DebugAction<? extends View>>> actionMap;
 
-  private final DrawerLayout drawerLayout;
+  private final DebugDrawerLayout drawerLayout;
   private final Context drawerContext;
   private final View contextualTitleView;
   private final LinearLayout contextualListView;

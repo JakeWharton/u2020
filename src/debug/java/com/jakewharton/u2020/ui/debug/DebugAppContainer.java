@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -157,7 +156,7 @@ public class DebugAppContainer implements AppContainer {
     this.app = app;
   }
 
-  @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
+  @InjectView(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
   @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
   @InjectView(R.id.debug_content) ScalpelFrameLayout content;
 
@@ -231,7 +230,7 @@ public class DebugAppContainer implements AppContainer {
     content.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(contextualActions));
 
     drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
-    drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+    drawerLayout.setDrawerListener(new DebugDrawerLayout.SimpleDrawerListener() {
       @Override public void onDrawerOpened(View drawerView) {
         refreshPicassoStats();
         refreshOkHttpCacheStats();

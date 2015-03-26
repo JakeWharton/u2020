@@ -65,7 +65,7 @@ public final class ScrimInsetsFrameLayout extends FrameLayout {
     this.insets = new Rect(insets);
     setWillNotDraw(insetForeground == null);
     ViewCompat.postInvalidateOnAnimation(this);
-    return true; // consume insets
+    return false; // Do not consume insets.
   }
 
   @Override public void draw(@NonNull Canvas canvas) {
