@@ -30,7 +30,9 @@ public final class U2020App extends Application {
 
     buildObjectGraphAndInject();
 
+    lumberYard.cleanUp();
     Timber.plant(lumberYard.tree());
+
     registerActivityLifecycleCallbacks(activityHierarchyServer);
   }
 
