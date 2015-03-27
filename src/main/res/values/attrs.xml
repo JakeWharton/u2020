@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <declare-styleable name="ForegroundImageView">
-    <attr name="android:foreground"/>
+  <declare-styleable name="ScrimInsetsView">
+    <attr name="insetForeground" format="reference|color"/>
   </declare-styleable>
 
-  <declare-styleable name="ScrimInsetsView">
-    <attr name="insetForeground" format="reference|color" />
+  <declare-styleable name="AspectRatioImageView">
+    <attr name="widthRatio" format="integer"/>
+    <attr name="heightRatio" format="integer"/>
   </declare-styleable>
 </resources>
