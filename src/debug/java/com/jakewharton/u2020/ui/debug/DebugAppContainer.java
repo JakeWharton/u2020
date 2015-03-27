@@ -51,9 +51,11 @@ import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.MainActivity;
+import com.jakewharton.u2020.ui.bugreport.BugReportLens;
 import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Strings;
+import com.mattprecious.telescope.TelescopeLayout;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
@@ -157,6 +159,7 @@ public class DebugAppContainer implements AppContainer {
   }
 
   @InjectView(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
+  @InjectView(R.id.telescope_container) TelescopeLayout telescopeLayout;
   @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
   @InjectView(R.id.debug_content) ScalpelFrameLayout content;
 
@@ -236,6 +239,9 @@ public class DebugAppContainer implements AppContainer {
         refreshOkHttpCacheStats();
       }
     });
+
+    TelescopeLayout.cleanUp(activity); // Clean up any old screenshots.
+    telescopeLayout.setLens(new BugReportLens(activity));
 
     // If you have not seen the debug drawer before, show it with a message
     if (!seenDebugDrawer.get()) {

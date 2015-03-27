@@ -43,6 +43,7 @@ dependencies {
   compile 'io.reactivex:rxandroid:0.24.0'
 
   compile 'net.danlew:android.joda:2.7.1'
+  debugCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -75,6 +76,13 @@ android {
     debug {
       applicationIdSuffix '.dev'
       versionNameSuffix '-dev'
+    }
+  }
+
+  sourceSets {
+    debug {
+      java.srcDirs += file('src/bugreport/java')
+      res.srcDirs += file('src/bugreport/res')
     }
   }
 
