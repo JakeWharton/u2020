@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.util.LruCache;
 import com.squareup.picasso.Downloader;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
@@ -50,13 +51,10 @@ public final class MockRequestHandler extends RequestHandler {
       return new Result(loadBitmap(imagePath), Picasso.LoadedFrom.DISK);
     }
 
-    /*
     // If we are not allowed to hit the network and the cache missed return a big fat nothing.
-    if (data.loadFromLocalCacheOnly) {
-      // todo: package protected
+    if (NetworkPolicy.isOfflineOnly(networkPolicy)) {
       return null;
     }
-    */
 
     // If we got this far there was a cache miss and hitting the network is required. See if we need
     // to fake an network error.

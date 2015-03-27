@@ -7,7 +7,7 @@ import java.util.List;
 import rx.functions.Func1;
 
 public final class SearchResultToRepositoryList implements Func1<RepositoriesResponse, List<Repository>> {
-  private static SearchResultToRepositoryList instance;
+  private static volatile SearchResultToRepositoryList instance;
 
   public static SearchResultToRepositoryList instance() {
     if (instance == null) {

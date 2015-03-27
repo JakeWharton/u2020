@@ -10,7 +10,7 @@ public final class User {
   @NonNull public final String login;
   @SerializedName("avatar_url") @Nullable public final String avatarUrl;
 
-  public User(String login, String avatarUrl) {
+  public User(String login, @Nullable String avatarUrl) {
     this.login = checkNotNull(login, "login == null");
     this.avatarUrl = avatarUrl;
   }

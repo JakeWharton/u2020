@@ -18,6 +18,8 @@ import org.joda.time.DateTime;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Module(
     includes = ApiModule.class,
@@ -25,16 +27,16 @@ import static android.content.Context.MODE_PRIVATE;
     library = true
 )
 public final class DataModule {
-  static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
+  static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
   }
 
   @Provides @Singleton Gson provideGson() {
-    GsonBuilder gson = new GsonBuilder();
-    gson.registerTypeAdapter(DateTime.class, new DateTimeConverter());
-    return gson.create();
+    return new GsonBuilder()
+        .registerTypeAdapter(DateTime.class, new DateTimeConverter())
+        .create();
   }
 
   @Provides @Singleton Clock provideClock() {
@@ -58,6 +60,9 @@ public final class DataModule {
 
   static OkHttpClient createOkHttpClient(Application app) {
     OkHttpClient client = new OkHttpClient();
+    client.setConnectTimeout(10, SECONDS);
+    client.setReadTimeout(10, SECONDS);
+    client.setWriteTimeout(10, SECONDS);
 
     // Install an HTTP cache in the application cache directory.
     File cacheDir = new File(app.getCacheDir(), "http");
