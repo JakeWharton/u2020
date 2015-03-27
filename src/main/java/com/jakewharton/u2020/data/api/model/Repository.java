@@ -26,8 +26,8 @@ public final class Repository {
     this.name = checkNotNull(builder.name, "name == null");
     this.owner = checkNotNull(builder.owner, "owner == null");
     this.description = builder.description;
-    this.stars = checkNotNull(builder.stars, "stars == null");
-    this.forks = checkNotNull(builder.forks, "forks == null");
+    this.stars = builder.stars;
+    this.forks = builder.forks;
     this.htmlUrl = checkNotNull(builder.htmlUrl, "htmlUrl == null");
     this.updatedAt = checkNotNull(builder.updatedAt, "updatedAt == null");
   }
