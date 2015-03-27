@@ -24,12 +24,12 @@ public final class LoggingInterceptor implements Interceptor {
     Request request = chain.request();
 
     long t1 = clock.nanos();
-    Timber.v("Sending request %s%n%s", request.url(), prettyHeaders(request.headers()));
+    Timber.v("Sending request %s%s", request.url(), prettyHeaders(request.headers()));
 
     Response response = chain.proceed(request);
 
     long t2 = clock.nanos();
-    Timber.v("Received response (%s) for %s in %sms%n%s", response.code(), response.request().url(),
+    Timber.v("Received response (%s) for %s in %sms%s", response.code(), response.request().url(),
         TimeUnit.NANOSECONDS.toMillis(t2 - t1), prettyHeaders(response.headers()));
 
     return response;
@@ -39,7 +39,7 @@ public final class LoggingInterceptor implements Interceptor {
     if (headers.size() == 0) return "";
 
     StringBuilder builder = new StringBuilder();
-    builder.append("  Headers:");
+    builder.append("\n  Headers:");
 
     for (int i = 0; i < headers.size(); i++) {
       builder.append("\n    ").append(headers.name(i)).append(": ").append(headers.value(i));

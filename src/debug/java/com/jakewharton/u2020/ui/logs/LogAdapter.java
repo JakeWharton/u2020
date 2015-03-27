@@ -1,7 +1,7 @@
 package com.jakewharton.u2020.ui.logs;
 
 import android.content.Context;
-import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,48 +71,27 @@ final class LogAdapter extends BindableAdapter<Entry> implements Action1<Entry> 
     }
 
     public void setEntry(Entry entry) {
-      LogLevelStyle levelStyle = LogLevelStyle.fromLogLevel(entry.level);
-      rootView.setBackgroundResource(levelStyle.backgroundColorResId);
-      levelView.setText(levelStyle.letter);
+      rootView.setBackgroundResource(backgroundForLevel(entry.level));
+      levelView.setText(entry.displayLevel());
       tagView.setText(entry.tag);
       messageView.setText(entry.message);
     }
   }
 
-  public enum LogLevelStyle {
-    VERBOSE("V", R.color.debug_log_accent_debug),
-    DEBUG("D", R.color.debug_log_accent_debug),
-    INFO("I", R.color.debug_log_accent_info),
-    WARN("W", R.color.debug_log_accent_warn),
-    ERROR("E", R.color.debug_log_accent_error),
-    ASSERT("A", R.color.debug_log_accent_error),
-    UNKNOWN("?", R.color.debug_log_accent_unknown);
-
-    public final String letter;
-    public final int backgroundColorResId;
-
-    LogLevelStyle(String letter, @ColorRes int backgroundColorResId) {
-      this.letter = letter;
-      this.backgroundColorResId = backgroundColorResId;
-    }
-
-    public static LogLevelStyle fromLogLevel(int level) {
-      switch (level) {
-        case Log.VERBOSE:
-          return VERBOSE;
-        case Log.DEBUG:
-          return DEBUG;
-        case Log.INFO:
-          return INFO;
-        case Log.WARN:
-          return WARN;
-        case Log.ERROR:
-          return ERROR;
-        case Log.ASSERT:
-          return ASSERT;
-        default:
-          return UNKNOWN;
-      }
+  public static @DrawableRes int backgroundForLevel(int level) {
+    switch (level) {
+      case Log.VERBOSE:
+      case Log.DEBUG:
+        return R.color.debug_log_accent_debug;
+      case Log.INFO:
+        return R.color.debug_log_accent_info;
+      case Log.WARN:
+        return R.color.debug_log_accent_warn;
+      case Log.ERROR:
+      case Log.ASSERT:
+        return R.color.debug_log_accent_error;
+      default:
+        return R.color.debug_log_accent_unknown;
     }
   }
 }
