@@ -8,17 +8,24 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     >
-  <com.jakewharton.madge.MadgeFrameLayout
-      android:id="@+id/madge_container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      >
-    <com.jakewharton.scalpel.ScalpelFrameLayout
-        android:id="@+id/debug_content"
+  <com.mattprecious.telescope.TelescopeLayout
+    android:id="@+id/telescope_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:progressColor="#ff0d47a1"
+    >
+    <com.jakewharton.madge.MadgeFrameLayout
+        android:id="@+id/madge_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
-  </com.jakewharton.madge.MadgeFrameLayout>
+        >
+      <com.jakewharton.scalpel.ScalpelFrameLayout
+          android:id="@+id/debug_content"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+    </com.jakewharton.madge.MadgeFrameLayout>
+  </com.mattprecious.telescope.TelescopeLayout>
   <com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout
       android:layout_width="290dp"
       android:layout_height="match_parent"

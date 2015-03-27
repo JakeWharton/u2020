@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jakewharton.u2020.ui.bugreport.BugReportView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+  <EditText
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="What's the problem?"
+      android:inputType="textCapSentences|textAutoCorrect"
+      android:maxLines="1"
+      android:singleLine="true"
+      />
+  <EditText
+      android:id="@+id/description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:hint="Additional details"
+      android:inputType="textCapSentences|textAutoCorrect"
+      />
+  <CheckBox
+      android:id="@+id/screenshot"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="?android:attr/selectableItemBackground"
+      android:text="Include screenshot?"
+      android:textSize="16sp"
+      tools:checked="true"
+      />
+</com.jakewharton.u2020.ui.bugreport.BugReportView>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- Used for sharing logs. -->
+  <!-- Used for telescope and sharing logs. -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+  <!-- Used for telescope. -->
+  <uses-permission android:name="android.permission.VIBRATE"/>
 
   <!-- Used for instrumentation tests. -->
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
