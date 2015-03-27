@@ -63,5 +63,34 @@
           android:layout_height="match_parent"
           />
     </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/trending_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="48dp"
+        >
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/error_title"
+          android:textSize="34sp"
+          android:textColor="?android:attr/textColorPrimary"
+          />
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="32dp"
+          android:layout_marginBottom="32dp"
+          android:src="@drawable/error"
+          />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/error_message"
+          android:gravity="center_horizontal"
+          />
+    </LinearLayout>
   </com.jakewharton.u2020.ui.misc.BetterViewAnimator>
 </com.jakewharton.u2020.ui.trending.TrendingView>

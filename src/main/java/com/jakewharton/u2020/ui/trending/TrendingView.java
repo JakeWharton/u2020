@@ -29,13 +29,14 @@ import com.jakewharton.u2020.ui.misc.BetterViewAnimator;
 import com.jakewharton.u2020.ui.misc.DividerItemDecoration;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Intents;
-import com.jakewharton.u2020.util.ViewSubscriptions;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
@@ -51,13 +52,13 @@ public final class TrendingView extends LinearLayout
   @Inject GithubService githubService;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
-  @Inject ViewSubscriptions subscriptions;
 
   private final float dividerPaddingStart;
 
   private final PublishSubject<TrendingTimespan> timespanSubject;
   private final EnumAdapter<TrendingTimespan> timespanAdapter;
   private final TrendingAdapter trendingAdapter;
+  private final CompositeSubscription subscriptions = new CompositeSubscription();
 
   public TrendingView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -106,9 +107,9 @@ public final class TrendingView extends LinearLayout
     super.onAttachedToWindow();
 
     subscriptions.add(timespanSubject //
-            .flatMap(trendingSearch) //
-            .map(SearchResultToRepositoryList.instance()), //
-        trendingAdapter);
+        .flatMap(trendingSearch) //
+        .map(SearchResultToRepositoryList.instance())
+        .subscribe(trendingAdapter));
 
     // Load the default selection.
     onRefresh();
@@ -147,6 +148,7 @@ public final class TrendingView extends LinearLayout
               .build();
 
           return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC)
+              .observeOn(AndroidSchedulers.mainThread())
               .doOnError(trendingError)
               .onErrorResumeNext(Observable.<RepositoriesResponse>empty());
         }
@@ -156,6 +158,7 @@ public final class TrendingView extends LinearLayout
     @Override public void call(Throwable throwable) {
       Timber.e(throwable, "Failed to get trending repositories");
       swipeRefreshView.setRefreshing(false);
+      animatorView.setDisplayedChildId(R.id.trending_error);
     }
   };
 }
