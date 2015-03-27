@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import rx.functions.Action1;
 
-public final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder>
+final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHolder>
     implements Action1<List<Repository>> {
   public interface RepositoryClickListener {
     void onRepositoryClick(Repository repository);

@@ -4,7 +4,7 @@ import com.jakewharton.u2020.data.api.SearchQuery;
 import org.joda.time.DateTime;
 import org.joda.time.DurationFieldType;
 
-public enum TrendingTimespan {
+enum TrendingTimespan {
   DAY("today", 1, DurationFieldType.days()),
   WEEK("last week", 1, DurationFieldType.weeks()),
   MONTH("last month", 1, DurationFieldType.months());

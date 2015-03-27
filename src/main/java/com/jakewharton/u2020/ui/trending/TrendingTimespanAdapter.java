@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 
-public final class TrendingTimespanAdapter extends EnumAdapter<TrendingTimespan> {
+final class TrendingTimespanAdapter extends EnumAdapter<TrendingTimespan> {
   public TrendingTimespanAdapter(Context context) {
     super(context, TrendingTimespan.class);
   }
