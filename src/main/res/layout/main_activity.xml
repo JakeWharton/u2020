@@ -14,6 +14,7 @@
       android:layout_height="match_parent"
       />
   <com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout
+      android:id="@+id/main_drawer_content"
       android:layout_width="300dp"
       android:layout_height="match_parent"
       android:layout_gravity="start"
