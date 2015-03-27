@@ -14,12 +14,28 @@
       android:layout_height="match_parent"
       />
   <com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout
-      android:id="@+id/main_drawer_content"
       android:layout_width="300dp"
       android:layout_height="match_parent"
       android:layout_gravity="start"
       android:background="#fff"
       android:fitsSystemWindows="true"
       app:insetForeground="#4000"
-      />
+      >
+    <com.jakewharton.u2020.ui.NavDrawerView
+        android:id="@+id/main_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+      <com.jakewharton.u2020.ui.misc.AspectRatioImageView
+          android:id="@+id/drawer_header"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:background="@color/status_bar"
+          android:src="@drawable/drawer_header"
+          app:widthRatio="16"
+          app:heightRatio="9"
+          />
+    </com.jakewharton.u2020.ui.NavDrawerView>
+  </com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout>
 </android.support.v4.widget.DrawerLayout>

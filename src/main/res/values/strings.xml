@@ -6,4 +6,6 @@
   <string name="no_intent_handler">
     There are no applications available to handle this action.
   </string>
+  <string name="nav_trending">Trending</string>
+  <string name="nav_search">Search</string>
 </resources>

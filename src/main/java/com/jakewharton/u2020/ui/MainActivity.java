@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import javax.inject.Inject;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 public final class MainActivity extends Activity {
   @Inject AppContainer appContainer;
 
   @InjectView(R.id.main_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.main_drawer_content) ViewGroup drawer;
+  @InjectView(R.id.main_drawer) NavDrawerView drawer;
   @InjectView(R.id.main_content) ViewGroup content;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,19 @@ public final class MainActivity extends Activity {
     drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.status_bar));
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-    inflater.inflate(R.layout.main_drawer, drawer);
+    drawer.addItem(R.drawable.nav_trending, R.string.nav_trending, new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        drawerLayout.closeDrawers();
+        Toast.makeText(MainActivity.this, "Trending!", LENGTH_SHORT).show();
+      }
+    });
+    drawer.addItem(R.drawable.nav_search, R.string.nav_search, new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        drawerLayout.closeDrawers();
+        Toast.makeText(MainActivity.this, "Search!", LENGTH_SHORT).show();
+      }
+    });
+
     inflater.inflate(R.layout.trending_view, content);
   }
 }
