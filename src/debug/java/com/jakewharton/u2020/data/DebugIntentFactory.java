@@ -13,17 +13,17 @@ import javax.inject.Singleton;
 @Singleton
 public class DebugIntentFactory extends IntentFactory {
   private final boolean isMockMode;
-  private final BooleanPreference useExternalApps;
+  private final BooleanPreference captureIntents;
 
   @Inject public DebugIntentFactory(@IsMockMode boolean isMockMode,
-      @UseExternalApps BooleanPreference useExternalApps) {
+      @CaptureIntents BooleanPreference captureIntents) {
     this.isMockMode = isMockMode;
-    this.useExternalApps = useExternalApps;
+    this.captureIntents = captureIntents;
   }
 
   @Override public Intent createUrlIntent(String url) {
     Intent baseIntent = super.createUrlIntent(url);
-    if (!isMockMode || useExternalApps.get()) {
+    if (!isMockMode || !captureIntents.get()) {
       return baseIntent;
     } else {
       return ExternalIntentActivity.createIntent(baseIntent);
