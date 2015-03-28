@@ -2,6 +2,7 @@ package com.jakewharton.u2020.ui.trending;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
@@ -48,6 +50,7 @@ public final class TrendingView extends LinearLayout
   @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
   @InjectView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
   @InjectView(R.id.trending_list) RecyclerView trendingView;
+  @InjectView(R.id.trending_loading_message) TextView loadingMessageView;
 
   @Inject GithubService githubService;
   @Inject Picasso picasso;
@@ -62,7 +65,9 @@ public final class TrendingView extends LinearLayout
 
   public TrendingView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    U2020App.get(context).inject(this);
+    if (!isInEditMode()) {
+      U2020App.get(context).inject(this);
+    }
 
     dividerPaddingStart =
         getResources().getDimensionPixelSize(R.dimen.trending_divider_padding_start);
@@ -76,6 +81,11 @@ public final class TrendingView extends LinearLayout
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
+
+    AnimationDrawable ellipsis =
+        (AnimationDrawable) getResources().getDrawable(R.drawable.dancing_ellipsis);
+    loadingMessageView.setCompoundDrawablesWithIntrinsicBounds(null, null, ellipsis, null);
+    ellipsis.start();
 
     toolbarView.setNavigationIcon(R.drawable.menu_icon);
     toolbarView.setNavigationOnClickListener(new OnClickListener() {
@@ -120,8 +130,19 @@ public final class TrendingView extends LinearLayout
     subscriptions.unsubscribe();
   }
 
-  @OnItemSelected(R.id.trending_timespan) void timespanSelected(int position) {
-    timespanSubject.onNext(timespanAdapter.getItem(position));
+  @OnItemSelected(R.id.trending_timespan) void timespanSelected(final int position) {
+    if (animatorView.getDisplayedChildId() == R.id.trending_error) {
+      animatorView.setDisplayedChildId(R.id.trending_loading);
+    }
+
+    // For whatever reason, the SRL's spinner does not draw itself when we call setRefreshing(true)
+    // unless it is posted.
+    post(new Runnable() {
+      @Override public void run() {
+        swipeRefreshView.setRefreshing(true);
+        timespanSubject.onNext(timespanAdapter.getItem(position));
+      }
+    });
   }
 
   @Override public void onRefresh() {

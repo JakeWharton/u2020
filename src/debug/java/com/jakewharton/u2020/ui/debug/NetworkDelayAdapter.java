@@ -11,7 +11,7 @@ import static butterknife.ButterKnife.findById;
 
 class NetworkDelayAdapter extends BindableAdapter<Long> {
   private static final long[] VALUES = {
-      250, 500, 1000, 2000, 3000
+      250, 500, 1000, 2000, 3000, 5000
   };
 
   public static int getPositionForValue(long value) {

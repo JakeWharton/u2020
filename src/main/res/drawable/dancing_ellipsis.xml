@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:duration="33" android:drawable="@drawable/ellipsis_20" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_21" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_22" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_23" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_24" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_25" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_26" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_27" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_28" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_29" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_30" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_31" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_32" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_33" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_34" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_35" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_36" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_37" />
+  <item android:duration="33" android:drawable="@drawable/ellipsis_38" />
+  <item android:duration="500" android:drawable="@drawable/ellipsis_39" />
+</animation-list>

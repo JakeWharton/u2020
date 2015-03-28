@@ -10,4 +10,5 @@
   <string name="nav_search">Search</string>
   <string name="error_title">Oops!</string>
   <string name="error_message">An error occurred loading the resource.\nPlease try again later.</string>
+  <string name="loading_message">loading</string>
 </resources>

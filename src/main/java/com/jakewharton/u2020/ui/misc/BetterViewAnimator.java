@@ -19,7 +19,8 @@ public class BetterViewAnimator extends ViewAnimator {
         return;
       }
     }
-    throw new IllegalArgumentException("No view with ID " + id);
+    String name = getResources().getResourceEntryName(id);
+    throw new IllegalArgumentException("No view with ID " + name);
   }
 
   public int getDisplayedChildId() {
