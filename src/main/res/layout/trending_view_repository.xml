@@ -17,7 +17,7 @@
       android:layout_marginEnd="16dp"
       android:layout_marginRight="16dp"
       android:importantForAccessibility="no"
-      tools:background="#10000000"
+      tools:src="@drawable/avatar"
       />
   <TextView
       android:id="@+id/trending_repository_name"
