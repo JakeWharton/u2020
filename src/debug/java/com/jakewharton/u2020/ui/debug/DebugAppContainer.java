@@ -241,7 +241,7 @@ public class DebugAppContainer implements AppContainer {
     });
 
     TelescopeLayout.cleanUp(activity); // Clean up any old screenshots.
-    telescopeLayout.setLens(new BugReportLens(activity));
+    telescopeLayout.setLens(new BugReportLens(activity, lumberYard));
 
     // If you have not seen the debug drawer before, show it with a message
     if (!seenDebugDrawer.get()) {

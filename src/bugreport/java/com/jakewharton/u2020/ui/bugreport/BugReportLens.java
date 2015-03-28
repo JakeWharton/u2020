@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.widget.Toast;
 import com.jakewharton.u2020.BuildConfig;
+import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.util.Intents;
 import com.jakewharton.u2020.util.Strings;
 import com.mattprecious.telescope.Lens;
 import java.io.File;
+import java.util.ArrayList;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.jakewharton.u2020.ui.bugreport.BugReportDialog.ReportListener;
 import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
@@ -20,11 +26,13 @@ import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
  */
 public final class BugReportLens implements Lens, ReportListener {
   private final Context context;
+  private final LumberYard lumberYard;
 
   private File screenshot;
 
-  public BugReportLens(Context context) {
+  public BugReportLens(Context context, LumberYard lumberYard) {
     this.context = context;
+    this.lumberYard = lumberYard;
   }
 
   @Override public void onCapture(File screenshot) {
@@ -35,11 +43,35 @@ public final class BugReportLens implements Lens, ReportListener {
     dialog.show();
   }
 
-  @Override public void onBugReportSubmit(Report report) {
+  @Override public void onBugReportSubmit(final Report report) {
+    if (report.includeLogs) {
+      lumberYard.save()
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new Subscriber<File>() {
+            @Override public void onCompleted() {
+              // NO-OP.
+            }
+
+            @Override public void onError(Throwable e) {
+              Toast.makeText(context, "Couldn't attach the logs.", Toast.LENGTH_SHORT).show();
+              submitReport(report, null);
+            }
+
+            @Override public void onNext(File logs) {
+              submitReport(report, logs);
+            }
+          });
+    } else {
+      submitReport(report, null);
+    }
+  }
+
+  private void submitReport(Report report, File logs) {
     DisplayMetrics dm = context.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(dm);
 
-    Intent intent = new Intent(Intent.ACTION_SEND);
+    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
     intent.setType("message/rfc822");
     // TODO: intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "u2020-bugs@blackhole.io" });
     intent.putExtra(Intent.EXTRA_SUBJECT, report.title);
@@ -73,8 +105,16 @@ public final class BugReportLens implements Lens, ReportListener {
 
     intent.putExtra(Intent.EXTRA_TEXT, body.toString());
 
+    ArrayList<Uri> attachments = new ArrayList<>();
     if (screenshot != null && report.includeScreenshot) {
-      intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(screenshot));
+      attachments.add(Uri.fromFile(screenshot));
+    }
+    if (logs != null) {
+      attachments.add(Uri.fromFile(logs));
+    }
+
+    if (!attachments.isEmpty()) {
+      intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
     }
 
     Intents.maybeStartActivity(context, intent);
