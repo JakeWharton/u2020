@@ -12,6 +12,9 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import javax.inject.Singleton;
@@ -21,6 +24,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import retrofit.MockRestAdapter;
 import timber.log.Timber;
+
+import static java.net.Proxy.Type.HTTP;
 
 @Module(
     includes = DebugApiModule.class,
@@ -38,9 +43,17 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
   private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
 
-  @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
+  @Provides @Singleton OkHttpClient provideOkHttpClient(Application app, @NetworkProxy StringPreference networkProxy) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
     client.setSslSocketFactory(createBadSslSocketFactory());
+
+    if(networkProxy.isSet()) {
+      String[] parts = networkProxy.get().split(":", 2);
+      SocketAddress address =
+          InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
+
+      client.setProxy(new Proxy(HTTP, address));
+    }
     return client;
   }
 
