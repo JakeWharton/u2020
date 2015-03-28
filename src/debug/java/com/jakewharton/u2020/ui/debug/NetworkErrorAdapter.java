@@ -11,7 +11,7 @@ import static butterknife.ButterKnife.findById;
 
 class NetworkErrorAdapter extends BindableAdapter<Integer> {
   private static final int[] VALUES = {
-      0, 3, 10, 25, 100
+      0, 3, 10, 25, 50, 75, 100
   };
 
   public static int getPositionForValue(int value) {

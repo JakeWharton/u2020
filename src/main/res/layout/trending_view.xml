@@ -46,12 +46,67 @@
       android:inAnimation="@android:anim/fade_in"
       android:outAnimation="@android:anim/fade_out"
       >
-    <ProgressBar
-        android:id="@+id/trending_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
+    <RelativeLayout
+        android:id="@+id/trending_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="48dp"
+        >
+      <ImageView
+          android:id="@+id/trending_loading_image"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="32dp"
+          android:layout_marginBottom="32dp"
+          android:src="@drawable/loading"
+          android:scaleType="center"
+          android:clickable="true"
+          />
+      <TextView
+          android:id="@+id/trending_loading_message"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/trending_loading_image"
+          android:layout_centerHorizontal="true"
+          android:gravity="center_horizontal"
+          android:text="@string/loading_message"
+          />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/trending_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="48dp"
+        >
+      <ImageView
+          android:id="@+id/trending_error_image"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="32dp"
+          android:layout_marginBottom="32dp"
+          android:src="@drawable/error"
+          />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_above="@id/trending_error_image"
+          android:gravity="center_horizontal"
+          android:text="@string/error_title"
+          android:textSize="34sp"
+          android:textColor="?android:attr/textColorPrimary"
+          />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/trending_error_image"
+          android:gravity="center_horizontal"
+          android:text="@string/error_message"
+          />
+    </RelativeLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/trending_swipe_refresh"
         android:layout_width="match_parent"
@@ -63,34 +118,5 @@
           android:layout_height="match_parent"
           />
     </android.support.v4.widget.SwipeRefreshLayout>
-    <LinearLayout
-        android:id="@+id/trending_error"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="48dp"
-        >
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/error_title"
-          android:textSize="34sp"
-          android:textColor="?android:attr/textColorPrimary"
-          />
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="32dp"
-          android:layout_marginBottom="32dp"
-          android:src="@drawable/error"
-          />
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/error_message"
-          android:gravity="center_horizontal"
-          />
-    </LinearLayout>
   </com.jakewharton.u2020.ui.misc.BetterViewAnimator>
 </com.jakewharton.u2020.ui.trending.TrendingView>
