@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
+import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -38,9 +39,11 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
   private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
 
-  @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
+  @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
+      NetworkProxyPreference networkProxy) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
     client.setSslSocketFactory(createBadSslSocketFactory());
+    client.setProxy(networkProxy.getProxy());
     return client;
   }
 
@@ -53,9 +56,8 @@ public final class DebugDataModule {
     return ApiEndpoints.isMockMode(endpoint.get());
   }
 
-  @Provides @Singleton @NetworkProxy
-  StringPreference provideNetworkProxy(SharedPreferences preferences) {
-    return new StringPreference(preferences, "debug_network_proxy");
+  @Provides @Singleton NetworkProxyPreference provideNetworkProxy(SharedPreferences preferences) {
+    return new NetworkProxyPreference(preferences, "debug_network_proxy");
   }
 
   @Provides @Singleton @CaptureIntents
