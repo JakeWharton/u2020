@@ -37,7 +37,6 @@ import com.jakewharton.u2020.data.ApiEndpoints;
 import com.jakewharton.u2020.data.CaptureIntents;
 import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.LumberYard;
-import com.jakewharton.u2020.data.NetworkProxy;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
 import com.jakewharton.u2020.data.PixelRatioEnabled;
@@ -48,12 +47,14 @@ import com.jakewharton.u2020.data.api.MockGithubService;
 import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
+import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.MainActivity;
 import com.jakewharton.u2020.ui.bugreport.BugReportLens;
 import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
+import com.jakewharton.u2020.util.Keyboards;
 import com.jakewharton.u2020.util.Strings;
 import com.mattprecious.telescope.TelescopeLayout;
 import com.squareup.okhttp.Cache;
@@ -61,9 +62,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
 import java.lang.reflect.Method;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.SocketAddress;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,6 +71,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
@@ -87,7 +87,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 import static butterknife.ButterKnife.findById;
-import static java.net.Proxy.Type.HTTP;
 import static retrofit.RestAdapter.LogLevel;
 
 /**
@@ -99,11 +98,12 @@ public class DebugAppContainer implements AppContainer {
   private static final DateFormat DATE_DISPLAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
   private final OkHttpClient client;
+  private final OkHttpClient apiClient;
   private final Picasso picasso;
   private final LumberYard lumberYard;
   private final boolean isMockMode;
   private final StringPreference networkEndpoint;
-  private final StringPreference networkProxy;
+  private final NetworkProxyPreference networkProxy;
   private final IntPreference animationSpeed;
   private final BooleanPreference picassoDebugging;
   private final BooleanPreference pixelGridEnabled;
@@ -121,11 +121,12 @@ public class DebugAppContainer implements AppContainer {
   Context drawerContext;
 
   @Inject public DebugAppContainer(OkHttpClient client,
+      @Named("Api") OkHttpClient apiClient,
       Picasso picasso,
       LumberYard lumberYard,
       @IsMockMode boolean isMockMode,
       @ApiEndpoint StringPreference networkEndpoint,
-      @NetworkProxy StringPreference networkProxy,
+      NetworkProxyPreference networkProxy,
       @CaptureIntents BooleanPreference captureIntents,
       @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
@@ -139,6 +140,7 @@ public class DebugAppContainer implements AppContainer {
       MockGithubService mockGithubService,
       Application app) {
     this.client = client;
+    this.apiClient = apiClient;
     this.picasso = picasso;
     this.lumberYard = lumberYard;
     this.isMockMode = isMockMode;
@@ -360,8 +362,10 @@ public class DebugAppContainer implements AppContainer {
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         if (position == ProxyAdapter.NONE) {
           Timber.d("Clearing network proxy");
+          // TODO: Keep the custom proxy around so you can easily switch back and forth.
           networkProxy.delete();
           client.setProxy(null);
+          apiClient.setProxy(null);
         } else if (networkProxy.isSet() && position == ProxyAdapter.PROXY) {
           Timber.d("Ignoring re-selection of network proxy %s", networkProxy.get());
         } else {
@@ -597,14 +601,14 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupOkHttpCacheSection() {
-    Cache cache = client.getCache();
+    Cache cache = client.getCache(); // Shares the cache with apiClient, so no need to check both.
     okHttpCacheMaxSizeView.setText(getSizeString(cache.getMaxSize()));
 
     refreshOkHttpCacheStats();
   }
 
   private void refreshOkHttpCacheStats() {
-    Cache cache = client.getCache();
+    Cache cache = client.getCache(); // Shares the cache with apiClient, so no need to check both.
     int writeTotal = cache.getWriteSuccessCount() + cache.getWriteAbortCount();
     int percentage = (int) ((1f * cache.getWriteAbortCount() / writeTotal) * 100);
     okHttpCacheWriteErrorView.setText(cache.getWriteAbortCount() + " / " + writeTotal + " (" + percentage + "%)");
@@ -657,7 +661,20 @@ public class DebugAppContainer implements AppContainer {
     final int originalSelection = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
-    final EditText host = findById(view, R.id.debug_drawer_network_proxy_host);
+    final EditText hostView = findById(view, R.id.debug_drawer_network_proxy_host);
+
+    String host = networkProxy.get();
+    if (!Strings.isBlank(host)) {
+      hostView.setText(host); // Set the current host.
+      hostView.setSelection(0, host.length()); // Pre-select it for editing.
+
+      // Show the keyboard. Post this to the next frame when the dialog has been attached.
+      hostView.post(new Runnable() {
+        @Override public void run() {
+          Keyboards.showKeyboard(hostView);
+        }
+      });
+    }
 
     new AlertDialog.Builder(drawerContext) //
         .setTitle("Set Network Proxy")
@@ -670,17 +687,15 @@ public class DebugAppContainer implements AppContainer {
         })
         .setPositiveButton("Use", new DialogInterface.OnClickListener() {
           @Override public void onClick(DialogInterface dialog, int i) {
-            String theHost = host.getText().toString();
+            String theHost = hostView.getText().toString();
             if (!Strings.isBlank(theHost)) {
-              String[] parts = theHost.split(":", 2);
-              SocketAddress address =
-                  InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
-
               networkProxy.set(theHost); // Persist across restarts.
               proxyAdapter.notifyDataSetChanged(); // Tell the spinner to update.
               networkProxyView.setSelection(ProxyAdapter.PROXY); // And show the proxy.
 
-              client.setProxy(new Proxy(HTTP, address));
+              Proxy proxy = networkProxy.getProxy();
+              client.setProxy(proxy);
+              apiClient.setProxy(proxy);
             } else {
               networkProxyView.setSelection(originalSelection);
             }
