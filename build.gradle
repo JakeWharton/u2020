@@ -19,33 +19,6 @@ repositories {
   mavenCentral()
 }
 
-dependencies {
-  compile 'com.android.support:support-v4:22.0.0'
-  compile 'com.android.support:support-annotations:22.0.0'
-  compile 'com.android.support:appcompat-v7:22.0.0'
-  compile 'com.android.support:recyclerview-v7:22.0.0'
-
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-
-  compile 'com.squareup.okhttp:okhttp:2.3.0'
-  compile 'com.squareup.picasso:picasso:2.5.0'
-  compile 'com.squareup.retrofit:retrofit:1.9.0'
-  debugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
-
-  compile 'com.jakewharton:butterknife:6.1.0'
-  compile 'com.jakewharton.timber:timber:2.7.1'
-  compile 'com.jakewharton.byteunits:byteunits:0.9.0'
-  debugCompile 'com.jakewharton.madge:madge:1.1.1'
-  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
-
-  compile 'io.reactivex:rxjava:1.0.8'
-  compile 'io.reactivex:rxandroid:0.24.0'
-
-  compile 'net.danlew:android.joda:2.7.1'
-  debugCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
-}
-
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
@@ -61,6 +34,15 @@ android {
     preDexLibraries = preDexEnabled && !isTravis
   }
 
+  signingConfigs {
+    u2020 {
+      storeFile file('u2020.keystore')
+      storePassword 'android'
+      keyAlias 'android'
+      keyPassword 'android'
+    }
+  }
+
   defaultConfig {
     minSdkVersion 15
     targetSdkVersion 22
@@ -68,21 +50,24 @@ android {
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
+    signingConfig signingConfigs.u2020
+
     buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
     buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
   }
 
   buildTypes {
     debug {
-      applicationIdSuffix '.dev'
-      versionNameSuffix '-dev'
+      applicationIdSuffix '.debug'
     }
   }
 
-  sourceSets {
-    debug {
-      java.srcDirs += file('src/bugreport/java')
-      res.srcDirs += file('src/bugreport/res')
+  productFlavors {
+    internal {
+      applicationId 'com.jakewharton.u2020.internal'
+    }
+    production {
+      applicationId 'com.jakewharton.u2020'
     }
   }
 
@@ -94,4 +79,42 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_7
     targetCompatibility JavaVersion.VERSION_1_7
   }
+}
+
+dependencies {
+  compile 'com.android.support:support-v4:22.0.0'
+  compile 'com.android.support:support-annotations:22.0.0'
+  compile 'com.android.support:appcompat-v7:22.0.0'
+  compile 'com.android.support:recyclerview-v7:22.0.0'
+
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+  compile 'com.squareup.okhttp:okhttp:2.3.0'
+  compile 'com.squareup.picasso:picasso:2.5.0'
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+  // TODO switch to internalDebugCompile: http://b.android.com/162285
+  debugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
+
+  compile 'com.jakewharton:butterknife:6.1.0'
+  compile 'com.jakewharton.timber:timber:2.7.1'
+  compile 'com.jakewharton.byteunits:byteunits:0.9.0'
+  // TODO switch to internalDebugCompile: http://b.android.com/162285
+  debugCompile 'com.jakewharton.madge:madge:1.1.1'
+  // TODO switch to internalDebugCompile: http://b.android.com/162285
+  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
+
+  compile 'io.reactivex:rxjava:1.0.8'
+  compile 'io.reactivex:rxandroid:0.24.0'
+
+  compile 'net.danlew:android.joda:2.7.1'
+  internalCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
+}
+
+def installAll = tasks.create('installAll')
+installAll.description = 'Install all applications.'
+android.applicationVariants.all { variant ->
+  installAll.dependsOn(variant.install)
+  // Ensure we end up in the same group as the other install tasks.
+  installAll.group = variant.install.group
 }
