@@ -60,6 +60,7 @@
       android:layout_width="0dp"
       android:layout_gravity="start|fill_horizontal"
       android:visibility="gone"
+      android:orientation="vertical"
       />
 
   <!-- NETWORK SECTION -->
