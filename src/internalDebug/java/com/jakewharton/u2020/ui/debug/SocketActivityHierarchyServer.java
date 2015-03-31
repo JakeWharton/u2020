@@ -61,7 +61,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
   private static final int VIEW_SERVER_DEFAULT_PORT = 4939;
   private static final int VIEW_SERVER_MAX_CONNECTIONS = 10;
 
-  private static final String LOG_TAG = "SocketActivityHierarchyServer";
+  private static final String LOG_TAG = "ActivityHierarchyServer";
 
   private static final String VALUE_PROTOCOL_VERSION = "4";
   private static final String VALUE_SERVER_VERSION = "4";
