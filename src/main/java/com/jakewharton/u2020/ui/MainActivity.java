@@ -1,5 +1,6 @@
 package com.jakewharton.u2020.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,7 +33,7 @@ public final class MainActivity extends Activity {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       // Remove the status bar color. The DrawerLayout is responsible for drawing it from now on.
-      getWindow().setStatusBarColor(Color.TRANSPARENT);
+      setStatusBarColor(getWindow());
     }
 
     U2020App app = U2020App.get(this);
@@ -59,5 +61,10 @@ public final class MainActivity extends Activity {
     });
 
     inflater.inflate(R.layout.trending_view, content);
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  private static void setStatusBarColor(Window window) {
+    window.setStatusBarColor(Color.TRANSPARENT);
   }
 }
