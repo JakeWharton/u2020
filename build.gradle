@@ -81,6 +81,11 @@ android {
   }
 }
 
+// TODO remove eventually: http://b.android.com/162285
+configurations {
+  internalDebugCompile
+}
+
 dependencies {
   compile 'com.android.support:support-v4:22.0.0'
   compile 'com.android.support:support-annotations:22.0.0'
@@ -93,16 +98,13 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp:2.3.0'
   compile 'com.squareup.picasso:picasso:2.5.0'
   compile 'com.squareup.retrofit:retrofit:1.9.0'
-  // TODO switch to internalDebugCompile: http://b.android.com/162285
-  debugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
+  internalDebugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
 
   compile 'com.jakewharton:butterknife:6.1.0'
   compile 'com.jakewharton.timber:timber:2.7.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.0'
-  // TODO switch to internalDebugCompile: http://b.android.com/162285
-  debugCompile 'com.jakewharton.madge:madge:1.1.1'
-  // TODO switch to internalDebugCompile: http://b.android.com/162285
-  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
+  internalDebugCompile 'com.jakewharton.madge:madge:1.1.1'
+  internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 
   compile 'io.reactivex:rxjava:1.0.8'
   compile 'io.reactivex:rxandroid:0.24.0'
