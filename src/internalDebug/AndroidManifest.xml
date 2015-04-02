@@ -18,5 +18,10 @@
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
+    <activity
+        android:name="com.jakewharton.u2020.ui.debug.ProcessPhoenix"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:process=":phoenix"
+        />
   </application>
 </manifest>
