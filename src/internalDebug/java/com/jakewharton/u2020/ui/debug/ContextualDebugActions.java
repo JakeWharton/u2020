@@ -15,55 +15,79 @@ import java.util.Set;
 import timber.log.Timber;
 
 public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListener {
-  public interface DebugAction<T extends View> {
-    String name();
-    Class<T> viewClass();
-    void run(T view);
+  public static abstract class DebugAction<T extends View> {
+    private final Class<T> viewClass;
+
+    protected DebugAction(Class<T> viewClass) {
+      this.viewClass = viewClass;
+    }
+
+    /** Invoked when the action has been added as available to run. */
+    public void added() {}
+
+    /** Invoked when the action has been removed as available to run. */
+    public void removed() {}
+
+    /** Return true if action is applicable. Called each time the target view is added. */
+    public boolean enabled() {
+      return true;
+    }
+
+    /** Human-readable action name. Displayed in debug drawer. */
+    public abstract String name();
+
+    /** Perform this action using the specified view. */
+    public abstract void run(T view);
   }
 
   private final Map<DebugAction<? extends View>, View> buttonMap;
   private final Map<Class<? extends View>, List<DebugAction<? extends View>>> actionMap;
 
-  private final DebugDrawerLayout drawerLayout;
   private final Context drawerContext;
   private final View contextualTitleView;
   private final LinearLayout contextualListView;
 
-  public ContextualDebugActions(DebugAppContainer container, Set<DebugAction<?>> debugActions) {
+  private View.OnClickListener clickListener;
+
+  public ContextualDebugActions(DebugView debugView, Set<DebugAction<?>> debugActions) {
     buttonMap = new LinkedHashMap<>();
     actionMap = new LinkedHashMap<>();
 
-    drawerLayout = container.drawerLayout;
-    drawerContext = container.drawerContext;
-    contextualTitleView = container.contextualTitleView;
-    contextualListView = container.contextualListView;
+    drawerContext = debugView.getContext();
+    contextualTitleView = debugView.contextualTitleView;
+    contextualListView = debugView.contextualListView;
 
     for (DebugAction<?> debugAction : debugActions) {
-      putAction(debugAction.viewClass(), debugAction);
+      Class cls = debugAction.viewClass;
+      Timber.d("Adding %s action for %s.", debugAction.getClass().getSimpleName(), cls.getSimpleName());
+
+      List<DebugAction<? extends View>> actionList = actionMap.get(cls);
+      if (actionList == null) {
+        actionList = new ArrayList<>(2);
+        actionMap.put(cls, actionList);
+      }
+      actionList.add(debugAction);
     }
   }
 
-  private void putAction(Class<? extends View> view, DebugAction<? extends View> action) {
-    Timber.d("Adding %s action for %s.", action.getClass().getSimpleName(), view.getSimpleName());
-
-    List<DebugAction<? extends View>> actions = actionMap.get(view);
-    if (actions == null) {
-      actions = new ArrayList<>(2);
-      actionMap.put(view, actions);
-    }
-    actions.add(action);
+  public void setActionClickListener(View.OnClickListener clickListener) {
+    this.clickListener = clickListener;
   }
 
   @Override public void onChildViewAdded(View parent, View child) {
     List<DebugAction<? extends View>> actions = actionMap.get(child.getClass());
     if (actions != null) {
       for (DebugAction<? extends View> action : actions) {
+        if (!action.enabled()) {
+          continue;
+        }
         Timber.d("Adding debug action \"%s\" for %s.", action.name(),
             child.getClass().getSimpleName());
 
         View button = createButton(action, child);
         buttonMap.put(action, button);
         contextualListView.addView(button);
+        action.added();
       }
       updateContextualVisibility();
     }
@@ -75,7 +99,11 @@ public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListen
       for (DebugAction<? extends View> action : actions) {
         Timber.d("Removing debug action \"%s\" for %s.", action.name(),
             child.getClass().getSimpleName());
-        contextualListView.removeView(buttonMap.remove(action));
+        View buttonView = buttonMap.remove(action);
+        if (buttonView != null) {
+          contextualListView.removeView(buttonView);
+          action.removed();
+        }
       }
       updateContextualVisibility();
     }
@@ -87,7 +115,9 @@ public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListen
     button.setText(action.name());
     button.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        drawerLayout.closeDrawers();
+        if (clickListener != null) {
+          clickListener.onClick(view);
+        }
         action.run(child);
       }
     });

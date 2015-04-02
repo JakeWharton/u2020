@@ -7,6 +7,7 @@ import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
+import com.jakewharton.u2020.data.prefs.RxSharedPreferences;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -21,6 +22,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import retrofit.MockRestAdapter;
+import rx.Observable;
 import timber.log.Timber;
 
 @Module(
@@ -38,6 +40,11 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
   private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
+
+  @Provides @Singleton
+  RxSharedPreferences provideRxSharedPreferences(SharedPreferences preferences) {
+    return RxSharedPreferences.create(preferences);
+  }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
       NetworkProxyPreference networkProxy) {
@@ -81,10 +88,20 @@ public final class DebugDataModule {
         DEFAULT_PIXEL_GRID_ENABLED);
   }
 
+  @Provides @Singleton @PixelGridEnabled
+  Observable<Boolean> provideObservablePixelGridEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_pixel_grid_enabled", DEFAULT_PIXEL_GRID_ENABLED);
+  }
+
   @Provides @Singleton @PixelRatioEnabled
   BooleanPreference providePixelRatioEnabled(SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_pixel_ratio_enabled",
         DEFAULT_PIXEL_RATIO_ENABLED);
+  }
+
+  @Provides @Singleton @PixelRatioEnabled
+  Observable<Boolean> provideObservablePixelRatioEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_pixel_ratio_enabled", DEFAULT_PIXEL_RATIO_ENABLED);
   }
 
   @Provides @Singleton @SeenDebugDrawer
@@ -97,9 +114,20 @@ public final class DebugDataModule {
     return new BooleanPreference(preferences, "debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
   }
 
+  @Provides @Singleton @ScalpelEnabled
+  Observable<Boolean> provideObservableScalpelEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
+  }
+
   @Provides @Singleton @ScalpelWireframeEnabled
   BooleanPreference provideScalpelWireframeEnabled(SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_scalpel_wireframe_drawer",
+        DEFAULT_SCALPEL_WIREFRAME_ENABLED);
+  }
+
+  @Provides @Singleton @ScalpelWireframeEnabled
+  Observable<Boolean> provideObservableScalpelWireframeEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_scalpel_wireframe_drawer",
         DEFAULT_SCALPEL_WIREFRAME_ENABLED);
   }
 
