@@ -21,7 +21,7 @@ public final class TelescopeAppContainer implements AppContainer {
 
   @InjectView(R.id.telescope_container) TelescopeLayout telescopeLayout;
 
-  @Override public ViewGroup get(Activity activity) {
+  @Override public ViewGroup bind(Activity activity) {
     activity.setContentView(R.layout.internal_activity_frame);
     ButterKnife.inject(this, activity);
 
