@@ -39,7 +39,7 @@ public final class MainActivity extends Activity {
     U2020App app = U2020App.get(this);
     app.inject(this);
 
-    ViewGroup container = appContainer.get(this);
+    ViewGroup container = appContainer.bind(this);
 
     inflater.inflate(R.layout.main_activity, container);
     ButterKnife.inject(this, container);
