@@ -542,7 +542,7 @@ public final class DebugView extends FrameLayout {
       case DisplayMetrics.DENSITY_TV:
         return "tvdpi";
       default:
-        return "unknown";
+        return String.valueOf(displayMetrics.densityDpi);
     }
   }
 
