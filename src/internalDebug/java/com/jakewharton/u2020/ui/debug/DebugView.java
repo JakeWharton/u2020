@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
@@ -42,7 +41,6 @@ import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
-import com.jakewharton.u2020.ui.MainActivity;
 import com.jakewharton.u2020.ui.debug.ContextualDebugActions.DebugAction;
 import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
@@ -68,8 +66,6 @@ import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import timber.log.Timber;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static butterknife.ButterKnife.findById;
 
 public final class DebugView extends FrameLayout {
@@ -645,9 +641,6 @@ public final class DebugView extends FrameLayout {
     Timber.d("Setting network endpoint to %s", endpoint);
     networkEndpoint.set(endpoint);
 
-    Intent newApp = new Intent(getContext(), MainActivity.class);
-    newApp.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
-    getContext().startActivity(newApp);
-    U2020App.get(getContext()).buildObjectGraphAndInject();
+    ProcessPhoenix.triggerRebirth(getContext());
   }
 }
