@@ -216,7 +216,7 @@ public final class DebugAppContainer implements AppContainer {
 
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
-    drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);;
+    drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);
 
     riseAndShine(activity);
 
