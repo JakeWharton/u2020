@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
-import com.jakewharton.u2020.U2020App;
+import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.IntentFactory;
 import com.jakewharton.u2020.data.api.GithubService;
 import com.jakewharton.u2020.data.api.Order;
@@ -66,7 +66,7 @@ public final class TrendingView extends LinearLayout
   public TrendingView(Context context, AttributeSet attrs) {
     super(context, attrs);
     if (!isInEditMode()) {
-      U2020App.get(context).inject(this);
+      Injector.obtain(context).inject(this);
     }
 
     dividerPaddingStart =
