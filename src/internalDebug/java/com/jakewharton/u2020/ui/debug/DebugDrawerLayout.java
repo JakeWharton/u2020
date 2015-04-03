@@ -179,7 +179,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
      * @param drawerView The child view that was moved
      * @param slideOffset The new offset of this drawer within its range, from 0-1
      */
-    public void onDrawerSlide(View drawerView, float slideOffset);
+    void onDrawerSlide(View drawerView, float slideOffset);
 
     /**
      * Called when a drawer has settled in a completely open state.
@@ -187,14 +187,14 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
      *
      * @param drawerView Drawer view that is now open
      */
-    public void onDrawerOpened(View drawerView);
+    void onDrawerOpened(View drawerView);
 
     /**
      * Called when a drawer has settled in a completely closed state.
      *
      * @param drawerView Drawer view that is now closed
      */
-    public void onDrawerClosed(View drawerView);
+    void onDrawerClosed(View drawerView);
 
     /**
      * Called when the drawer motion state changes. The new state will
@@ -202,7 +202,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
      *
      * @param newState The new drawer motion state
      */
-    public void onDrawerStateChanged(@State int newState);
+    void onDrawerStateChanged(@State int newState);
   }
 
   /**
