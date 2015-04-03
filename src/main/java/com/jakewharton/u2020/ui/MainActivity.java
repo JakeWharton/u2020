@@ -76,6 +76,11 @@ public final class MainActivity extends Activity {
     return super.getSystemService(name);
   }
 
+  @Override protected void onDestroy() {
+    activityGraph = null;
+    super.onDestroy();
+  }
+
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private static void setStatusBarColor(Window window) {
     window.setStatusBarColor(Color.TRANSPARENT);
