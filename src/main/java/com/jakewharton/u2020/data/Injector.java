@@ -2,11 +2,11 @@ package com.jakewharton.u2020.data;
 
 import android.content.Context;
 import dagger.ObjectGraph;
-import javax.inject.Inject;
 
 public final class Injector {
   private static final String INJECTOR_SERVICE = "com.jakewharton.u2020.injector";
 
+  @SuppressWarnings("ResourceType") // Explicitly doing a custom service.
   public static ObjectGraph obtain(Context context) {
     return (ObjectGraph) context.getSystemService(INJECTOR_SERVICE);
   }
