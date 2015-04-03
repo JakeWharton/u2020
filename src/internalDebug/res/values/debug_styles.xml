@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <style name="Theme.U2020.Debug" parent="Theme.AppCompat.NoActionBar">
     <item name="colorAccent">@color/accent</item>
+    <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
   </style>
   <style name="Theme.U2020.External" parent="Theme.U2020">
     <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
