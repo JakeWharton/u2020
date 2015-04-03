@@ -2,6 +2,7 @@ package com.jakewharton.u2020.data.api;
 
 import com.jakewharton.u2020.data.api.model.RepositoriesResponse;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static com.jakewharton.u2020.data.api.MockRepositories.BUTTERKNIFE;
 import static com.jakewharton.u2020.data.api.MockRepositories.DAGGER;
@@ -28,7 +29,7 @@ public enum MockRepositoriesResponse {
       TELESCOPE, //
       U2020, //
       WIRE))),
-  ONE("One", new RepositoriesResponse(Arrays.asList(DAGGER))),
+  ONE("One", new RepositoriesResponse(Collections.singletonList(DAGGER))),
   EMPTY("Empty", new RepositoriesResponse(null));
 
   public final String name;
