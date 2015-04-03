@@ -105,7 +105,9 @@ public final class TrendingView extends LinearLayout
 
     trendingAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       @Override public void onChanged() {
-        animatorView.setDisplayedChildId(R.id.trending_swipe_refresh);
+        animatorView.setDisplayedChildId(trendingAdapter.getItemCount() == 0 //
+            ? R.id.trending_empty //
+            : R.id.trending_swipe_refresh);
         swipeRefreshView.setRefreshing(false);
       }
     });
@@ -134,7 +136,7 @@ public final class TrendingView extends LinearLayout
   }
 
   @OnItemSelected(R.id.trending_timespan) void timespanSelected(final int position) {
-    if (animatorView.getDisplayedChildId() == R.id.trending_error) {
+    if (animatorView.getDisplayedChildId() != R.id.trending_swipe_refresh) {
       animatorView.setDisplayedChildId(R.id.trending_loading);
     }
 

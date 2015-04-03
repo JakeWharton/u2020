@@ -107,6 +107,39 @@
           android:text="@string/error_message"
           />
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/trending_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="48dp"
+        >
+      <ImageView
+          android:id="@+id/trending_empty_image"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="32dp"
+          android:layout_marginBottom="32dp"
+          android:src="@drawable/empty"
+          />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_above="@id/trending_empty_image"
+          android:gravity="center_horizontal"
+          android:text="@string/empty_title"
+          android:textSize="34sp"
+          android:textColor="?android:attr/textColorPrimary"
+          />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/trending_empty_image"
+          android:gravity="center_horizontal"
+          android:text="@string/empty_message"
+          />
+    </RelativeLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/trending_swipe_refresh"
         android:layout_width="match_parent"
