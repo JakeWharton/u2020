@@ -28,6 +28,7 @@ public enum MockRepositoriesResponse {
       TELESCOPE, //
       U2020, //
       WIRE))),
+  ONE("One", new RepositoriesResponse(Arrays.asList(DAGGER))),
   EMPTY("Empty", new RepositoriesResponse(null));
 
   public final String name;
