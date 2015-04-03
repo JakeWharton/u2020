@@ -10,6 +10,19 @@
 
   <application>
     <activity
+        android:name="com.jakewharton.u2020.ui.DebugActivity"
+        android:label="U+2020 Dev Settings"
+        android:launchMode="singleTask"
+        android:theme="@style/Theme.U2020.Debug"
+        android:screenOrientation="portrait"
+        android:icon="@drawable/dev_app_icon"
+        >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
         android:name="com.jakewharton.u2020.ui.ExternalIntentActivity"
         android:theme="@style/Theme.U2020.External"
         >

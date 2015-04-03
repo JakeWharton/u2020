@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -143,7 +144,11 @@ public final class DebugView extends FrameLayout {
   private final ContextualDebugActions contextualDebugActions;
 
   public DebugView(Context context) {
-    super(context);
+    this(context, null);
+  }
+
+  public DebugView(Context context, AttributeSet attrs) {
+    super(context, attrs);
     ((U2020App) context.getApplicationContext()).inject(this);
 
     // Inflate all of the controls and inject them.
