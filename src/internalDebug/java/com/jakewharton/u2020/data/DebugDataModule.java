@@ -46,6 +46,11 @@ public final class DebugDataModule {
     return RxSharedPreferences.create(preferences);
   }
 
+  @Provides @Singleton IntentFactory provideIntentFactory(@IsMockMode boolean isMockMode,
+      @CaptureIntents BooleanPreference captureIntents) {
+    return new DebugIntentFactory(IntentFactory.REAL, isMockMode, captureIntents);
+  }
+
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
       NetworkProxyPreference networkProxy) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
@@ -143,10 +148,6 @@ public final class DebugDataModule {
       }
     });
     return builder.build();
-  }
-
-  @Provides @Singleton IntentFactory provideIntentFactory(DebugIntentFactory debugIntentFactory) {
-    return debugIntentFactory;
   }
 
   private static SSLSocketFactory createBadSslSocketFactory() {

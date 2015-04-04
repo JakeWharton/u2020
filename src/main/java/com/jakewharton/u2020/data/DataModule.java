@@ -43,6 +43,10 @@ public final class DataModule {
     return Clock.REAL;
   }
 
+  @Provides @Singleton IntentFactory provideIntentFactory() {
+    return IntentFactory.REAL;
+  }
+
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
     return createOkHttpClient(app);
   }
