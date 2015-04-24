@@ -1,5 +1,8 @@
 buildscript {
   repositories {
+    //maven {
+    //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    //}
     mavenCentral()
   }
   dependencies {
@@ -18,6 +21,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
+  //maven {
+  //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
+  //}
   mavenCentral()
 }
 
@@ -29,7 +35,7 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
   compileSdkVersion 22
-  buildToolsVersion '22.0.0'
+  buildToolsVersion '22.0.1'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -90,21 +96,21 @@ configurations {
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:22.0.0'
-  compile 'com.android.support:support-annotations:22.0.0'
-  compile 'com.android.support:appcompat-v7:22.0.0'
-  compile 'com.android.support:recyclerview-v7:22.0.0'
+  compile 'com.android.support:support-v4:22.1.0'
+  compile 'com.android.support:support-annotations:22.1.0'
+  compile 'com.android.support:appcompat-v7:22.1.0'
+  compile 'com.android.support:recyclerview-v7:22.1.0'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
   compile 'com.squareup.okhttp:okhttp:2.3.0'
-  compile 'com.squareup.picasso:picasso:2.5.0'
+  compile 'com.squareup.picasso:picasso:2.5.2'
   compile 'com.squareup.retrofit:retrofit:1.9.0'
   internalDebugCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
 
   compile 'com.jakewharton:butterknife:6.1.0'
-  compile 'com.jakewharton.timber:timber:2.7.1'
+  compile 'com.jakewharton.timber:timber:3.0.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.0'
   internalDebugCompile 'com.jakewharton.madge:madge:1.1.1'
   internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'

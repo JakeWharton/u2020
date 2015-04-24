@@ -42,7 +42,7 @@ public final class LumberYard {
 
   public Timber.Tree tree() {
     return new Timber.DebugTree() {
-      @Override protected void logMessage(int priority, String tag, String message) {
+      @Override protected void log(int priority, String tag, String message, Throwable t) {
         addEntry(new Entry(priority, tag, message));
       }
     };
