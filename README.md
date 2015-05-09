@@ -72,6 +72,7 @@ Libraries
  * Timber - http://github.com/JakeWharton/timber
  * Madge - http://github.com/JakeWharton/madge
  * Scalpel - http://github.com/JakeWharton/scalpel
+ * LeakCanary - http://github.com/square/leakcanary
 
 
 

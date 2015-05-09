@@ -145,6 +145,23 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
     mFocusLock.writeLock().lock();
     try {
       mFocusedWindow = view == null ? null : view.getRootView();
+      if (mFocusedWindow != null) {
+        mFocusedWindow.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+          @Override public void onViewAttachedToWindow(View v) {
+          }
+
+          @Override public void onViewDetachedFromWindow(View v) {
+            mFocusLock.writeLock().lock();
+            try {
+              if (v == mFocusedWindow) {
+                mFocusedWindow = null;
+              }
+            } finally {
+              mFocusLock.writeLock().unlock();
+            }
+          }
+        });
+      }
     } finally {
       mFocusLock.writeLock().unlock();
     }

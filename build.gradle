@@ -115,6 +115,9 @@ dependencies {
   internalDebugCompile 'com.jakewharton.madge:madge:1.1.1'
   internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 
+  internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+  productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+
   compile 'io.reactivex:rxjava:1.0.10'
   compile 'io.reactivex:rxandroid:0.24.0'
 

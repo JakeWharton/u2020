@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
+import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -21,6 +22,7 @@ public final class U2020App extends Application {
   @Override public void onCreate() {
     super.onCreate();
     JodaTimeAndroid.init(this);
+    LeakCanary.install(this);
 
     if (BuildConfig.DEBUG) {
       Timber.plant(new DebugTree());
