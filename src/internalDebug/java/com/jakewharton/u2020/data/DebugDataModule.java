@@ -3,6 +3,7 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
@@ -64,8 +65,10 @@ public final class DebugDataModule {
     return new StringPreference(preferences, "debug_endpoint", ApiEndpoints.MOCK_MODE.url);
   }
 
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
-    return ApiEndpoints.isMockMode(endpoint.get());
+  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint,
+      @IsInstrumentationTest boolean isInstrumentationTest) {
+    // Running in an instrumentation forces mock mode.
+    return isInstrumentationTest || ApiEndpoints.isMockMode(endpoint.get());
   }
 
   @Provides @Singleton NetworkProxyPreference provideNetworkProxy(SharedPreferences preferences) {

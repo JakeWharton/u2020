@@ -62,6 +62,8 @@ android {
 
     buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
     buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+    testInstrumentationRunner "com.jakewharton.u2020.U2020TestRunner"
   }
 
   buildTypes {
@@ -88,6 +90,10 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_7
     targetCompatibility JavaVersion.VERSION_1_7
   }
+
+  packagingOptions {
+    exclude 'LICENSE.txt'
+  }
 }
 
 // TODO remove eventually: http://b.android.com/162285
@@ -96,10 +102,10 @@ configurations {
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:22.1.1'
-  compile 'com.android.support:support-annotations:22.1.1'
-  compile 'com.android.support:appcompat-v7:22.1.1'
-  compile 'com.android.support:recyclerview-v7:22.1.1'
+  compile 'com.android.support:support-v4:22.2.0'
+  compile 'com.android.support:support-annotations:22.2.0'
+  compile 'com.android.support:appcompat-v7:22.2.0'
+  compile 'com.android.support:recyclerview-v7:22.2.0'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
@@ -120,6 +126,13 @@ dependencies {
 
   compile 'net.danlew:android.joda:2.7.1'
   internalCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
+
+  androidTestCompile 'junit:junit:4.12'
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+  // TODO https://code.google.com/p/android-test-kit/issues/detail?id=157
+  //androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2'
+  androidTestCompile 'com.android.support.test:runner:0.3'
+  androidTestCompile 'com.android.support.test:rules:0.3'
 }
 
 def installAll = tasks.create('installAll')
@@ -128,4 +141,9 @@ android.applicationVariants.all { variant ->
   installAll.dependsOn(variant.install)
   // Ensure we end up in the same group as the other install tasks.
   installAll.group = variant.install.group
+}
+
+// The default 'assemble' task only applies to normal variants. Add test variants as well.
+android.testVariants.all { variant ->
+  tasks.getByName('assemble').dependsOn variant.assemble
 }
