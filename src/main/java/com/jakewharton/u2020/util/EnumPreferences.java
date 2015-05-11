@@ -6,12 +6,12 @@ public final class EnumPreferences {
   private EnumPreferences() {
   }
 
-  public static <T extends Enum> T getEnumValue(SharedPreferences preferences, Class<T> type,
+  public static <T extends Enum<T>> T getEnumValue(SharedPreferences preferences, Class<T> type,
       String key, T defaultValue) {
     String name = preferences.getString(key, null);
     if (name != null) {
       try {
-        return type.cast(Enum.valueOf(type, name));
+        return Enum.valueOf(type, name);
       } catch (IllegalArgumentException ignored) {
       }
     }
