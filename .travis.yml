@@ -1,7 +1,6 @@
 language: android
 
 jdk:
- - oraclejdk7
  - oraclejdk8
 
 android:
@@ -9,6 +8,17 @@ android:
     - build-tools-22.0.1
     - android-22
     - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-19
+
+before_script:
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+env:
+  global:
+    - ADB_INSTALL_TIMEOUT=8
 
 notifications:
   email: false
