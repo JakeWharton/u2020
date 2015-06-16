@@ -1,6 +1,7 @@
 package com.jakewharton.u2020.ui.trending;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -55,7 +56,7 @@ public final class TrendingItemView extends RelativeLayout {
     Truss description = new Truss();
     description.append(repository.owner.login);
 
-    if (repository.description != null) {
+    if (!TextUtils.isEmpty(repository.description)) {
       description.pushSpan(new ForegroundColorSpan(descriptionColor));
       description.append(" — ");
       description.append(repository.description);
