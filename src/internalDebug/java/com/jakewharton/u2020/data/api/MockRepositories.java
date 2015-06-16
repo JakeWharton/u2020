@@ -109,6 +109,15 @@ final class MockRepositories {
       .htmlUrl("https://github.com/square/wire") //
       .updatedAt(DateTime.parse("2015-03-06")) //
       .build();
+    static final Repository MOSHI = new Repository.Builder() //
+        .name("moshi") //
+        .owner(SQUARE) //
+        .description("") // Intentionally empty description.
+        .forks(19) //
+        .stars(465) //
+        .htmlUrl("https://github.com/square/moshi") //
+        .updatedAt(DateTime.parse("2015-06-16")) //
+        .build();
 
   private MockRepositories() {
     throw new AssertionError("No instances.");

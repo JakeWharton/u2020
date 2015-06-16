@@ -7,6 +7,7 @@ import java.util.Collections;
 import static com.jakewharton.u2020.data.api.MockRepositories.BUTTERKNIFE;
 import static com.jakewharton.u2020.data.api.MockRepositories.DAGGER;
 import static com.jakewharton.u2020.data.api.MockRepositories.JAVAPOET;
+import static com.jakewharton.u2020.data.api.MockRepositories.MOSHI;
 import static com.jakewharton.u2020.data.api.MockRepositories.OKHTTP;
 import static com.jakewharton.u2020.data.api.MockRepositories.OKIO;
 import static com.jakewharton.u2020.data.api.MockRepositories.PICASSO;
@@ -28,7 +29,8 @@ public enum MockRepositoriesResponse {
       SQLBRITE, //
       TELESCOPE, //
       U2020, //
-      WIRE))),
+      WIRE, //
+      MOSHI))),
   ONE("One", new RepositoriesResponse(Collections.singletonList(DAGGER))),
   EMPTY("Empty", new RepositoriesResponse(null));
 
