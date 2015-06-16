@@ -26,7 +26,7 @@
           />
     </com.jakewharton.madge.MadgeFrameLayout>
   </com.mattprecious.telescope.TelescopeLayout>
-  <com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout
+  <com.jakewharton.u2020.ui.debug.NonConsumingScrimInsetsFrameLayout
       android:layout_width="290dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
@@ -41,5 +41,5 @@
         android:fitsSystemWindows="true"
         android:clipToPadding="false"
         />
-  </com.jakewharton.u2020.ui.misc.ScrimInsetsFrameLayout>
+  </com.jakewharton.u2020.ui.debug.NonConsumingScrimInsetsFrameLayout>
 </com.jakewharton.u2020.ui.debug.DebugDrawerLayout>

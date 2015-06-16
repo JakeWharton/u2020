@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jakewharton.u2020.ui.misc;
+package com.jakewharton.u2020.ui.debug;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,33 +29,37 @@ import com.jakewharton.u2020.R;
 /**
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(Rect)}, i.e. the
  * area above UI chrome (status and navigation bars, overlay action bars).
+ * <p>
+ * Unlike the {@code ScrimInsetsFrameLayout} in the design support library, this variant does not
+ * consume the insets.
  */
-public final class ScrimInsetsFrameLayout extends FrameLayout {
+public final class NonConsumingScrimInsetsFrameLayout extends FrameLayout {
   private Drawable insetForeground;
   private Rect insets;
   private Rect tempRect = new Rect();
 
-  public ScrimInsetsFrameLayout(Context context) {
+  public NonConsumingScrimInsetsFrameLayout(Context context) {
     super(context);
     init(context, null, 0);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
+  public NonConsumingScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs, 0);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+  public NonConsumingScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context, attrs, defStyle);
   }
 
   private void init(Context context, AttributeSet attrs, int defStyle) {
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ScrimInsetsView, defStyle, 0);
+    TypedArray a =
+        context.obtainStyledAttributes(attrs, R.styleable.NonConsumingScrimInsetsView, defStyle, 0);
     if (a == null) {
       return;
     }
-    insetForeground = a.getDrawable(R.styleable.ScrimInsetsView_insetForeground);
+    insetForeground = a.getDrawable(R.styleable.NonConsumingScrimInsetsView_insetForeground);
     a.recycle();
 
     setWillNotDraw(true);
