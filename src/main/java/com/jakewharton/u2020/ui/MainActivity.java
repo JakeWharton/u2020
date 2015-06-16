@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,7 +26,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public final class MainActivity extends Activity {
   @InjectView(R.id.main_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.main_drawer) NavDrawerView drawer;
+  @InjectView(R.id.main_navigation) NavigationView drawer;
   @InjectView(R.id.main_content) ViewGroup content;
 
   @Inject AppContainer appContainer;
@@ -53,16 +55,25 @@ public final class MainActivity extends Activity {
     drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.status_bar));
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-    drawer.addItem(R.drawable.nav_trending, R.string.nav_trending, new View.OnClickListener() {
-      @Override public void onClick(View v) {
+    drawer.inflateHeaderView(R.layout.main_drawer_header);
+    drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+      @Override public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+          case R.id.nav_search:
+            Toast.makeText(MainActivity.this, "Search!", LENGTH_SHORT).show();
+            break;
+          case R.id.nav_trending:
+            Toast.makeText(MainActivity.this, "Trending!", LENGTH_SHORT).show();
+            break;
+          default:
+            throw new IllegalStateException("Unknown navigation item: " + item.getTitle());
+        }
+
         drawerLayout.closeDrawers();
-        Toast.makeText(MainActivity.this, "Trending!", LENGTH_SHORT).show();
-      }
-    });
-    drawer.addItem(R.drawable.nav_search, R.string.nav_search, new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        drawerLayout.closeDrawers();
-        Toast.makeText(MainActivity.this, "Search!", LENGTH_SHORT).show();
+        // If we supported actual navigation, we would change what was checked and navigate there.
+        //item.setChecked(true);
+
+        return true;
       }
     });
 
