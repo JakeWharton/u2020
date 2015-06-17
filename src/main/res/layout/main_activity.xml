@@ -22,5 +22,6 @@
       android:fitsSystemWindows="true"
       app:insetForeground="#4000"
       app:menu="@menu/main_drawer"
+      app:headerLayout="@layout/main_drawer_header"
       />
 </android.support.v4.widget.DrawerLayout>

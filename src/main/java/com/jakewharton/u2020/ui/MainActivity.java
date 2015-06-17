@@ -55,7 +55,6 @@ public final class MainActivity extends Activity {
     drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.status_bar));
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-    drawer.inflateHeaderView(R.layout.main_drawer_header);
     drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
       @Override public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
