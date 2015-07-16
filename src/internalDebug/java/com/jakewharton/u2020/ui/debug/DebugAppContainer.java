@@ -9,8 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.jakewharton.u2020.R;
@@ -28,7 +28,6 @@ import com.mattprecious.telescope.TelescopeLayout;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import rx.Observable;
-import rx.android.lifecycle.LifecycleObservable;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -52,11 +51,11 @@ public final class DebugAppContainer implements AppContainer {
   private final Observable<Boolean> scalpelWireframeEnabled;
 
   static class ViewHolder {
-    @InjectView(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
-    @InjectView(R.id.debug_drawer) ViewGroup debugDrawer;
-    @InjectView(R.id.telescope_container) TelescopeLayout telescopeLayout;
-    @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
-    @InjectView(R.id.debug_content) ScalpelFrameLayout content;
+    @Bind(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
+    @Bind(R.id.debug_drawer) ViewGroup debugDrawer;
+    @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
+    @Bind(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
+    @Bind(R.id.debug_content) ScalpelFrameLayout content;
   }
 
   @Inject public DebugAppContainer(LumberYard lumberYard,
@@ -77,7 +76,7 @@ public final class DebugAppContainer implements AppContainer {
     activity.setContentView(R.layout.debug_activity_frame);
 
     final ViewHolder viewHolder = new ViewHolder();
-    ButterKnife.inject(viewHolder, activity);
+    ButterKnife.bind(viewHolder, activity);
 
     final Context drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);
     final DebugView debugView = new DebugView(drawerContext);

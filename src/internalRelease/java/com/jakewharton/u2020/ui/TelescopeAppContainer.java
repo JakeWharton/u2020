@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
@@ -32,11 +32,11 @@ public final class TelescopeAppContainer implements AppContainer {
     this.seenTelescopeDialog = new BooleanPreference(preferences, "internal-seen-telescope-dialog");
   }
 
-  @InjectView(R.id.telescope_container) TelescopeLayout telescopeLayout;
+  @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
 
   @Override public ViewGroup bind(final Activity activity) {
     activity.setContentView(R.layout.internal_activity_frame);
-    ButterKnife.inject(this, activity);
+    ButterKnife.bind(this, activity);
 
     TelescopeLayout.cleanUp(activity); // Clean up any old screenshots.
     telescopeLayout.setLens(new BugReportLens(activity, lumberYard));

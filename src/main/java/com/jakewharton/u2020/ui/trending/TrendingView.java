@@ -16,8 +16,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.BindDimen;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Injector;
@@ -47,19 +48,19 @@ import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
 public final class TrendingView extends LinearLayout
     implements SwipeRefreshLayout.OnRefreshListener, TrendingAdapter.RepositoryClickListener {
-  @InjectView(R.id.trending_toolbar) Toolbar toolbarView;
-  @InjectView(R.id.trending_timespan) Spinner timespanView;
-  @InjectView(R.id.trending_animator) BetterViewAnimator animatorView;
-  @InjectView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
-  @InjectView(R.id.trending_list) RecyclerView trendingView;
-  @InjectView(R.id.trending_loading_message) TextView loadingMessageView;
+  @Bind(R.id.trending_toolbar) Toolbar toolbarView;
+  @Bind(R.id.trending_timespan) Spinner timespanView;
+  @Bind(R.id.trending_animator) BetterViewAnimator animatorView;
+  @Bind(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
+  @Bind(R.id.trending_list) RecyclerView trendingView;
+  @Bind(R.id.trending_loading_message) TextView loadingMessageView;
+
+  @BindDimen(R.dimen.trending_divider_padding_start) float dividerPaddingStart;
 
   @Inject GithubService githubService;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
   @Inject DrawerLayout drawerLayout;
-
-  private final float dividerPaddingStart;
 
   private final PublishSubject<TrendingTimespan> timespanSubject;
   private final EnumAdapter<TrendingTimespan> timespanAdapter;
@@ -72,9 +73,6 @@ public final class TrendingView extends LinearLayout
       Injector.obtain(context).inject(this);
     }
 
-    dividerPaddingStart =
-        getResources().getDimensionPixelSize(R.dimen.trending_divider_padding_start);
-
     timespanSubject = PublishSubject.create();
     timespanAdapter = new TrendingTimespanAdapter(
         new ContextThemeWrapper(getContext(), R.style.Theme_U2020_TrendingTimespan));
@@ -83,7 +81,7 @@ public final class TrendingView extends LinearLayout
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     AnimationDrawable ellipsis =
         (AnimationDrawable) getResources().getDrawable(R.drawable.dancing_ellipsis);

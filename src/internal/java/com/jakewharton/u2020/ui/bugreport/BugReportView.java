@@ -7,17 +7,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.EmptyTextWatcher;
 import com.jakewharton.u2020.util.Strings;
 
 public final class BugReportView extends LinearLayout {
-  @InjectView(R.id.title) EditText titleView;
-  @InjectView(R.id.description) EditText descriptionView;
-  @InjectView(R.id.screenshot) CheckBox screenshotView;
-  @InjectView(R.id.logs) CheckBox logsView;
+  @Bind(R.id.title) EditText titleView;
+  @Bind(R.id.description) EditText descriptionView;
+  @Bind(R.id.screenshot) CheckBox screenshotView;
+  @Bind(R.id.logs) CheckBox logsView;
 
   public interface ReportDetailsListener {
     void onStateChanged(boolean valid);
@@ -31,7 +31,7 @@ public final class BugReportView extends LinearLayout {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     titleView.setOnFocusChangeListener(new OnFocusChangeListener() {
       @Override public void onFocusChange(View v, boolean hasFocus) {

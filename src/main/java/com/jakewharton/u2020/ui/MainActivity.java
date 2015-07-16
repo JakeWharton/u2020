@@ -11,12 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
+import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Injector;
 import dagger.ObjectGraph;
@@ -25,9 +25,11 @@ import javax.inject.Inject;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public final class MainActivity extends Activity {
-  @InjectView(R.id.main_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.main_navigation) NavigationView drawer;
-  @InjectView(R.id.main_content) ViewGroup content;
+  @Bind(R.id.main_drawer_layout) DrawerLayout drawerLayout;
+  @Bind(R.id.main_navigation) NavigationView drawer;
+  @Bind(R.id.main_content) ViewGroup content;
+
+  @BindColor(R.color.status_bar) int statusBarColor;
 
   @Inject AppContainer appContainer;
 
@@ -50,9 +52,9 @@ public final class MainActivity extends Activity {
     ViewGroup container = appContainer.bind(this);
 
     inflater.inflate(R.layout.main_activity, container);
-    ButterKnife.inject(this, container);
+    ButterKnife.bind(this, container);
 
-    drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.status_bar));
+    drawerLayout.setStatusBarBackgroundColor(statusBarColor);
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
     drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
