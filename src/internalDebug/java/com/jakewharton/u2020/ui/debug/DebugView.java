@@ -1,11 +1,11 @@
 package com.jakewharton.u2020.ui.debug;
 
 import android.animation.ValueAnimator;
-import android.support.v7.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.jakewharton.u2020.BuildConfig;
@@ -74,54 +74,54 @@ public final class DebugView extends FrameLayout {
   private static final DateFormat DATE_DISPLAY_FORMAT =
       new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.US);
 
-  @InjectView(R.id.debug_contextual_title) View contextualTitleView;
-  @InjectView(R.id.debug_contextual_list) LinearLayout contextualListView;
+  @Bind(R.id.debug_contextual_title) View contextualTitleView;
+  @Bind(R.id.debug_contextual_list) LinearLayout contextualListView;
 
-  @InjectView(R.id.debug_network_endpoint) Spinner endpointView;
-  @InjectView(R.id.debug_network_endpoint_edit) View endpointEditView;
-  @InjectView(R.id.debug_network_delay) Spinner networkDelayView;
-  @InjectView(R.id.debug_network_variance) Spinner networkVarianceView;
-  @InjectView(R.id.debug_network_error) Spinner networkErrorView;
-  @InjectView(R.id.debug_network_proxy) Spinner networkProxyView;
-  @InjectView(R.id.debug_network_logging) Spinner networkLoggingView;
+  @Bind(R.id.debug_network_endpoint) Spinner endpointView;
+  @Bind(R.id.debug_network_endpoint_edit) View endpointEditView;
+  @Bind(R.id.debug_network_delay) Spinner networkDelayView;
+  @Bind(R.id.debug_network_variance) Spinner networkVarianceView;
+  @Bind(R.id.debug_network_error) Spinner networkErrorView;
+  @Bind(R.id.debug_network_proxy) Spinner networkProxyView;
+  @Bind(R.id.debug_network_logging) Spinner networkLoggingView;
 
-  @InjectView(R.id.debug_capture_intents) Switch captureIntentsView;
-  @InjectView(R.id.debug_repositories_response) Spinner repositoriesResponseView;
+  @Bind(R.id.debug_capture_intents) Switch captureIntentsView;
+  @Bind(R.id.debug_repositories_response) Spinner repositoriesResponseView;
 
-  @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
-  @InjectView(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
-  @InjectView(R.id.debug_ui_pixel_ratio) Switch uiPixelRatioView;
-  @InjectView(R.id.debug_ui_scalpel) Switch uiScalpelView;
-  @InjectView(R.id.debug_ui_scalpel_wireframe) Switch uiScalpelWireframeView;
+  @Bind(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
+  @Bind(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
+  @Bind(R.id.debug_ui_pixel_ratio) Switch uiPixelRatioView;
+  @Bind(R.id.debug_ui_scalpel) Switch uiScalpelView;
+  @Bind(R.id.debug_ui_scalpel_wireframe) Switch uiScalpelWireframeView;
 
-  @InjectView(R.id.debug_build_name) TextView buildNameView;
-  @InjectView(R.id.debug_build_code) TextView buildCodeView;
-  @InjectView(R.id.debug_build_sha) TextView buildShaView;
-  @InjectView(R.id.debug_build_date) TextView buildDateView;
+  @Bind(R.id.debug_build_name) TextView buildNameView;
+  @Bind(R.id.debug_build_code) TextView buildCodeView;
+  @Bind(R.id.debug_build_sha) TextView buildShaView;
+  @Bind(R.id.debug_build_date) TextView buildDateView;
 
-  @InjectView(R.id.debug_device_make) TextView deviceMakeView;
-  @InjectView(R.id.debug_device_model) TextView deviceModelView;
-  @InjectView(R.id.debug_device_resolution) TextView deviceResolutionView;
-  @InjectView(R.id.debug_device_density) TextView deviceDensityView;
-  @InjectView(R.id.debug_device_release) TextView deviceReleaseView;
-  @InjectView(R.id.debug_device_api) TextView deviceApiView;
+  @Bind(R.id.debug_device_make) TextView deviceMakeView;
+  @Bind(R.id.debug_device_model) TextView deviceModelView;
+  @Bind(R.id.debug_device_resolution) TextView deviceResolutionView;
+  @Bind(R.id.debug_device_density) TextView deviceDensityView;
+  @Bind(R.id.debug_device_release) TextView deviceReleaseView;
+  @Bind(R.id.debug_device_api) TextView deviceApiView;
 
-  @InjectView(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
-  @InjectView(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
-  @InjectView(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
-  @InjectView(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
-  @InjectView(R.id.debug_picasso_decoded) TextView picassoDecodedView;
-  @InjectView(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
-  @InjectView(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
-  @InjectView(R.id.debug_picasso_transformed) TextView picassoTransformedView;
-  @InjectView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
-  @InjectView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
+  @Bind(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
+  @Bind(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
+  @Bind(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
+  @Bind(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
+  @Bind(R.id.debug_picasso_decoded) TextView picassoDecodedView;
+  @Bind(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
+  @Bind(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
+  @Bind(R.id.debug_picasso_transformed) TextView picassoTransformedView;
+  @Bind(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
+  @Bind(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
-  @InjectView(R.id.debug_okhttp_cache_max_size) TextView okHttpCacheMaxSizeView;
-  @InjectView(R.id.debug_okhttp_cache_write_error) TextView okHttpCacheWriteErrorView;
-  @InjectView(R.id.debug_okhttp_cache_request_count) TextView okHttpCacheRequestCountView;
-  @InjectView(R.id.debug_okhttp_cache_network_count) TextView okHttpCacheNetworkCountView;
-  @InjectView(R.id.debug_okhttp_cache_hit_count) TextView okHttpCacheHitCountView;
+  @Bind(R.id.debug_okhttp_cache_max_size) TextView okHttpCacheMaxSizeView;
+  @Bind(R.id.debug_okhttp_cache_write_error) TextView okHttpCacheWriteErrorView;
+  @Bind(R.id.debug_okhttp_cache_request_count) TextView okHttpCacheRequestCountView;
+  @Bind(R.id.debug_okhttp_cache_network_count) TextView okHttpCacheNetworkCountView;
+  @Bind(R.id.debug_okhttp_cache_hit_count) TextView okHttpCacheHitCountView;
 
   @Inject OkHttpClient client;
   @Inject @Named("Api") OkHttpClient apiClient;
@@ -154,7 +154,7 @@ public final class DebugView extends FrameLayout {
 
     // Inflate all of the controls and inject them.
     LayoutInflater.from(context).inflate(R.layout.debug_view_content, this);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     Set<DebugAction<?>> debugActions = Collections.emptySet();
     contextualDebugActions = new ContextualDebugActions(this, debugActions);

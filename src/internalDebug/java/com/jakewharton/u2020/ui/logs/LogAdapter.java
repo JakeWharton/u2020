@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 import java.util.ArrayList;
@@ -61,13 +61,13 @@ final class LogAdapter extends BindableAdapter<Entry> implements Action1<Entry> 
 
   static final class LogItemViewHolder {
     private final View rootView;
-    @InjectView(R.id.debug_log_level) TextView levelView;
-    @InjectView(R.id.debug_log_tag) TextView tagView;
-    @InjectView(R.id.debug_log_message) TextView messageView;
+    @Bind(R.id.debug_log_level) TextView levelView;
+    @Bind(R.id.debug_log_tag) TextView tagView;
+    @Bind(R.id.debug_log_message) TextView messageView;
 
     public LogItemViewHolder(View rootView) {
       this.rootView = rootView;
-      ButterKnife.inject(this, rootView);
+      ButterKnife.bind(this, rootView);
     }
 
     public void setEntry(Entry entry) {

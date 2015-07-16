@@ -9,8 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.Truss;
 import com.jakewharton.u2020.util.Intents;
@@ -28,17 +28,17 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
     return intent;
   }
 
-  @InjectView(R.id.toolbar) Toolbar toolbarView;
-  @InjectView(R.id.action) TextView actionView;
-  @InjectView(R.id.data) TextView dataView;
-  @InjectView(R.id.extras) TextView extrasView;
+  @Bind(R.id.toolbar) Toolbar toolbarView;
+  @Bind(R.id.action) TextView actionView;
+  @Bind(R.id.data) TextView dataView;
+  @Bind(R.id.extras) TextView extrasView;
 
   private Intent baseIntent;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.debug_external_intent_activity);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     toolbarView.inflateMenu(R.menu.debug_external_intent);
     toolbarView.setOnMenuItemClickListener(this);

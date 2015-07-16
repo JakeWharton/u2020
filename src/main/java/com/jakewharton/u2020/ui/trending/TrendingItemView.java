@@ -8,8 +8,8 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Repository;
 import com.jakewharton.u2020.ui.misc.Truss;
@@ -17,11 +17,11 @@ import com.jakewharton.u2020.ui.transform.CircleStrokeTransformation;
 import com.squareup.picasso.Picasso;
 
 public final class TrendingItemView extends RelativeLayout {
-  @InjectView(R.id.trending_repository_avatar) ImageView avatarView;
-  @InjectView(R.id.trending_repository_name) TextView nameView;
-  @InjectView(R.id.trending_repository_description) TextView descriptionView;
-  @InjectView(R.id.trending_repository_stars) TextView starsView;
-  @InjectView(R.id.trending_repository_forks) TextView forksView;
+  @Bind(R.id.trending_repository_avatar) ImageView avatarView;
+  @Bind(R.id.trending_repository_name) TextView nameView;
+  @Bind(R.id.trending_repository_description) TextView descriptionView;
+  @Bind(R.id.trending_repository_stars) TextView starsView;
+  @Bind(R.id.trending_repository_forks) TextView forksView;
 
   private final CircleStrokeTransformation avatarTransformation;
   private final int descriptionColor;
@@ -40,7 +40,7 @@ public final class TrendingItemView extends RelativeLayout {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
   }
 
   public void bindTo(Repository repository, Picasso picasso) {
