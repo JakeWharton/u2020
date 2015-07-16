@@ -5,16 +5,18 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Image;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class GalleryItemView extends FrameLayout {
-  @InjectView(R.id.gallery_image_image) ImageView image;
-  @InjectView(R.id.gallery_image_title) TextView title;
+  @Bind(R.id.gallery_image_image) ImageView image;
+  @Bind(R.id.gallery_image_title) TextView title;
 
   private float aspectRatio = 1;
   private RequestCreator request;
@@ -25,7 +27,7 @@ public class GalleryItemView extends FrameLayout {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
   }
 
   public void bindTo(Image item, Picasso picasso) {

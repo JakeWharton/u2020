@@ -22,9 +22,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.jakewharton.u2020.BuildConfig;
@@ -49,6 +47,7 @@ import com.jakewharton.u2020.util.Strings;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
+
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -60,8 +59,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import timber.log.Timber;
@@ -101,15 +105,15 @@ public class DebugAppContainer implements AppContainer {
   Context drawerContext;
 
   @Inject public DebugAppContainer(OkHttpClient client, Picasso picasso,
-      @ApiEndpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
-      @AnimationSpeed IntPreference animationSpeed,
-      @PicassoDebugging BooleanPreference picassoDebugging,
-      @PixelGridEnabled BooleanPreference pixelGridEnabled,
-      @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
-      @ScalpelEnabled BooleanPreference scalpelEnabled,
-      @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
-      MockRestAdapter mockRestAdapter, Application app) {
+                                   @ApiEndpoint StringPreference networkEndpoint, @NetworkProxy StringPreference networkProxy,
+                                   @AnimationSpeed IntPreference animationSpeed,
+                                   @PicassoDebugging BooleanPreference picassoDebugging,
+                                   @PixelGridEnabled BooleanPreference pixelGridEnabled,
+                                   @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
+                                   @ScalpelEnabled BooleanPreference scalpelEnabled,
+                                   @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
+                                   @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter,
+                                   MockRestAdapter mockRestAdapter, Application app) {
     this.client = client;
     this.picasso = picasso;
     this.networkEndpoint = networkEndpoint;
@@ -126,49 +130,49 @@ public class DebugAppContainer implements AppContainer {
     this.app = app;
   }
 
-  @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
-  @InjectView(R.id.debug_content) ScalpelFrameLayout content;
+  @Bind(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
+  @Bind(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
+  @Bind(R.id.debug_content) ScalpelFrameLayout content;
 
-  @InjectView(R.id.debug_contextual_title) View contextualTitleView;
-  @InjectView(R.id.debug_contextual_list) LinearLayout contextualListView;
+  @Bind(R.id.debug_contextual_title) View contextualTitleView;
+  @Bind(R.id.debug_contextual_list) LinearLayout contextualListView;
 
-  @InjectView(R.id.debug_network_endpoint) Spinner endpointView;
-  @InjectView(R.id.debug_network_endpoint_edit) View endpointEditView;
-  @InjectView(R.id.debug_network_delay) Spinner networkDelayView;
-  @InjectView(R.id.debug_network_variance) Spinner networkVarianceView;
-  @InjectView(R.id.debug_network_error) Spinner networkErrorView;
-  @InjectView(R.id.debug_network_proxy) Spinner networkProxyView;
-  @InjectView(R.id.debug_network_logging) Spinner networkLoggingView;
+  @Bind(R.id.debug_network_endpoint) Spinner endpointView;
+  @Bind(R.id.debug_network_endpoint_edit) View endpointEditView;
+  @Bind(R.id.debug_network_delay) Spinner networkDelayView;
+  @Bind(R.id.debug_network_variance) Spinner networkVarianceView;
+  @Bind(R.id.debug_network_error) Spinner networkErrorView;
+  @Bind(R.id.debug_network_proxy) Spinner networkProxyView;
+  @Bind(R.id.debug_network_logging) Spinner networkLoggingView;
 
-  @InjectView(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
-  @InjectView(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
-  @InjectView(R.id.debug_ui_pixel_ratio) Switch uiPixelRatioView;
-  @InjectView(R.id.debug_ui_scalpel) Switch uiScalpelView;
-  @InjectView(R.id.debug_ui_scalpel_wireframe) Switch uiScalpelWireframeView;
+  @Bind(R.id.debug_ui_animation_speed) Spinner uiAnimationSpeedView;
+  @Bind(R.id.debug_ui_pixel_grid) Switch uiPixelGridView;
+  @Bind(R.id.debug_ui_pixel_ratio) Switch uiPixelRatioView;
+  @Bind(R.id.debug_ui_scalpel) Switch uiScalpelView;
+  @Bind(R.id.debug_ui_scalpel_wireframe) Switch uiScalpelWireframeView;
 
-  @InjectView(R.id.debug_build_name) TextView buildNameView;
-  @InjectView(R.id.debug_build_code) TextView buildCodeView;
-  @InjectView(R.id.debug_build_sha) TextView buildShaView;
-  @InjectView(R.id.debug_build_date) TextView buildDateView;
+  @Bind(R.id.debug_build_name) TextView buildNameView;
+  @Bind(R.id.debug_build_code) TextView buildCodeView;
+  @Bind(R.id.debug_build_sha) TextView buildShaView;
+  @Bind(R.id.debug_build_date) TextView buildDateView;
 
-  @InjectView(R.id.debug_device_make) TextView deviceMakeView;
-  @InjectView(R.id.debug_device_model) TextView deviceModelView;
-  @InjectView(R.id.debug_device_resolution) TextView deviceResolutionView;
-  @InjectView(R.id.debug_device_density) TextView deviceDensityView;
-  @InjectView(R.id.debug_device_release) TextView deviceReleaseView;
-  @InjectView(R.id.debug_device_api) TextView deviceApiView;
+  @Bind(R.id.debug_device_make) TextView deviceMakeView;
+  @Bind(R.id.debug_device_model) TextView deviceModelView;
+  @Bind(R.id.debug_device_resolution) TextView deviceResolutionView;
+  @Bind(R.id.debug_device_density) TextView deviceDensityView;
+  @Bind(R.id.debug_device_release) TextView deviceReleaseView;
+  @Bind(R.id.debug_device_api) TextView deviceApiView;
 
-  @InjectView(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
-  @InjectView(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
-  @InjectView(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
-  @InjectView(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
-  @InjectView(R.id.debug_picasso_decoded) TextView picassoDecodedView;
-  @InjectView(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
-  @InjectView(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
-  @InjectView(R.id.debug_picasso_transformed) TextView picassoTransformedView;
-  @InjectView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
-  @InjectView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
+  @Bind(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
+  @Bind(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
+  @Bind(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
+  @Bind(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
+  @Bind(R.id.debug_picasso_decoded) TextView picassoDecodedView;
+  @Bind(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
+  @Bind(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
+  @Bind(R.id.debug_picasso_transformed) TextView picassoTransformedView;
+  @Bind(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
+  @Bind(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
   @Override public ViewGroup get(final Activity activity) {
     this.activity = activity;
@@ -181,7 +185,7 @@ public class DebugAppContainer implements AppContainer {
     LayoutInflater.from(drawerContext).inflate(R.layout.debug_drawer_content, drawer);
 
     // Inject after inflating the drawer layout so its views are available to inject.
-    ButterKnife.inject(this, activity);
+    ButterKnife.bind(this, activity);
 
     // Set up the contextual actions to watch views coming in and out of the content area.
     Set<ContextualDebugActions.DebugAction<?>> debugActions = Collections.emptySet();
@@ -218,7 +222,7 @@ public class DebugAppContainer implements AppContainer {
   private void setupNetworkSection() {
     final ApiEndpoints currentEndpoint = ApiEndpoints.from(networkEndpoint.get());
     final EnumAdapter<ApiEndpoints> endpointAdapter =
-        new EnumAdapter<>(drawerContext, ApiEndpoints.class);
+            new EnumAdapter<>(drawerContext, ApiEndpoints.class);
     endpointView.setAdapter(endpointAdapter);
     endpointView.setSelection(currentEndpoint.ordinal());
     endpointView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -244,7 +248,7 @@ public class DebugAppContainer implements AppContainer {
     final NetworkDelayAdapter delayAdapter = new NetworkDelayAdapter(drawerContext);
     networkDelayView.setAdapter(delayAdapter);
     networkDelayView.setSelection(
-        NetworkDelayAdapter.getPositionForValue(mockRestAdapter.getDelay()));
+            NetworkDelayAdapter.getPositionForValue(mockRestAdapter.getDelay()));
     networkDelayView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -264,7 +268,7 @@ public class DebugAppContainer implements AppContainer {
     final NetworkVarianceAdapter varianceAdapter = new NetworkVarianceAdapter(drawerContext);
     networkVarianceView.setAdapter(varianceAdapter);
     networkVarianceView.setSelection(
-        NetworkVarianceAdapter.getPositionForValue(mockRestAdapter.getVariancePercentage()));
+            NetworkVarianceAdapter.getPositionForValue(mockRestAdapter.getVariancePercentage()));
     networkVarianceView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -284,7 +288,7 @@ public class DebugAppContainer implements AppContainer {
     final NetworkErrorAdapter errorAdapter = new NetworkErrorAdapter(drawerContext);
     networkErrorView.setAdapter(errorAdapter);
     networkErrorView.setSelection(
-        NetworkErrorAdapter.getPositionForValue(mockRestAdapter.getErrorPercentage()));
+            NetworkErrorAdapter.getPositionForValue(mockRestAdapter.getErrorPercentage()));
     networkErrorView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -370,7 +374,7 @@ public class DebugAppContainer implements AppContainer {
     uiAnimationSpeedView.setAdapter(speedAdapter);
     final int animationSpeedValue = animationSpeed.get();
     uiAnimationSpeedView.setSelection(
-        AnimationSpeedAdapter.getPositionForValue(animationSpeedValue));
+            AnimationSpeedAdapter.getPositionForValue(animationSpeedValue));
     uiAnimationSpeedView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -548,38 +552,38 @@ public class DebugAppContainer implements AppContainer {
     final EditText host = findById(view, R.id.debug_drawer_network_proxy_host);
 
     new AlertDialog.Builder(activity) //
-        .setTitle("Set Network Proxy")
-        .setView(view)
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int i) {
-            networkProxyView.setSelection(originalSelection);
-            dialog.cancel();
-          }
-        })
-        .setPositiveButton("Use", new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int i) {
-            String theHost = host.getText().toString();
-            if (!Strings.isBlank(theHost)) {
-              String[] parts = theHost.split(":", 2);
-              SocketAddress address =
-                  InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
+            .setTitle("Set Network Proxy")
+            .setView(view)
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+              @Override public void onClick(DialogInterface dialog, int i) {
+                networkProxyView.setSelection(originalSelection);
+                dialog.cancel();
+              }
+            })
+            .setPositiveButton("Use", new DialogInterface.OnClickListener() {
+              @Override public void onClick(DialogInterface dialog, int i) {
+                String theHost = host.getText().toString();
+                if (!Strings.isBlank(theHost)) {
+                  String[] parts = theHost.split(":", 2);
+                  SocketAddress address =
+                          InetSocketAddress.createUnresolved(parts[0], Integer.parseInt(parts[1]));
 
-              networkProxy.set(theHost); // Persist across restarts.
-              proxyAdapter.notifyDataSetChanged(); // Tell the spinner to update.
-              networkProxyView.setSelection(ProxyAdapter.PROXY); // And show the proxy.
+                  networkProxy.set(theHost); // Persist across restarts.
+                  proxyAdapter.notifyDataSetChanged(); // Tell the spinner to update.
+                  networkProxyView.setSelection(ProxyAdapter.PROXY); // And show the proxy.
 
-              client.setProxy(new Proxy(HTTP, address));
-            } else {
-              networkProxyView.setSelection(originalSelection);
-            }
-          }
-        })
-        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-          @Override public void onCancel(DialogInterface dialogInterface) {
-            networkProxyView.setSelection(originalSelection);
-          }
-        })
-        .show();
+                  client.setProxy(new Proxy(HTTP, address));
+                } else {
+                  networkProxyView.setSelection(originalSelection);
+                }
+              }
+            })
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+              @Override public void onCancel(DialogInterface dialogInterface) {
+                networkProxyView.setSelection(originalSelection);
+              }
+            })
+            .show();
   }
 
   private void showCustomEndpointDialog(final int originalSelection, String defaultUrl) {
@@ -589,30 +593,30 @@ public class DebugAppContainer implements AppContainer {
     url.setSelection(url.length());
 
     new AlertDialog.Builder(activity) //
-        .setTitle("Set Network Endpoint")
-        .setView(view)
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int i) {
-            endpointView.setSelection(originalSelection);
-            dialog.cancel();
-          }
-        })
-        .setPositiveButton("Use", new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int i) {
-            String theUrl = url.getText().toString();
-            if (!Strings.isBlank(theUrl)) {
-              setEndpointAndRelaunch(theUrl);
-            } else {
-              endpointView.setSelection(originalSelection);
-            }
-          }
-        })
-        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-          @Override public void onCancel(DialogInterface dialogInterface) {
-            endpointView.setSelection(originalSelection);
-          }
-        })
-        .show();
+            .setTitle("Set Network Endpoint")
+            .setView(view)
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+              @Override public void onClick(DialogInterface dialog, int i) {
+                endpointView.setSelection(originalSelection);
+                dialog.cancel();
+              }
+            })
+            .setPositiveButton("Use", new DialogInterface.OnClickListener() {
+              @Override public void onClick(DialogInterface dialog, int i) {
+                String theUrl = url.getText().toString();
+                if (!Strings.isBlank(theUrl)) {
+                  setEndpointAndRelaunch(theUrl);
+                } else {
+                  endpointView.setSelection(originalSelection);
+                }
+              }
+            })
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+              @Override public void onCancel(DialogInterface dialogInterface) {
+                endpointView.setSelection(originalSelection);
+              }
+            })
+            .show();
   }
 
   private void setEndpointAndRelaunch(String endpoint) {

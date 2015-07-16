@@ -3,8 +3,7 @@ package com.jakewharton.u2020.ui.gallery;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.U2020App;
 import com.jakewharton.u2020.data.GalleryDatabase;
@@ -13,12 +12,17 @@ import com.jakewharton.u2020.data.api.model.Image;
 import com.jakewharton.u2020.data.rx.EndlessObserver;
 import com.jakewharton.u2020.ui.misc.BetterViewAnimator;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Subscription;
 
 public class GalleryView extends BetterViewAnimator {
-  @InjectView(R.id.gallery_grid) AbsListView galleryView;
+  @Bind(R.id.gallery_grid) AbsListView galleryView;
 
   @Inject Picasso picasso;
   @Inject GalleryDatabase galleryDatabase;
@@ -37,7 +41,7 @@ public class GalleryView extends BetterViewAnimator {
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     galleryView.setAdapter(adapter);
   }
