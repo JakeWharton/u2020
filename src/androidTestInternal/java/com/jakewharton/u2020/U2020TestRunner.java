@@ -12,26 +12,29 @@ import static android.os.PowerManager.FULL_WAKE_LOCK;
 import static android.os.PowerManager.ON_AFTER_RELEASE;
 
 public final class U2020TestRunner extends AndroidJUnitRunner {
+  private PowerManager.WakeLock wakeLock;
+
   @Override public void onStart() {
     // Inform the app we are an instrumentation test before the object graph is initialized.
     DebugU2020Module.instrumentationTest = true;
 
-    runOnMainSync(new Runnable() {
-      @SuppressWarnings("deprecation") // We don't care about deprecation here.
-      @Override public void run() {
-        Context app = getTargetContext().getApplicationContext();
+    Context app = getTargetContext().getApplicationContext();
 
-        String name = U2020TestRunner.class.getSimpleName();
-        // Unlock the device so that the tests can input keystrokes.
-        KeyguardManager keyguard = (KeyguardManager) app.getSystemService(KEYGUARD_SERVICE);
-        keyguard.newKeyguardLock(name).disableKeyguard();
-        // Wake up the screen.
-        PowerManager power = (PowerManager) app.getSystemService(POWER_SERVICE);
-        power.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE, name)
-            .acquire();
-      }
-    });
+    String name = U2020TestRunner.class.getSimpleName();
+    // Unlock the device so that the tests can input keystrokes.
+    KeyguardManager keyguard = (KeyguardManager) app.getSystemService(KEYGUARD_SERVICE);
+    keyguard.newKeyguardLock(name).disableKeyguard();
+    // Wake up the screen.
+    PowerManager power = (PowerManager) app.getSystemService(POWER_SERVICE);
+    wakeLock = power.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE, name);
+    wakeLock.acquire();
 
     super.onStart();
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+
+    wakeLock.release();
   }
 }
