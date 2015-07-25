@@ -21,10 +21,12 @@ import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
+import com.jakewharton.u2020.data.Funcs;
 import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.IntentFactory;
 import com.jakewharton.u2020.data.api.GithubService;
 import com.jakewharton.u2020.data.api.Order;
+import com.jakewharton.u2020.data.api.Results;
 import com.jakewharton.u2020.data.api.SearchQuery;
 import com.jakewharton.u2020.data.api.Sort;
 import com.jakewharton.u2020.data.api.model.RepositoriesResponse;
@@ -36,6 +38,8 @@ import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Intents;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
+import retrofit.Response;
+import retrofit.Result;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -119,14 +123,45 @@ public final class TrendingView extends LinearLayout
   @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();
 
-    subscriptions.add(timespanSubject //
+    Observable<Result<RepositoriesResponse>> result = timespanSubject //
         .flatMap(trendingSearch) //
-        .map(SearchResultToRepositoryList.instance())
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .share();
+    subscriptions.add(result //
+        .filter(Results.isSuccess()) //
+        .map(SearchResultToRepositoryList.instance()) //
         .subscribe(trendingAdapter));
+    subscriptions.add(result //
+        .filter(Funcs.not(Results.isSuccess())) //
+        .subscribe(trendingError));
 
     // Load the default selection.
     onRefresh();
   }
+
+  private final Func1<TrendingTimespan, Observable<Result<RepositoriesResponse>>> trendingSearch =
+      new Func1<TrendingTimespan, Observable<Result<RepositoriesResponse>>>() {
+        @Override
+        public Observable<Result<RepositoriesResponse>> call(TrendingTimespan trendingTimespan) {
+          SearchQuery trendingQuery = new SearchQuery.Builder() //
+              .createdSince(trendingTimespan.createdSince()) //
+              .build();
+          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC);
+        }
+      };
+
+  private final Action1<Result<RepositoriesResponse>> trendingError = new Action1<Result<RepositoriesResponse>>() {
+    @Override public void call(Result<RepositoriesResponse> result) {
+      if (result.isError()) {
+        Timber.e(result.error(), "Failed to get trending repositories");
+      } else {
+        Response<RepositoriesResponse> response = result.response();
+        Timber.e("Failed to get trending repositories. Server returned " + response.code());
+      }
+      swipeRefreshView.setRefreshing(false);
+      animatorView.setDisplayedChildId(R.id.trending_error);
+    }
+  };
 
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
@@ -153,7 +188,7 @@ public final class TrendingView extends LinearLayout
   }
 
   @Override public void onRepositoryClick(Repository repository) {
-    Intents.maybeStartActivity(getContext(), intentFactory.createUrlIntent(repository.htmlUrl));
+    Intents.maybeStartActivity(getContext(), intentFactory.createUrlIntent(repository.html_url));
   }
 
   private boolean safeIsRtl() {
@@ -163,26 +198,4 @@ public final class TrendingView extends LinearLayout
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) private boolean isRtl() {
     return getLayoutDirection() == LAYOUT_DIRECTION_RTL;
   }
-
-  private final Func1<TrendingTimespan, Observable<RepositoriesResponse>> trendingSearch =
-      new Func1<TrendingTimespan, Observable<RepositoriesResponse>>() {
-        @Override public Observable<RepositoriesResponse> call(TrendingTimespan trendingTimespan) {
-          SearchQuery trendingQuery = new SearchQuery.Builder() //
-              .createdSince(trendingTimespan.createdSince()) //
-              .build();
-
-          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC)
-              .observeOn(AndroidSchedulers.mainThread())
-              .doOnError(trendingError)
-              .onErrorResumeNext(Observable.<RepositoriesResponse>empty());
-        }
-      };
-
-  private final Action1<Throwable> trendingError = new Action1<Throwable>() {
-    @Override public void call(Throwable throwable) {
-      Timber.e(throwable, "Failed to get trending repositories");
-      swipeRefreshView.setRefreshing(false);
-      animatorView.setDisplayedChildId(R.id.trending_error);
-    }
-  };
 }

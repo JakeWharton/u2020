@@ -66,6 +66,7 @@ Libraries
  * Dagger - http://square.github.io/dagger
  * ButterKnife - http://jakewharton.github.io/butterknife
  * Retrofit - http://square.github.io/retrofit
+ * Moshi - https://github.com/square/moshi
  * Picasso - http://square.github.io/picasso
  * OkHttp - http://square.github.io/okhttp
  * RxJava - https://github.com/ReactiveX/RxJava

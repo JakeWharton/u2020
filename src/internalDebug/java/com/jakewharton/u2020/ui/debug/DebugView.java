@@ -32,6 +32,9 @@ import com.jakewharton.u2020.data.CaptureIntents;
 import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.LumberYard;
+import com.jakewharton.u2020.data.NetworkDelay;
+import com.jakewharton.u2020.data.NetworkFailurePercent;
+import com.jakewharton.u2020.data.NetworkVariancePercent;
 import com.jakewharton.u2020.data.PicassoDebugging;
 import com.jakewharton.u2020.data.PixelGridEnabled;
 import com.jakewharton.u2020.data.PixelRatioEnabled;
@@ -41,6 +44,7 @@ import com.jakewharton.u2020.data.api.MockGithubService;
 import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
+import com.jakewharton.u2020.data.prefs.LongPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.jakewharton.u2020.ui.debug.ContextualDebugActions.DebugAction;
@@ -62,11 +66,11 @@ import javax.inject.Named;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.TemporalAccessor;
-import retrofit.MockRestAdapter;
-import retrofit.RestAdapter;
+import retrofit.mock.NetworkBehavior;
 import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.threeten.bp.format.DateTimeFormatter.ISO_INSTANT;
 
 public final class DebugView extends FrameLayout {
@@ -136,8 +140,10 @@ public final class DebugView extends FrameLayout {
   @Inject @PixelRatioEnabled BooleanPreference pixelRatioEnabled;
   @Inject @ScalpelEnabled BooleanPreference scalpelEnabled;
   @Inject @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled;
-  @Inject RestAdapter restAdapter;
-  @Inject MockRestAdapter mockRestAdapter;
+  @Inject NetworkBehavior behavior;
+  @Inject @NetworkDelay LongPreference networkDelay;
+  @Inject @NetworkFailurePercent IntPreference networkFailurePercent;
+  @Inject @NetworkVariancePercent IntPreference networkVariancePercent;
   @Inject MockGithubService mockGithubService;
   @Inject Application app;
 
@@ -205,14 +211,15 @@ public final class DebugView extends FrameLayout {
     final NetworkDelayAdapter delayAdapter = new NetworkDelayAdapter(getContext());
     networkDelayView.setAdapter(delayAdapter);
     networkDelayView.setSelection(
-        NetworkDelayAdapter.getPositionForValue(mockRestAdapter.getDelay()));
+        NetworkDelayAdapter.getPositionForValue(behavior.delay(MILLISECONDS)));
     networkDelayView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         long selected = delayAdapter.getItem(position);
-        if (selected != mockRestAdapter.getDelay()) {
+        if (selected != behavior.delay(MILLISECONDS)) {
           Timber.d("Setting network delay to %sms", selected);
-          mockRestAdapter.setDelay(selected);
+          behavior.setDelay(selected, MILLISECONDS);
+          networkDelay.set(selected);
         } else {
           Timber.d("Ignoring re-selection of network delay %sms", selected);
         }
@@ -225,14 +232,15 @@ public final class DebugView extends FrameLayout {
     final NetworkVarianceAdapter varianceAdapter = new NetworkVarianceAdapter(getContext());
     networkVarianceView.setAdapter(varianceAdapter);
     networkVarianceView.setSelection(
-        NetworkVarianceAdapter.getPositionForValue(mockRestAdapter.getVariancePercentage()));
+        NetworkVarianceAdapter.getPositionForValue(behavior.variancePercent()));
     networkVarianceView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         int selected = varianceAdapter.getItem(position);
-        if (selected != mockRestAdapter.getVariancePercentage()) {
+        if (selected != behavior.variancePercent()) {
           Timber.d("Setting network variance to %s%%", selected);
-          mockRestAdapter.setVariancePercentage(selected);
+          behavior.setVariancePercent(selected);
+          networkVariancePercent.set(selected);
         } else {
           Timber.d("Ignoring re-selection of network variance %s%%", selected);
         }
@@ -245,14 +253,15 @@ public final class DebugView extends FrameLayout {
     final NetworkErrorAdapter errorAdapter = new NetworkErrorAdapter(getContext());
     networkErrorView.setAdapter(errorAdapter);
     networkErrorView.setSelection(
-        NetworkErrorAdapter.getPositionForValue(mockRestAdapter.getErrorPercentage()));
+        NetworkErrorAdapter.getPositionForValue(behavior.failurePercent()));
     networkErrorView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         int selected = errorAdapter.getItem(position);
-        if (selected != mockRestAdapter.getErrorPercentage()) {
+        if (selected != behavior.failurePercent()) {
           Timber.d("Setting network error to %s%%", selected);
-          mockRestAdapter.setErrorPercentage(selected);
+          behavior.setFailurePercent(selected);
+          networkFailurePercent.set(selected);
         } else {
           Timber.d("Ignoring re-selection of network error %s%%", selected);
         }
@@ -302,25 +311,25 @@ public final class DebugView extends FrameLayout {
     }
 
     // We use the JSON rest adapter as the source of truth for the log level.
-    final EnumAdapter<RestAdapter.LogLevel> loggingAdapter =
-        new EnumAdapter<>(getContext(), RestAdapter.LogLevel.class);
-    networkLoggingView.setAdapter(loggingAdapter);
-    networkLoggingView.setSelection(restAdapter.getLogLevel().ordinal());
-    networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        RestAdapter.LogLevel selected = loggingAdapter.getItem(position);
-        if (selected != restAdapter.getLogLevel()) {
-          Timber.d("Setting logging level to %s", selected);
-          restAdapter.setLogLevel(selected);
-        } else {
-          Timber.d("Ignoring re-selection of logging level " + selected);
-        }
-      }
-
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
-      }
-    });
+    //final EnumAdapter<RestAdapter.LogLevel> loggingAdapter =
+    //    new EnumAdapter<>(getContext(), RestAdapter.LogLevel.class);
+    //networkLoggingView.setAdapter(loggingAdapter);
+    //networkLoggingView.setSelection(retrofit.getLogLevel().ordinal());
+    //networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    //  @Override
+    //  public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+    //    RestAdapter.LogLevel selected = loggingAdapter.getItem(position);
+    //    if (selected != retrofit.getLogLevel()) {
+    //      Timber.d("Setting logging level to %s", selected);
+    //      retrofit.setLogLevel(selected);
+    //    } else {
+    //      Timber.d("Ignoring re-selection of logging level " + selected);
+    //    }
+    //  }
+    //
+    //  @Override public void onNothingSelected(AdapterView<?> adapterView) {
+    //  }
+    //});
   }
 
   @OnClick(R.id.debug_network_endpoint_edit) void onEditEndpointClicked() {

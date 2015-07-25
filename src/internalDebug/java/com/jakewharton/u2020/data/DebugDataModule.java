@@ -8,6 +8,7 @@ import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
+import com.jakewharton.u2020.data.prefs.LongPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
 import com.jakewharton.u2020.data.prefs.RxSharedPreferences;
 import com.jakewharton.u2020.data.prefs.StringPreference;
@@ -23,7 +24,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import retrofit.MockRestAdapter;
+import retrofit.mock.NetworkBehavior;
 import rx.Observable;
 import timber.log.Timber;
 
@@ -76,6 +77,21 @@ public final class DebugDataModule {
       @IsInstrumentationTest boolean isInstrumentationTest) {
     // Running in an instrumentation forces mock mode.
     return isInstrumentationTest || ApiEndpoints.isMockMode(endpoint.get());
+  }
+
+  @Provides @Singleton @NetworkDelay LongPreference provideNetworkDelay(
+      SharedPreferences preferences) {
+    return new LongPreference(preferences, "debug_network_delay", 2000);
+  }
+
+  @Provides @Singleton @NetworkFailurePercent IntPreference provideNetworkFailurePercent(
+      SharedPreferences preferences) {
+    return new IntPreference(preferences, "debug_network_failure_percent", 3);
+  }
+
+  @Provides @Singleton @NetworkVariancePercent IntPreference provideNetworkVariancePercent(
+      SharedPreferences preferences) {
+    return new IntPreference(preferences, "debug_network_variance_percent", 40);
   }
 
   @Provides @Singleton NetworkProxyPreference provideNetworkProxy(SharedPreferences preferences) {
@@ -146,11 +162,11 @@ public final class DebugDataModule {
         DEFAULT_SCALPEL_WIREFRAME_ENABLED);
   }
 
-  @Provides @Singleton Picasso providePicasso(OkHttpClient client, MockRestAdapter mockRestAdapter,
+  @Provides @Singleton Picasso providePicasso(OkHttpClient client, NetworkBehavior behavior,
       @IsMockMode boolean isMockMode, Application app) {
     Picasso.Builder builder = new Picasso.Builder(app).downloader(new OkHttpDownloader(client));
     if (isMockMode) {
-      builder.addRequestHandler(new MockRequestHandler(mockRestAdapter, app.getAssets()));
+      builder.addRequestHandler(new MockRequestHandler(behavior, app.getAssets()));
     }
     builder.listener(new Picasso.Listener() {
       @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {

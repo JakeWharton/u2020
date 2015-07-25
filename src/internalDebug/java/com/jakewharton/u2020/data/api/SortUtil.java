@@ -55,8 +55,8 @@ final class SortUtil {
     }
 
     @Override public int compareAsc(@NonNull Repository lhs, @NonNull Repository rhs) {
-      long left = lhs.stars;
-      long right = rhs.stars;
+      long left = lhs.watchers;
+      long right = rhs.watchers;
       return left < right ? -1 : (left == right ? 0 : 1);
     }
   }
@@ -79,7 +79,7 @@ final class SortUtil {
     }
 
     @Override public int compareAsc(@NonNull Repository lhs, @NonNull Repository rhs) {
-      return lhs.updatedAt.compareTo(rhs.updatedAt);
+      return lhs.updated_at.compareTo(rhs.updated_at);
     }
   }
 
