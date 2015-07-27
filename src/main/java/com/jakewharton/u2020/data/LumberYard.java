@@ -5,31 +5,25 @@ import android.os.AsyncTask;
 import android.util.Log;
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Deque;
 import java.util.List;
-import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import okio.BufferedSink;
 import okio.Okio;
+import org.threeten.bp.LocalDateTime;
 import rx.Observable;
 import rx.Subscriber;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static org.threeten.bp.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
 @Singleton
 public final class LumberYard {
   private static final int BUFFER_SIZE = 200;
-  private static final ThreadLocal<DateFormat> LOG_FILE_FORMAT = new ThreadLocal<DateFormat>() {
-    @Override protected DateFormat initialValue() {
-      return new SimpleDateFormat("yyyy-MM-dd-HHmmss.'log'", Locale.US);
-    }
-  };
 
   private final Application app;
 
@@ -75,7 +69,7 @@ public final class LumberYard {
           return;
         }
 
-        String fileName = LOG_FILE_FORMAT.get().format(new Date());
+        String fileName = ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
         File output = new File(folder, fileName);
 
         BufferedSink sink = null;
@@ -138,7 +132,7 @@ public final class LumberYard {
     public String prettyPrint() {
       return String.format("%22s %s %s", tag, displayLevel(),
           // Indent newlines to match the original indentation.
-          message.replaceAll("\\n{1}", "\n                         "));
+          message.replaceAll("\\n", "\n                         "));
     }
 
     public String displayLevel() {

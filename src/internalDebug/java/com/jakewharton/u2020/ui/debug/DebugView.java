@@ -54,25 +54,24 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
 import java.lang.reflect.Method;
 import java.net.Proxy;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.TemporalAccessor;
 import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
+import static org.threeten.bp.format.DateTimeFormatter.ISO_INSTANT;
 
 public final class DebugView extends FrameLayout {
-  private static final DateFormat DATE_DISPLAY_FORMAT =
-      new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.US);
+  private static final DateTimeFormatter DATE_DISPLAY_FORMAT =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a", Locale.US).withZone(ZoneId.systemDefault());
 
   @Bind(R.id.debug_contextual_title) View contextualTitleView;
   @Bind(R.id.debug_contextual_list) LinearLayout contextualListView;
@@ -447,15 +446,8 @@ public final class DebugView extends FrameLayout {
     buildCodeView.setText(String.valueOf(BuildConfig.VERSION_CODE));
     buildShaView.setText(BuildConfig.GIT_SHA);
 
-    try {
-      // Parse ISO8601-format time into local time.
-      DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
-      inFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-      Date buildTime = inFormat.parse(BuildConfig.BUILD_TIME);
-      buildDateView.setText(DATE_DISPLAY_FORMAT.format(buildTime));
-    } catch (ParseException e) {
-      throw new RuntimeException("Unable to decode build time: " + BuildConfig.BUILD_TIME, e);
-    }
+    TemporalAccessor buildTime = ISO_INSTANT.parse(BuildConfig.BUILD_TIME);
+    buildDateView.setText(DATE_DISPLAY_FORMAT.format(buildTime));
   }
 
   private void setupDeviceSection() {
