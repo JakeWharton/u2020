@@ -3,7 +3,7 @@ package com.jakewharton.u2020.data.api.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
-import org.joda.time.DateTime;
+import org.threeten.bp.Instant;
 
 import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
 
@@ -20,7 +20,7 @@ public final class Repository {
   public final String htmlUrl;
 
   @SerializedName("updated_at")
-  public final DateTime updatedAt;
+  public final Instant updatedAt;
 
   private Repository(Builder builder) {
     this.name = checkNotNull(builder.name, "name == null");
@@ -51,7 +51,7 @@ public final class Repository {
     private long stars;
     private long forks;
     private String htmlUrl;
-    private DateTime updatedAt;
+    private Instant updatedAt;
 
     public Builder name(String name) {
       this.name = name;
@@ -83,7 +83,7 @@ public final class Repository {
       return this;
     }
 
-    public Builder updatedAt(DateTime updatedAt) {
+    public Builder updatedAt(Instant updatedAt) {
       this.updatedAt = updatedAt;
       return this;
     }

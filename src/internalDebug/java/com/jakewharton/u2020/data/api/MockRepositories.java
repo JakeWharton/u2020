@@ -1,11 +1,12 @@
 package com.jakewharton.u2020.data.api;
 
 import com.jakewharton.u2020.data.api.model.Repository;
-import org.joda.time.DateTime;
+import org.threeten.bp.LocalDate;
 
 import static com.jakewharton.u2020.data.api.MockUsers.JAKE_WHARTON;
 import static com.jakewharton.u2020.data.api.MockUsers.MATT_PRECIOUS;
 import static com.jakewharton.u2020.data.api.MockUsers.SQUARE;
+import static org.threeten.bp.ZoneOffset.UTC;
 
 final class MockRepositories {
   static final Repository BUTTERKNIFE = new Repository.Builder() //
@@ -15,7 +16,7 @@ final class MockRepositories {
       .forks(626) //
       .stars(3136) //
       .htmlUrl("https://github.com/JakeWharton/butterknife") //
-      .updatedAt(DateTime.parse("2015-03-15")) //
+      .updatedAt(LocalDate.of(2015, 3, 15).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository DAGGER = new Repository.Builder() //
       .name("dagger") //
@@ -24,7 +25,7 @@ final class MockRepositories {
       .forks(574) //
       .stars(3085) //
       .htmlUrl("https://github.com/square/dagger") //
-      .updatedAt(DateTime.parse("2015-03-05")) //
+      .updatedAt(LocalDate.of(2015, 3, 5).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository JAVAPOET = new Repository.Builder() //
       .name("javapoet") //
@@ -33,7 +34,7 @@ final class MockRepositories {
       .forks(137) //
       .stars(809) //
       .htmlUrl("https://github.com/square/javapoet") //
-      .updatedAt(DateTime.parse("2015-03-06")) //
+      .updatedAt(LocalDate.of(2015, 3, 6).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository OKHTTP = new Repository.Builder() //
       .name("okhttp") //
@@ -42,7 +43,7 @@ final class MockRepositories {
       .forks(828) //
       .stars(3663) //
       .htmlUrl("https://github.com/square/okhttp") //
-      .updatedAt(DateTime.parse("2015-03-15")) //
+      .updatedAt(LocalDate.of(2015, 3, 15).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository OKIO = new Repository.Builder() //
       .name("okio") //
@@ -51,7 +52,7 @@ final class MockRepositories {
       .forks(126) //
       .stars(954) //
       .htmlUrl("https://github.com/square/okio") //
-      .updatedAt(DateTime.parse("2015-03-11")) //
+      .updatedAt(LocalDate.of(2015, 3, 11).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository PICASSO = new Repository.Builder() //
       .name("picasso") //
@@ -60,7 +61,7 @@ final class MockRepositories {
       .forks(1513) //
       .stars(5279) //
       .htmlUrl("https://github.com/square/picasso") //
-      .updatedAt(DateTime.parse("2015-03-14")) //
+      .updatedAt(LocalDate.of(2015, 3, 14).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository RETROFIT = new Repository.Builder() //
       .name("retrofit") //
@@ -69,7 +70,7 @@ final class MockRepositories {
       .forks(775) //
       .stars(4583) //
       .htmlUrl("https://github.com/square/retrofit") //
-      .updatedAt(DateTime.parse("2015-02-02")) //
+      .updatedAt(LocalDate.of(2015, 2, 2).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository SQLBRITE = new Repository.Builder() //
       .name("sqlbrite") //
@@ -79,7 +80,7 @@ final class MockRepositories {
       .forks(63) //
       .stars(987) //
       .htmlUrl("https://github.com/square/sqlbrite") //
-      .updatedAt(DateTime.parse("2015-03-06")) //
+      .updatedAt(LocalDate.of(2015, 3, 6).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository TELESCOPE = new Repository.Builder() //
       .name("telescope") //
@@ -88,7 +89,7 @@ final class MockRepositories {
       .forks(31) //
       .stars(399) //
       .htmlUrl("https://github.com/mattprecious/telescope") //
-      .updatedAt(DateTime.parse("2015-02-06")) //
+      .updatedAt(LocalDate.of(2015, 2, 6).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository U2020 = new Repository.Builder() //
       .name("u2020") //
@@ -98,7 +99,7 @@ final class MockRepositories {
       .forks(260) //
       .stars(1487) //
       .htmlUrl("https://github.com/JakeWharton/u2020") //
-      .updatedAt(DateTime.parse("2015-03-14")) //
+      .updatedAt(LocalDate.of(2015, 3, 14).atStartOfDay(UTC).toInstant()) //
       .build();
   static final Repository WIRE = new Repository.Builder() //
       .name("wire") //
@@ -107,17 +108,17 @@ final class MockRepositories {
       .forks(100) //
       .stars(616) //
       .htmlUrl("https://github.com/square/wire") //
-      .updatedAt(DateTime.parse("2015-03-06")) //
+      .updatedAt(LocalDate.of(2015, 3, 6).atStartOfDay(UTC).toInstant()) //
       .build();
-    static final Repository MOSHI = new Repository.Builder() //
-        .name("moshi") //
-        .owner(SQUARE) //
-        .description("") // Intentionally empty description.
-        .forks(19) //
-        .stars(465) //
-        .htmlUrl("https://github.com/square/moshi") //
-        .updatedAt(DateTime.parse("2015-06-16")) //
-        .build();
+  static final Repository MOSHI = new Repository.Builder() //
+      .name("moshi") //
+      .owner(SQUARE) //
+      .description("") // Intentionally empty description.
+      .forks(19) //
+      .stars(465) //
+      .htmlUrl("https://github.com/square/moshi") //
+      .updatedAt(LocalDate.of(2015, 6, 16).atStartOfDay(UTC).toInstant()) //
+      .build();
 
   private MockRepositories() {
     throw new AssertionError("No instances.");

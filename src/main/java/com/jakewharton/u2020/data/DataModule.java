@@ -14,7 +14,7 @@ import dagger.Module;
 import dagger.Provides;
 import java.io.File;
 import javax.inject.Singleton;
-import org.joda.time.DateTime;
+import org.threeten.bp.Instant;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -35,7 +35,7 @@ public final class DataModule {
 
   @Provides @Singleton Gson provideGson() {
     return new GsonBuilder()
-        .registerTypeAdapter(DateTime.class, new DateTimeConverter())
+        .registerTypeAdapter(Instant.class, new InstantConverter().nullSafe())
         .create();
   }
 

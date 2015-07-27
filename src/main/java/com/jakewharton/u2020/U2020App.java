@@ -2,13 +2,13 @@ package com.jakewharton.u2020;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.ui.ActivityHierarchyServer;
 import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
-import net.danlew.android.joda.JodaTimeAndroid;
 import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
@@ -21,7 +21,7 @@ public final class U2020App extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
-    JodaTimeAndroid.init(this);
+    AndroidThreeTen.init(this);
     LeakCanary.install(this);
 
     if (BuildConfig.DEBUG) {

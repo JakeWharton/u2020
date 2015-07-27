@@ -1,15 +1,12 @@
 package com.jakewharton.u2020.data.api;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
 
 import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
+import static org.threeten.bp.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 public final class SearchQuery {
-  private static final DateTimeFormatter ISO_8601_DATE = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-  private final DateTime createdSince;
+  private final LocalDate createdSince;
 
   private SearchQuery(Builder builder) {
     this.createdSince = checkNotNull(builder.createdSince, "createdSince == null");
@@ -17,13 +14,13 @@ public final class SearchQuery {
 
   @Override public String toString() {
     // Returning null here is not ideal, but it lets retrofit drop the query param altogether.
-    return createdSince == null ? null : "created:>=" + ISO_8601_DATE.print(createdSince);
+    return createdSince == null ? null : "created:>=" + ISO_LOCAL_DATE.format(createdSince);
   }
 
   public static final class Builder {
-    private DateTime createdSince;
+    private LocalDate createdSince;
 
-    public Builder createdSince(DateTime createdSince) {
+    public Builder createdSince(LocalDate createdSince) {
       this.createdSince = createdSince;
       return this;
     }
