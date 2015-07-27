@@ -130,7 +130,8 @@ dependencies {
   compile 'io.reactivex:rxjava:1.0.10'
   compile 'io.reactivex:rxandroid:0.24.0'
 
-  compile 'net.danlew:android.joda:2.7.1'
+  compile 'com.jakewharton.threetenabp:threetenabp:1.0.1'
+
   internalCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
 
   androidTestCompile 'junit:junit:4.12'

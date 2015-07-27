@@ -1,27 +1,28 @@
 package com.jakewharton.u2020.ui.trending;
 
 import com.jakewharton.u2020.data.api.SearchQuery;
-import org.joda.time.DateTime;
-import org.joda.time.DurationFieldType;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
+import org.threeten.bp.temporal.TemporalUnit;
 
 enum TrendingTimespan {
-  DAY("today", 1, DurationFieldType.days()),
-  WEEK("last week", 1, DurationFieldType.weeks()),
-  MONTH("last month", 1, DurationFieldType.months());
+  DAY("today", 1, ChronoUnit.DAYS),
+  WEEK("last week", 1, ChronoUnit.WEEKS),
+  MONTH("last month", 1, ChronoUnit.MONTHS);
 
   private final String name;
-  private final int duration;
-  private final DurationFieldType durationType;
+  private final long duration;
+  private final TemporalUnit durationUnit;
 
-  TrendingTimespan(String name, int duration, DurationFieldType durationType) {
+  TrendingTimespan(String name, int duration, TemporalUnit durationUnit) {
     this.name = name;
     this.duration = duration;
-    this.durationType = durationType;
+    this.durationUnit = durationUnit;
   }
 
-  /** Returns a {@code DateTime} to use with {@link SearchQuery.Builder#createdSince(DateTime)}. */
-  public DateTime createdSince() {
-    return DateTime.now().withFieldAdded(durationType, -duration);
+  /** Returns a {@code LocalDate} to use with {@link SearchQuery.Builder#createdSince(LocalDate)}. */
+  public LocalDate createdSince() {
+    return LocalDate.now().minus(duration, durationUnit);
   }
 
   @Override public String toString() {
