@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.PowerManager;
+import android.support.v4.view.GravityCompat;
 import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -92,7 +92,7 @@ public final class DebugAppContainer implements AppContainer {
     viewHolder.content.setOnHierarchyChangeListener(
         HierarchyTreeChangeListener.wrap(contextualActions));
 
-    viewHolder.drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
+    viewHolder.drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, GravityCompat.END);
     viewHolder.drawerLayout.setDrawerListener(new DebugDrawerLayout.SimpleDrawerListener() {
       @Override public void onDrawerOpened(View drawerView) {
         debugView.onDrawerOpened();
@@ -106,7 +106,7 @@ public final class DebugAppContainer implements AppContainer {
     if (!seenDebugDrawer.get()) {
       viewHolder.drawerLayout.postDelayed(new Runnable() {
         @Override public void run() {
-          viewHolder.drawerLayout.openDrawer(Gravity.END);
+          viewHolder.drawerLayout.openDrawer(GravityCompat.END);
           Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
         }
       }, 1000);
