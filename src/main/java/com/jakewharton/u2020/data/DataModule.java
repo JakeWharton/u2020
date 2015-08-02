@@ -14,6 +14,7 @@ import dagger.Module;
 import dagger.Provides;
 import java.io.File;
 import javax.inject.Singleton;
+import org.threeten.bp.Clock;
 import org.threeten.bp.Instant;
 import timber.log.Timber;
 
@@ -40,7 +41,7 @@ public final class DataModule {
   }
 
   @Provides @Singleton Clock provideClock() {
-    return Clock.REAL;
+    return Clock.systemDefaultZone();
   }
 
   @Provides @Singleton IntentFactory provideIntentFactory() {

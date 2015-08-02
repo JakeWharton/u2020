@@ -1,14 +1,13 @@
 package com.jakewharton.u2020.data.api;
 
-import com.jakewharton.u2020.data.Clock;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.threeten.bp.Clock;
 import timber.log.Timber;
 
 /** Verbose logging of network calls, which includes path, headers, and times. */
@@ -23,14 +22,14 @@ public final class LoggingInterceptor implements Interceptor {
   @Override public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
 
-    long t1 = clock.nanos();
+    long startMs = clock.millis();
     Timber.v("Sending request %s%s", request.url(), prettyHeaders(request.headers()));
 
     Response response = chain.proceed(request);
 
-    long t2 = clock.nanos();
+    long tookMs = clock.millis() - startMs;
     Timber.v("Received response (%s) for %s in %sms%s", response.code(), response.request().url(),
-        TimeUnit.NANOSECONDS.toMillis(t2 - t1), prettyHeaders(response.headers()));
+        tookMs, prettyHeaders(response.headers()));
 
     return response;
   }
