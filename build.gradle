@@ -140,6 +140,9 @@ dependencies {
   //androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2'
   androidTestCompile 'com.android.support.test:runner:0.3'
   androidTestCompile 'com.android.support.test:rules:0.3'
+
+  testCompile 'junit:junit:4.12'
+  testCompile 'com.google.truth:truth:0.27'
 }
 
 def installAll = tasks.create('installAll')
