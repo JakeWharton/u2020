@@ -6,6 +6,8 @@ import android.net.Uri;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.u2020.data.api.ApiModule;
+import com.jakewharton.u2020.data.api.oauth.AccessToken;
+import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -32,6 +34,10 @@ public final class DataModule {
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
+  }
+
+  @Provides @Singleton @AccessToken StringPreference provideAccessToken(SharedPreferences prefs) {
+    return new StringPreference(prefs, "access-token");
   }
 
   @Provides @Singleton Gson provideGson() {

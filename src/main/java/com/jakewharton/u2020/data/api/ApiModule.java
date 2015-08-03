@@ -1,6 +1,8 @@
 package com.jakewharton.u2020.data.api;
 
 import com.google.gson.Gson;
+import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
+import com.jakewharton.u2020.data.api.oauth.OauthService;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
@@ -14,7 +16,10 @@ import retrofit.converter.GsonConverter;
 
 @Module(
     complete = false,
-    library = true
+    library = true,
+    injects = {
+        OauthService.class
+    }
 )
 public final class ApiModule {
   public static final String PRODUCTION_API_URL = "https://api.github.com";
@@ -23,8 +28,9 @@ public final class ApiModule {
     return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
   }
 
-  @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client) {
-    return client.clone();
+  @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
+      OauthInterceptor oauthInterceptor) {
+    return createApiClient(client, oauthInterceptor);
   }
 
   @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint,
@@ -38,5 +44,11 @@ public final class ApiModule {
 
   @Provides @Singleton GithubService provideGithubService(RestAdapter restAdapter) {
     return restAdapter.create(GithubService.class);
+  }
+
+  static OkHttpClient createApiClient(OkHttpClient client, OauthInterceptor oauthInterceptor) {
+    client = client.clone();
+    client.interceptors().add(oauthInterceptor);
+    return client;
   }
 }

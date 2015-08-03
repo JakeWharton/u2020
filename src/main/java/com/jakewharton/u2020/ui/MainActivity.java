@@ -2,7 +2,9 @@ package com.jakewharton.u2020.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,9 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Injector;
+import com.jakewharton.u2020.data.api.oauth.OauthManager;
+import com.jakewharton.u2020.data.api.oauth.OauthService;
+import com.jakewharton.u2020.util.Intents;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
 
@@ -91,6 +96,19 @@ public final class MainActivity extends Activity {
   @Override protected void onDestroy() {
     activityGraph = null;
     super.onDestroy();
+  }
+
+  @Override protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+
+    Uri data = intent.getData();
+    if (data == null) return;
+
+    if ("u2020".equals(data.getScheme())) {
+      Intent serviceIntent = new Intent(this, OauthService.class);
+      serviceIntent.setData(data);
+      startService(serviceIntent);
+    }
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -3,6 +3,7 @@ package com.jakewharton.u2020.data.api;
 import android.content.SharedPreferences;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.IsMockMode;
+import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
@@ -27,9 +28,9 @@ public final class DebugApiModule {
     return Endpoints.newFixedEndpoint(apiEndpoint.get());
   }
 
-  @Provides @Singleton @Named("Api")
-  OkHttpClient provideApiClient(OkHttpClient client, LoggingInterceptor loggingInterceptor) {
-    client = client.clone();
+  @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
+      OauthInterceptor oauthInterceptor, LoggingInterceptor loggingInterceptor) {
+    client = ApiModule.createApiClient(client, oauthInterceptor);
     client.interceptors().add(loggingInterceptor);
     return client;
   }
