@@ -10,7 +10,7 @@ import rx.functions.Func1;
 import rx.subscriptions.Subscriptions;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import static rx.android.internal.Preconditions.checkNotNull;
+import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
 
 public final class RxSharedPreferences {
   public static RxSharedPreferences create(SharedPreferences sharedPreferences) {
