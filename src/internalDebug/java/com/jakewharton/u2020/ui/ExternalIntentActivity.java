@@ -14,7 +14,9 @@ import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.Truss;
 import com.jakewharton.u2020.util.Intents;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import timber.log.Timber;
 
 public final class ExternalIntentActivity extends Activity implements Toolbar.OnMenuItemClickListener {
   public static final String ACTION = "com.jakewharton.u2020.intent.EXTERNAL_INTENT";
@@ -32,6 +34,7 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
   @Bind(R.id.action) TextView actionView;
   @Bind(R.id.data) TextView dataView;
   @Bind(R.id.extras) TextView extrasView;
+  @Bind(R.id.flags) TextView flagsView;
 
   private Intent baseIntent;
 
@@ -47,6 +50,7 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
     fillAction();
     fillData();
     fillExtras();
+    fillFlags();
   }
 
   @Override public boolean onMenuItemClick(MenuItem menuItem) {
@@ -95,5 +99,24 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
 
       extrasView.setText(truss.build());
     }
+  }
+
+  private void fillFlags() {
+    int flags = baseIntent.getFlags();
+
+    StringBuilder builder = new StringBuilder();
+    for (Field field : Intent.class.getDeclaredFields()) {
+      try {
+        if (field.getName().startsWith("FLAG_")
+            && field.getType() == Integer.TYPE
+            && (flags & field.getInt(null)) != 0) {
+          builder.append(field.getName()).append('\n');
+        }
+      } catch (IllegalAccessException e) {
+        Timber.e(e, "Couldn't read value for: " + field.getName());
+      }
+    }
+
+    flagsView.setText(builder.length() == 0 ? "None!" : builder.toString());
   }
 }
