@@ -1,18 +1,20 @@
 package com.jakewharton.u2020.ui.bugreport;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.ShareCompat;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
+
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.util.Intents;
 import com.jakewharton.u2020.util.Strings;
 import com.mattprecious.telescope.Lens;
+
 import java.io.File;
-import java.util.ArrayList;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -25,12 +27,12 @@ import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
  * JIRA-formatted body.
  */
 public final class BugReportLens implements Lens, ReportListener {
-  private final Context context;
+  private final Activity context;
   private final LumberYard lumberYard;
 
   private File screenshot;
 
-  public BugReportLens(Context context, LumberYard lumberYard) {
+  public BugReportLens(Activity context, LumberYard lumberYard) {
     this.context = context;
     this.lumberYard = lumberYard;
   }
@@ -71,10 +73,10 @@ public final class BugReportLens implements Lens, ReportListener {
     DisplayMetrics dm = context.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(dm);
 
-    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-    intent.setType("message/rfc822");
-    // TODO: intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "u2020-bugs@blackhole.io" });
-    intent.putExtra(Intent.EXTRA_SUBJECT, report.title);
+    ShareCompat.IntentBuilder intent = ShareCompat.IntentBuilder.from(context)
+            .setType("message/rfc822")
+    // TODO: .addEmailTo("u2020-bugs@blackhole.io")
+            .setSubject(report.title);
 
     StringBuilder body = new StringBuilder();
     if (!Strings.isBlank(report.description)) {
@@ -103,21 +105,16 @@ public final class BugReportLens implements Lens, ReportListener {
     body.append("API: ").append(Build.VERSION.SDK_INT).append('\n');
     body.append("{panel}");
 
-    intent.putExtra(Intent.EXTRA_TEXT, body.toString());
+    intent.setText(body.toString());
 
-    ArrayList<Uri> attachments = new ArrayList<>();
     if (screenshot != null && report.includeScreenshot) {
-      attachments.add(Uri.fromFile(screenshot));
+      intent.addStream(Uri.fromFile(screenshot));
     }
     if (logs != null) {
-      attachments.add(Uri.fromFile(logs));
+      intent.addStream(Uri.fromFile(logs));
     }
 
-    if (!attachments.isEmpty()) {
-      intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
-    }
-
-    Intents.maybeStartActivity(context, intent);
+    Intents.maybeStartActivity(context, intent.getIntent());
   }
 
   private static String getDensityString(DisplayMetrics displayMetrics) {
