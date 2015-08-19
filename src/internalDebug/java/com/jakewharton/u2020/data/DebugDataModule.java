@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
+import com.jakewharton.u2020.data.api.oauth.AccessToken;
 import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
@@ -58,6 +59,12 @@ public final class DebugDataModule {
     client.setSslSocketFactory(createBadSslSocketFactory());
     client.setProxy(networkProxy.getProxy());
     return client;
+  }
+
+  @Provides @Singleton @AccessToken StringPreference provideAccessToken(SharedPreferences prefs,
+      @ApiEndpoint StringPreference endpoint) {
+    // Return an endpoint-specific preference.
+    return new StringPreference(prefs, "access-token-" + endpoint.get());
   }
 
   @Provides @Singleton @ApiEndpoint

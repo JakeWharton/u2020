@@ -16,12 +16,25 @@
     <activity
         android:name=".ui.MainActivity"
         android:label="@string/launcher_name"
+        android:launchMode="singleTask"
         >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+
+        <data android:scheme="u2020"/>
+      </intent-filter>
     </activity>
+
+    <service
+        android:name=".data.api.oauth.OauthService"
+        android:exported="false"
+        />
   </application>
 </manifest>
