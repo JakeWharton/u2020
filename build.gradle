@@ -34,8 +34,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-  compileSdkVersion 22
-  buildToolsVersion '22.0.1'
+  compileSdkVersion 23
+  buildToolsVersion '23.0.0'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -104,16 +104,16 @@ configurations {
 
 configurations.all {
   resolutionStrategy {
-    force 'com.android.support:support-annotations:22.2.1'
+    force 'com.android.support:support-annotations:23.0.0'
   }
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:22.2.1'
-  compile 'com.android.support:support-annotations:22.2.1'
-  compile 'com.android.support:appcompat-v7:22.2.1'
-  compile 'com.android.support:recyclerview-v7:22.2.1'
-  compile 'com.android.support:design:22.2.1'
+  compile 'com.android.support:support-v4:23.0.0'
+  compile 'com.android.support:support-annotations:23.0.0'
+  compile 'com.android.support:appcompat-v7:23.0.0'
+  compile 'com.android.support:recyclerview-v7:23.0.0'
+  compile 'com.android.support:design:23.0.0'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
