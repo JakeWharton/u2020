@@ -11,7 +11,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
-import retrofit.MockRestAdapter;
+import retrofit.mock.NetworkBehavior;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * A Picasso {@link Downloader} which loads images from assets but attempts to emulate the
@@ -20,7 +22,7 @@ import retrofit.MockRestAdapter;
  * Images <em>must</em> be in the form {@code mock:///path/to/asset.png}.
  */
 public final class MockRequestHandler extends RequestHandler {
-  private final MockRestAdapter mockRestAdapter;
+  private final NetworkBehavior behavior;
   private final AssetManager assetManager;
 
   /** Emulate the disk cache by storing the URLs in an LRU using its size as the value. */
@@ -31,8 +33,8 @@ public final class MockRequestHandler extends RequestHandler {
         }
       };
 
-  public MockRequestHandler(MockRestAdapter mockRestAdapter, AssetManager assetManager) {
-    this.mockRestAdapter = mockRestAdapter;
+  public MockRequestHandler(NetworkBehavior behavior, AssetManager assetManager) {
+    this.behavior = behavior;
     this.assetManager = assetManager;
   }
 
@@ -58,13 +60,13 @@ public final class MockRequestHandler extends RequestHandler {
 
     // If we got this far there was a cache miss and hitting the network is required. See if we need
     // to fake an network error.
-    if (mockRestAdapter.calculateIsFailure()) {
-      SystemClock.sleep(mockRestAdapter.calculateDelayForError());
+    if (behavior.calculateIsFailure()) {
+      SystemClock.sleep(behavior.calculateDelay(MILLISECONDS));
       throw new IOException("Fake network error!");
     }
 
     // We aren't throwing a network error so fake a round trip delay.
-    SystemClock.sleep(mockRestAdapter.calculateDelayForCall());
+    SystemClock.sleep(behavior.calculateDelay(MILLISECONDS));
 
     // Since we cache missed put it in the LRU.
     long size = assetManager.openFd(imagePath).getLength();

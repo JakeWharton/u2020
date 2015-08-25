@@ -2,7 +2,6 @@ package com.jakewharton.u2020.data.api.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.google.gson.annotations.SerializedName;
 import org.threeten.bp.Instant;
 
 import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
@@ -12,24 +11,21 @@ public final class Repository {
   @NonNull public final User owner;
   @Nullable public final String description;
 
-  @SerializedName("watchers")
-  public final long stars;
+  public final long watchers;
   public final long forks;
 
-  @SerializedName("html_url")
-  public final String htmlUrl;
+  public final String html_url;
 
-  @SerializedName("updated_at")
-  public final Instant updatedAt;
+  public final Instant updated_at;
 
   private Repository(Builder builder) {
     this.name = checkNotNull(builder.name, "name == null");
     this.owner = checkNotNull(builder.owner, "owner == null");
     this.description = builder.description;
-    this.stars = builder.stars;
+    this.watchers = builder.stars;
     this.forks = builder.forks;
-    this.htmlUrl = checkNotNull(builder.htmlUrl, "htmlUrl == null");
-    this.updatedAt = checkNotNull(builder.updatedAt, "updatedAt == null");
+    this.html_url = checkNotNull(builder.htmlUrl, "html_url == null");
+    this.updated_at = checkNotNull(builder.updatedAt, "updated_at == null");
   }
 
   @Override public String toString() {
@@ -37,10 +33,10 @@ public final class Repository {
         "name='" + name + '\'' +
         ", owner=" + owner +
         ", description='" + description + '\'' +
-        ", stars=" + stars +
+        ", watchers=" + watchers +
         ", forks=" + forks +
-        ", htmlUrl='" + htmlUrl + '\'' +
-        ", updatedAt=" + updatedAt +
+        ", html_url='" + html_url + '\'' +
+        ", updated_at=" + updated_at +
         '}';
   }
 

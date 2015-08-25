@@ -1,20 +1,26 @@
 package com.jakewharton.u2020.data.api;
 
-import android.content.SharedPreferences;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.IsMockMode;
+import com.jakewharton.u2020.data.NetworkDelay;
+import com.jakewharton.u2020.data.NetworkFailurePercent;
+import com.jakewharton.u2020.data.NetworkVariancePercent;
 import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
+import com.jakewharton.u2020.data.prefs.IntPreference;
+import com.jakewharton.u2020.data.prefs.LongPreference;
 import com.jakewharton.u2020.data.prefs.StringPreference;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import retrofit.Endpoint;
-import retrofit.Endpoints;
-import retrofit.MockRestAdapter;
-import retrofit.RestAdapter;
-import retrofit.android.AndroidMockValuePersistence;
+import retrofit.Retrofit;
+import retrofit.mock.MockRetrofit;
+import retrofit.mock.NetworkBehavior;
+import retrofit.mock.RxJavaBehaviorAdapter;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Module(
     complete = false,
@@ -22,10 +28,8 @@ import retrofit.android.AndroidMockValuePersistence;
     overrides = true
 )
 public final class DebugApiModule {
-
-  @Provides @Singleton
-  Endpoint provideEndpoint(@ApiEndpoint StringPreference apiEndpoint) {
-    return Endpoints.newFixedEndpoint(apiEndpoint.get());
+  @Provides @Singleton HttpUrl provideHttpUrl(@ApiEndpoint StringPreference apiEndpoint) {
+    return HttpUrl.parse(apiEndpoint.get());
   }
 
   @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
@@ -35,20 +39,25 @@ public final class DebugApiModule {
     return client;
   }
 
-
-  @Provides @Singleton
-  MockRestAdapter provideMockRestAdapter(RestAdapter restAdapter, SharedPreferences preferences) {
-    MockRestAdapter mockRestAdapter = MockRestAdapter.from(restAdapter);
-    AndroidMockValuePersistence.install(mockRestAdapter, preferences);
-    return mockRestAdapter;
+  @Provides @Singleton NetworkBehavior provideBehavior(@NetworkDelay LongPreference networkDelay,
+      @NetworkFailurePercent IntPreference networkFailurePercent,
+      @NetworkVariancePercent IntPreference networkVariancePercent) {
+    NetworkBehavior behavior = NetworkBehavior.create();
+    behavior.setDelay(networkDelay.get(), MILLISECONDS);
+    behavior.setFailurePercent(networkFailurePercent.get());
+    behavior.setVariancePercent(networkVariancePercent.get());
+    return behavior;
   }
 
-  @Provides @Singleton
-  GithubService provideGithubService(RestAdapter restAdapter, MockRestAdapter mockRestAdapter,
-      @IsMockMode boolean isMockMode, MockGithubService mockService) {
+  @Provides @Singleton MockRetrofit provideMockRetrofit(NetworkBehavior behavior) {
+    return new MockRetrofit(behavior, RxJavaBehaviorAdapter.create());
+  }
+
+  @Provides @Singleton GithubService provideGithubService(Retrofit retrofit,
+      MockRetrofit mockRetrofit, @IsMockMode boolean isMockMode, MockGithubService mockService) {
     if (isMockMode) {
-      return mockRestAdapter.create(GithubService.class, mockService);
+      return mockRetrofit.create(GithubService.class, mockService);
     }
-    return restAdapter.create(GithubService.class);
+    return retrofit.create(GithubService.class);
   }
 }

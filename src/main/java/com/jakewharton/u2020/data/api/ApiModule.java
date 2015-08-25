@@ -1,18 +1,17 @@
 package com.jakewharton.u2020.data.api;
 
-import com.google.gson.Gson;
 import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
 import com.jakewharton.u2020.data.api.oauth.OauthService;
+import com.squareup.moshi.Moshi;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import retrofit.Endpoint;
-import retrofit.Endpoints;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import retrofit.MoshiConverterFactory;
+import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 @Module(
     complete = false,
@@ -22,10 +21,10 @@ import retrofit.converter.GsonConverter;
     }
 )
 public final class ApiModule {
-  public static final String PRODUCTION_API_URL = "https://api.github.com";
+  public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://api.github.com");
 
-  @Provides @Singleton Endpoint provideEndpoint() {
-    return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
+  @Provides @Singleton HttpUrl provideBaseUrl() {
+    return PRODUCTION_API_URL;
   }
 
   @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
@@ -33,17 +32,18 @@ public final class ApiModule {
     return createApiClient(client, oauthInterceptor);
   }
 
-  @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint,
-      @Named("Api") OkHttpClient client, Gson gson) {
-    return new RestAdapter.Builder() //
-        .setClient(new OkClient(client)) //
-        .setEndpoint(endpoint) //
-        .setConverter(new GsonConverter(gson)) //
+  @Provides @Singleton
+  Retrofit provideRetrofit(HttpUrl baseUrl, @Named("Api") OkHttpClient client, Moshi moshi) {
+    return new Retrofit.Builder() //
+        .client(client) //
+        .baseUrl(baseUrl) //
+        .addConverterFactory(MoshiConverterFactory.create(moshi)) //
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) //
         .build();
   }
 
-  @Provides @Singleton GithubService provideGithubService(RestAdapter restAdapter) {
-    return restAdapter.create(GithubService.class);
+  @Provides @Singleton GithubService provideGithubService(Retrofit retrofit) {
+    return retrofit.create(GithubService.class);
   }
 
   static OkHttpClient createApiClient(OkHttpClient client, OauthInterceptor oauthInterceptor) {

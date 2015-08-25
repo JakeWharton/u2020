@@ -2,9 +2,9 @@ package com.jakewharton.u2020.data.api.oauth;
 
 import android.content.Intent;
 import android.net.Uri;
-import com.google.gson.Gson;
 import com.jakewharton.u2020.data.IntentFactory;
 import com.jakewharton.u2020.data.prefs.StringPreference;
+import com.squareup.moshi.Moshi;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
@@ -21,14 +21,14 @@ import timber.log.Timber;
 
   private final IntentFactory intentFactory;
   private final OkHttpClient client;
-  private final Gson gson;
+  private final Moshi moshi;
   private final StringPreference accessToken;
 
-  @Inject public OauthManager(IntentFactory intentFactory, OkHttpClient client, Gson gson,
+  @Inject public OauthManager(IntentFactory intentFactory, OkHttpClient client, Moshi moshi,
       @AccessToken StringPreference accessToken) {
     this.intentFactory = intentFactory;
     this.client = client;
-    this.gson = gson;
+    this.moshi = moshi;
     this.accessToken = accessToken;
   }
 
@@ -62,7 +62,7 @@ import timber.log.Timber;
       Response response = client.newCall(request).execute();
       if (response.isSuccessful()) {
         AccessTokenResponse accessTokenResponse =
-            gson.getAdapter(AccessTokenResponse.class).fromJson(response.body().string());
+            moshi.adapter(AccessTokenResponse.class).fromJson(response.body().string());
         if (accessTokenResponse != null && accessTokenResponse.access_token != null) {
           accessToken.set(accessTokenResponse.access_token);
         }

@@ -44,13 +44,13 @@ public final class TrendingItemView extends RelativeLayout {
   }
 
   public void bindTo(Repository repository, Picasso picasso) {
-    picasso.load(repository.owner.avatarUrl)
+    picasso.load(repository.owner.avatar_url)
         .placeholder(R.drawable.avatar)
         .fit()
         .transform(avatarTransformation)
         .into(avatarView);
     nameView.setText(repository.name);
-    starsView.setText(String.valueOf(repository.stars));
+    starsView.setText(String.valueOf(repository.watchers));
     forksView.setText(String.valueOf(repository.forks));
 
     Truss description = new Truss();

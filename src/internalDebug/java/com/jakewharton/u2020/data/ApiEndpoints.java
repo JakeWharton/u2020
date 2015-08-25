@@ -3,9 +3,9 @@ package com.jakewharton.u2020.data;
 import com.jakewharton.u2020.data.api.ApiModule;
 
 public enum ApiEndpoints {
-  PRODUCTION("Production", ApiModule.PRODUCTION_API_URL),
+  PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString()),
   // STAGING("Staging", "https://api.staging.github.com/"),
-  MOCK_MODE("Mock Mode", "mock://"),
+  MOCK_MODE("Mock Mode", "http://localhost/mock"),
   CUSTOM("Custom", null);
 
   public final String name;
