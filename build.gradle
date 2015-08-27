@@ -21,9 +21,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
-  maven {
-    url 'https://oss.sonatype.org/content/repositories/snapshots/'
-  }
+  //maven {
+  //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
+  //}
   mavenCentral()
 }
 
@@ -121,11 +121,11 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp:2.4.0'
   compile 'com.squareup.picasso:picasso:2.5.2'
 
-  compile 'com.squareup.retrofit:retrofit:2.0.0-SNAPSHOT'
-  compile 'com.squareup.retrofit:converter-moshi:2.0.0-SNAPSHOT'
-  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-SNAPSHOT'
-  internalDebugCompile 'com.squareup.retrofit:retrofit-mock:2.0.0-SNAPSHOT'
-  internalDebugCompile 'com.squareup.retrofit:adapter-rxjava-mock:2.0.0-SNAPSHOT'
+  compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
+  compile 'com.squareup.retrofit:converter-moshi:2.0.0-beta1'
+  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta1'
+  internalDebugCompile 'com.squareup.retrofit:retrofit-mock:2.0.0-beta1'
+  internalDebugCompile 'com.squareup.retrofit:adapter-rxjava-mock:2.0.0-beta1'
 
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.jakewharton.timber:timber:3.0.2'
