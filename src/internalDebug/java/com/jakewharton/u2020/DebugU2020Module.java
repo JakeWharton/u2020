@@ -10,7 +10,8 @@ import javax.inject.Singleton;
     addsTo = U2020Module.class,
     includes = {
         DebugUiModule.class,
-        DebugDataModule.class
+        DebugDataModule.class,
+        DebugActionsModule.class
     },
     overrides = true
 )

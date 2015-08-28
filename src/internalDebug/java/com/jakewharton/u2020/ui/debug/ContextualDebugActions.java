@@ -49,7 +49,7 @@ public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListen
 
   private View.OnClickListener clickListener;
 
-  public ContextualDebugActions(DebugView debugView, Set<DebugAction<?>> debugActions) {
+  public ContextualDebugActions(DebugView debugView, Set<DebugAction> debugActions) {
     buttonMap = new LinkedHashMap<>();
     actionMap = new LinkedHashMap<>();
 

@@ -146,6 +146,7 @@ public final class DebugView extends FrameLayout {
   @Inject @NetworkVariancePercent IntPreference networkVariancePercent;
   @Inject MockGithubService mockGithubService;
   @Inject Application app;
+  @Inject Set<DebugAction> debugActions;
 
   private final ContextualDebugActions contextualDebugActions;
 
@@ -161,7 +162,6 @@ public final class DebugView extends FrameLayout {
     LayoutInflater.from(context).inflate(R.layout.debug_view_content, this);
     ButterKnife.bind(this);
 
-    Set<DebugAction<?>> debugActions = Collections.emptySet();
     contextualDebugActions = new ContextualDebugActions(this, debugActions);
 
     setupNetworkSection();
