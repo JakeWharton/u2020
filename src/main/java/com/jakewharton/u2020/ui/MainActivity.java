@@ -9,8 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -21,9 +21,7 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Injector;
-import com.jakewharton.u2020.data.api.oauth.OauthManager;
 import com.jakewharton.u2020.data.api.oauth.OauthService;
-import com.jakewharton.u2020.util.Intents;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
 
@@ -60,7 +58,7 @@ public final class MainActivity extends Activity {
     ButterKnife.bind(this, container);
 
     drawerLayout.setStatusBarBackgroundColor(statusBarColor);
-    drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+    drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
     drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
       @Override public boolean onNavigationItemSelected(MenuItem item) {
