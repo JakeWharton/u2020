@@ -21,9 +21,7 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Injector;
-import com.jakewharton.u2020.data.api.oauth.OauthManager;
 import com.jakewharton.u2020.data.api.oauth.OauthService;
-import com.jakewharton.u2020.util.Intents;
 import dagger.ObjectGraph;
 import javax.inject.Inject;
 
