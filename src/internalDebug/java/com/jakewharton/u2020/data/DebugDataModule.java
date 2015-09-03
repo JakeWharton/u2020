@@ -3,6 +3,7 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
@@ -10,7 +11,6 @@ import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.data.prefs.IntPreference;
 import com.jakewharton.u2020.data.prefs.LongPreference;
 import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
-import com.jakewharton.u2020.data.prefs.RxSharedPreferences;
 import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -121,7 +121,8 @@ public final class DebugDataModule {
 
   @Provides @Singleton @PixelGridEnabled
   Observable<Boolean> provideObservablePixelGridEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_pixel_grid_enabled", DEFAULT_PIXEL_GRID_ENABLED);
+    return preferences.getBoolean("debug_pixel_grid_enabled", DEFAULT_PIXEL_GRID_ENABLED)
+        .asObservable();
   }
 
   @Provides @Singleton @PixelRatioEnabled
@@ -132,7 +133,8 @@ public final class DebugDataModule {
 
   @Provides @Singleton @PixelRatioEnabled
   Observable<Boolean> provideObservablePixelRatioEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_pixel_ratio_enabled", DEFAULT_PIXEL_RATIO_ENABLED);
+    return preferences.getBoolean("debug_pixel_ratio_enabled", DEFAULT_PIXEL_RATIO_ENABLED)
+        .asObservable();
   }
 
   @Provides @Singleton @SeenDebugDrawer
@@ -147,7 +149,7 @@ public final class DebugDataModule {
 
   @Provides @Singleton @ScalpelEnabled
   Observable<Boolean> provideObservableScalpelEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
+    return preferences.getBoolean("debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED).asObservable();
   }
 
   @Provides @Singleton @ScalpelWireframeEnabled
@@ -159,7 +161,7 @@ public final class DebugDataModule {
   @Provides @Singleton @ScalpelWireframeEnabled
   Observable<Boolean> provideObservableScalpelWireframeEnabled(RxSharedPreferences preferences) {
     return preferences.getBoolean("debug_scalpel_wireframe_drawer",
-        DEFAULT_SCALPEL_WIREFRAME_ENABLED);
+        DEFAULT_SCALPEL_WIREFRAME_ENABLED).asObservable();
   }
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, NetworkBehavior behavior,
