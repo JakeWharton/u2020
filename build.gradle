@@ -104,16 +104,16 @@ configurations {
 
 configurations.all {
   resolutionStrategy {
-    force 'com.android.support:support-annotations:23.0.0'
+    force 'com.android.support:support-annotations:23.0.1'
   }
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:23.0.0'
-  compile 'com.android.support:support-annotations:23.0.0'
-  compile 'com.android.support:appcompat-v7:23.0.0'
-  compile 'com.android.support:recyclerview-v7:23.0.0'
-  compile 'com.android.support:design:23.0.0'
+  compile 'com.android.support:support-v4:23.0.1'
+  compile 'com.android.support:support-annotations:23.0.1'
+  compile 'com.android.support:appcompat-v7:23.0.1'
+  compile 'com.android.support:recyclerview-v7:23.0.1'
+  compile 'com.android.support:design:23.0.1'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
