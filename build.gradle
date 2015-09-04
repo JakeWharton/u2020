@@ -144,6 +144,8 @@ dependencies {
 
   internalCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
 
+  internalDebugCompile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
+
   androidTestCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
   // TODO https://code.google.com/p/android-test-kit/issues/detail?id=157
