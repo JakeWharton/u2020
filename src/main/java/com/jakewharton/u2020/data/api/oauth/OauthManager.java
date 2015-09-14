@@ -2,8 +2,8 @@ package com.jakewharton.u2020.data.api.oauth;
 
 import android.content.Intent;
 import android.net.Uri;
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.data.IntentFactory;
-import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.moshi.Moshi;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.HttpUrl;
@@ -22,10 +22,10 @@ import timber.log.Timber;
   private final IntentFactory intentFactory;
   private final OkHttpClient client;
   private final Moshi moshi;
-  private final StringPreference accessToken;
+  private final Preference<String> accessToken;
 
   @Inject public OauthManager(IntentFactory intentFactory, OkHttpClient client, Moshi moshi,
-      @AccessToken StringPreference accessToken) {
+      @AccessToken Preference<String> accessToken) {
     this.intentFactory = intentFactory;
     this.client = client;
     this.moshi = moshi;

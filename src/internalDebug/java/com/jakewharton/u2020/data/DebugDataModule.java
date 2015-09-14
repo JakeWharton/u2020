@@ -3,20 +3,18 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
-import com.jakewharton.u2020.data.prefs.BooleanPreference;
-import com.jakewharton.u2020.data.prefs.IntPreference;
-import com.jakewharton.u2020.data.prefs.LongPreference;
-import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
-import com.jakewharton.u2020.data.prefs.StringPreference;
+import com.jakewharton.u2020.data.prefs.InetSocketAddressPreferenceAdapter;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
+import java.net.InetSocketAddress;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import javax.inject.Singleton;
@@ -25,7 +23,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import retrofit.mock.NetworkBehavior;
-import rx.Observable;
 import timber.log.Timber;
 
 @Module(
@@ -44,124 +41,101 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
   private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
 
-  @Provides @Singleton
-  RxSharedPreferences provideRxSharedPreferences(SharedPreferences preferences) {
-    return RxSharedPreferences.create(preferences);
+  @Provides @Singleton RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
+    return RxSharedPreferences.create(prefs);
   }
 
   @Provides @Singleton IntentFactory provideIntentFactory(@IsMockMode boolean isMockMode,
-      @CaptureIntents BooleanPreference captureIntents) {
+      @CaptureIntents Preference<Boolean> captureIntents) {
     return new DebugIntentFactory(IntentFactory.REAL, isMockMode, captureIntents);
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
-      NetworkProxyPreference networkProxy) {
+      Preference<InetSocketAddress> networkProxyAddress) {
     OkHttpClient client = DataModule.createOkHttpClient(app);
     client.setSslSocketFactory(createBadSslSocketFactory());
-    client.setProxy(networkProxy.getProxy());
+    client.setProxy(InetSocketAddressPreferenceAdapter.createProxy(networkProxyAddress.get()));
     return client;
   }
 
-  @Provides @Singleton @AccessToken StringPreference provideAccessToken(SharedPreferences prefs,
-      @ApiEndpoint StringPreference endpoint) {
+  @Provides @Singleton @AccessToken Preference<String> provideAccessToken(RxSharedPreferences prefs,
+      @ApiEndpoint Preference<String> endpoint) {
     // Return an endpoint-specific preference.
-    return new StringPreference(prefs, "access-token-" + endpoint.get());
+    return prefs.getString("access-token-" + endpoint.get());
   }
 
   @Provides @Singleton @ApiEndpoint
-  StringPreference provideEndpointPreference(SharedPreferences preferences) {
-    return new StringPreference(preferences, "debug_endpoint", ApiEndpoints.MOCK_MODE.url);
+  Preference<String> provideEndpointPreference(RxSharedPreferences preferences) {
+    return preferences.getString("debug_endpoint", ApiEndpoints.MOCK_MODE.url);
   }
 
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint,
+  @Provides @Singleton @IsMockMode
+  boolean provideIsMockMode(@ApiEndpoint Preference<String> endpoint,
       @IsInstrumentationTest boolean isInstrumentationTest) {
     // Running in an instrumentation forces mock mode.
     return isInstrumentationTest || ApiEndpoints.isMockMode(endpoint.get());
   }
 
-  @Provides @Singleton @NetworkDelay LongPreference provideNetworkDelay(
-      SharedPreferences preferences) {
-    return new LongPreference(preferences, "debug_network_delay", 2000);
+  @Provides @Singleton @NetworkDelay
+  Preference<Long> provideNetworkDelay(RxSharedPreferences preferences) {
+    return preferences.getLong("debug_network_delay", 2000l);
   }
 
-  @Provides @Singleton @NetworkFailurePercent IntPreference provideNetworkFailurePercent(
-      SharedPreferences preferences) {
-    return new IntPreference(preferences, "debug_network_failure_percent", 3);
+  @Provides @Singleton @NetworkFailurePercent
+  Preference<Integer> provideNetworkFailurePercent(RxSharedPreferences preferences) {
+    return preferences.getInteger("debug_network_failure_percent", 3);
   }
 
-  @Provides @Singleton @NetworkVariancePercent IntPreference provideNetworkVariancePercent(
-      SharedPreferences preferences) {
-    return new IntPreference(preferences, "debug_network_variance_percent", 40);
+  @Provides @Singleton @NetworkVariancePercent
+  Preference<Integer> provideNetworkVariancePercent(RxSharedPreferences preferences) {
+    return preferences.getInteger("debug_network_variance_percent", 40);
   }
 
-  @Provides @Singleton NetworkProxyPreference provideNetworkProxy(SharedPreferences preferences) {
-    return new NetworkProxyPreference(preferences, "debug_network_proxy");
+  @Provides @Singleton
+  Preference<InetSocketAddress> provideNetworkProxyAddress(RxSharedPreferences preferences) {
+    return preferences.getObject("debug_network_proxy",
+        InetSocketAddressPreferenceAdapter.INSTANCE);
   }
 
   @Provides @Singleton @CaptureIntents
-  BooleanPreference provideCaptureIntentsPreference(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_capture_intents", DEFAULT_CAPTURE_INTENTS);
+  Preference<Boolean> provideCaptureIntentsPreference(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_capture_intents", DEFAULT_CAPTURE_INTENTS);
   }
 
   @Provides @Singleton @AnimationSpeed
-  IntPreference provideAnimationSpeed(SharedPreferences preferences) {
-    return new IntPreference(preferences, "debug_animation_speed", DEFAULT_ANIMATION_SPEED);
+  Preference<Integer> provideAnimationSpeed(RxSharedPreferences preferences) {
+    return preferences.getInteger("debug_animation_speed", DEFAULT_ANIMATION_SPEED);
   }
 
   @Provides @Singleton @PicassoDebugging
-  BooleanPreference providePicassoDebugging(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
+  Preference<Boolean> providePicassoDebugging(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
   }
 
   @Provides @Singleton @PixelGridEnabled
-  BooleanPreference providePixelGridEnabled(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_pixel_grid_enabled",
-        DEFAULT_PIXEL_GRID_ENABLED);
-  }
-
-  @Provides @Singleton @PixelGridEnabled
-  Observable<Boolean> provideObservablePixelGridEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_pixel_grid_enabled", DEFAULT_PIXEL_GRID_ENABLED)
-        .asObservable();
+  Preference<Boolean> providePixelGridEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_pixel_grid_enabled", DEFAULT_PIXEL_GRID_ENABLED);
   }
 
   @Provides @Singleton @PixelRatioEnabled
-  BooleanPreference providePixelRatioEnabled(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_pixel_ratio_enabled",
-        DEFAULT_PIXEL_RATIO_ENABLED);
-  }
-
-  @Provides @Singleton @PixelRatioEnabled
-  Observable<Boolean> provideObservablePixelRatioEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_pixel_ratio_enabled", DEFAULT_PIXEL_RATIO_ENABLED)
-        .asObservable();
+  Preference<Boolean> providePixelRatioEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_pixel_ratio_enabled", DEFAULT_PIXEL_RATIO_ENABLED);
   }
 
   @Provides @Singleton @SeenDebugDrawer
-  BooleanPreference provideSeenDebugDrawer(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_seen_debug_drawer", DEFAULT_SEEN_DEBUG_DRAWER);
+  Preference<Boolean> provideSeenDebugDrawer(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_seen_debug_drawer", DEFAULT_SEEN_DEBUG_DRAWER);
   }
 
   @Provides @Singleton @ScalpelEnabled
-  BooleanPreference provideScalpelEnabled(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
-  }
-
-  @Provides @Singleton @ScalpelEnabled
-  Observable<Boolean> provideObservableScalpelEnabled(RxSharedPreferences preferences) {
-    return preferences.getBoolean("debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED).asObservable();
+  Preference<Boolean> provideScalpelEnabled(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_scalpel_enabled", DEFAULT_SCALPEL_ENABLED);
   }
 
   @Provides @Singleton @ScalpelWireframeEnabled
-  BooleanPreference provideScalpelWireframeEnabled(SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_scalpel_wireframe_drawer",
-        DEFAULT_SCALPEL_WIREFRAME_ENABLED);
-  }
-
-  @Provides @Singleton @ScalpelWireframeEnabled
-  Observable<Boolean> provideObservableScalpelWireframeEnabled(RxSharedPreferences preferences) {
+  Preference<Boolean> provideScalpelWireframeEnabled(RxSharedPreferences preferences) {
     return preferences.getBoolean("debug_scalpel_wireframe_drawer",
-        DEFAULT_SCALPEL_WIREFRAME_ENABLED).asObservable();
+        DEFAULT_SCALPEL_WIREFRAME_ENABLED);
   }
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, NetworkBehavior behavior,

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.R;
@@ -42,11 +43,7 @@ import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.api.MockGithubService;
 import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
-import com.jakewharton.u2020.data.prefs.BooleanPreference;
-import com.jakewharton.u2020.data.prefs.IntPreference;
-import com.jakewharton.u2020.data.prefs.LongPreference;
-import com.jakewharton.u2020.data.prefs.NetworkProxyPreference;
-import com.jakewharton.u2020.data.prefs.StringPreference;
+import com.jakewharton.u2020.data.prefs.InetSocketAddressPreferenceAdapter;
 import com.jakewharton.u2020.ui.debug.ContextualDebugActions.DebugAction;
 import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
@@ -57,8 +54,8 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 import javax.inject.Inject;
@@ -131,19 +128,19 @@ public final class DebugView extends FrameLayout {
   @Inject Picasso picasso;
   @Inject LumberYard lumberYard;
   @Inject @IsMockMode boolean isMockMode;
-  @Inject @ApiEndpoint StringPreference networkEndpoint;
-  @Inject NetworkProxyPreference networkProxy;
-  @Inject @CaptureIntents BooleanPreference captureIntents;
-  @Inject @AnimationSpeed IntPreference animationSpeed;
-  @Inject @PicassoDebugging BooleanPreference picassoDebugging;
-  @Inject @PixelGridEnabled BooleanPreference pixelGridEnabled;
-  @Inject @PixelRatioEnabled BooleanPreference pixelRatioEnabled;
-  @Inject @ScalpelEnabled BooleanPreference scalpelEnabled;
-  @Inject @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled;
+  @Inject @ApiEndpoint Preference<String> networkEndpoint;
+  @Inject Preference<InetSocketAddress> networkProxyAddress;
+  @Inject @CaptureIntents Preference<Boolean> captureIntents;
+  @Inject @AnimationSpeed Preference<Integer> animationSpeed;
+  @Inject @PicassoDebugging Preference<Boolean> picassoDebugging;
+  @Inject @PixelGridEnabled Preference<Boolean> pixelGridEnabled;
+  @Inject @PixelRatioEnabled Preference<Boolean> pixelRatioEnabled;
+  @Inject @ScalpelEnabled Preference<Boolean> scalpelEnabled;
+  @Inject @ScalpelWireframeEnabled Preference<Boolean> scalpelWireframeEnabled;
   @Inject NetworkBehavior behavior;
-  @Inject @NetworkDelay LongPreference networkDelay;
-  @Inject @NetworkFailurePercent IntPreference networkFailurePercent;
-  @Inject @NetworkVariancePercent IntPreference networkVariancePercent;
+  @Inject @NetworkDelay Preference<Long> networkDelay;
+  @Inject @NetworkFailurePercent Preference<Integer> networkFailurePercent;
+  @Inject @NetworkVariancePercent Preference<Integer> networkVariancePercent;
   @Inject MockGithubService mockGithubService;
   @Inject Application app;
   @Inject Set<DebugAction> debugActions;
@@ -271,8 +268,8 @@ public final class DebugView extends FrameLayout {
       }
     });
 
-    int currentProxyPosition = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
-    final ProxyAdapter proxyAdapter = new ProxyAdapter(getContext(), networkProxy);
+    int currentProxyPosition = networkProxyAddress.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
+    final ProxyAdapter proxyAdapter = new ProxyAdapter(getContext(), networkProxyAddress);
     networkProxyView.setAdapter(proxyAdapter);
     networkProxyView.setSelection(currentProxyPosition);
     networkProxyView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -281,11 +278,11 @@ public final class DebugView extends FrameLayout {
         if (position == ProxyAdapter.NONE) {
           Timber.d("Clearing network proxy");
           // TODO: Keep the custom proxy around so you can easily switch back and forth.
-          networkProxy.delete();
+          networkProxyAddress.delete();
           client.setProxy(null);
           apiClient.setProxy(null);
-        } else if (networkProxy.isSet() && position == ProxyAdapter.PROXY) {
-          Timber.d("Ignoring re-selection of network proxy %s", networkProxy.get());
+        } else if (networkProxyAddress.isSet() && position == ProxyAdapter.PROXY) {
+          Timber.d("Ignoring re-selection of network proxy %s", networkProxyAddress.get());
         } else {
           Timber.d("New network proxy selected. Prompting for host.");
           showNewNetworkProxyDialog(proxyAdapter);
@@ -560,13 +557,13 @@ public final class DebugView extends FrameLayout {
   }
 
   private void showNewNetworkProxyDialog(final ProxyAdapter proxyAdapter) {
-    final int originalSelection = networkProxy.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
+    final int originalSelection = networkProxyAddress.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
     final EditText hostView = findById(view, R.id.debug_drawer_network_proxy_host);
 
-    String host = networkProxy.get();
-    if (!Strings.isBlank(host)) {
+    if(networkProxyAddress.isSet()) {
+      String host = networkProxyAddress.get().getHostName();
       hostView.setText(host); // Set the current host.
       hostView.setSelection(0, host.length()); // Pre-select it for editing.
 
@@ -589,13 +586,14 @@ public final class DebugView extends FrameLayout {
         })
         .setPositiveButton("Use", new DialogInterface.OnClickListener() {
           @Override public void onClick(DialogInterface dialog, int i) {
-            String theHost = hostView.getText().toString();
-            if (!Strings.isBlank(theHost)) {
-              networkProxy.set(theHost); // Persist across restarts.
+            String in = hostView.getText().toString();
+            InetSocketAddress address = InetSocketAddressPreferenceAdapter.parse(in);
+            if (address != null) {
+              networkProxyAddress.set(address); // Persist across restarts.
               proxyAdapter.notifyDataSetChanged(); // Tell the spinner to update.
               networkProxyView.setSelection(ProxyAdapter.PROXY); // And show the proxy.
 
-              Proxy proxy = networkProxy.getProxy();
+              Proxy proxy = InetSocketAddressPreferenceAdapter.createProxy(address);
               client.setProxy(proxy);
               apiClient.setProxy(proxy);
             } else {
