@@ -11,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jakewharton.processphoenix.ProcessPhoenix;
+import com.jakewharton.rxbinding.widget.RxAdapterView;
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.AnimationSpeed;
@@ -58,7 +58,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
 import java.lang.reflect.Method;
 import java.net.Proxy;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 import javax.inject.Inject;
@@ -67,6 +66,8 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.TemporalAccessor;
 import retrofit.mock.NetworkBehavior;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
@@ -188,23 +189,20 @@ public final class DebugView extends FrameLayout {
         new EnumAdapter<>(getContext(), ApiEndpoints.class);
     endpointView.setAdapter(endpointAdapter);
     endpointView.setSelection(currentEndpoint.ordinal());
-    endpointView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        ApiEndpoints selected = endpointAdapter.getItem(position);
-        if (selected != currentEndpoint) {
-          if (selected == ApiEndpoints.CUSTOM) {
-            Timber.d("Custom network endpoint selected. Prompting for URL.");
-            showCustomEndpointDialog(currentEndpoint.ordinal(), "http://");
-          } else {
-            setEndpointAndRelaunch(selected.url);
-          }
-        } else {
-          Timber.d("Ignoring re-selection of network endpoint %s", selected);
-        }
-      }
 
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
+    RxAdapterView.itemSelections(endpointView).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return endpointAdapter.getItem(position) != currentEndpoint;
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
+        ApiEndpoints selected = endpointAdapter.getItem(position);
+        if (selected == ApiEndpoints.CUSTOM) {
+          Timber.d("Custom network endpoint selected. Prompting for URL.");
+          showCustomEndpointDialog(currentEndpoint.ordinal(), "http://");
+        } else {
+          setEndpointAndRelaunch(selected.url);
+        }
       }
     });
 
@@ -212,20 +210,17 @@ public final class DebugView extends FrameLayout {
     networkDelayView.setAdapter(delayAdapter);
     networkDelayView.setSelection(
         NetworkDelayAdapter.getPositionForValue(behavior.delay(MILLISECONDS)));
-    networkDelayView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        long selected = delayAdapter.getItem(position);
-        if (selected != behavior.delay(MILLISECONDS)) {
-          Timber.d("Setting network delay to %sms", selected);
-          behavior.setDelay(selected, MILLISECONDS);
-          networkDelay.set(selected);
-        } else {
-          Timber.d("Ignoring re-selection of network delay %sms", selected);
-        }
-      }
 
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
+    RxAdapterView.itemSelections(networkDelayView).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return delayAdapter.getItem(position) != behavior.delay(MILLISECONDS);
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
+        long selected = delayAdapter.getItem(position);
+        Timber.d("Setting network delay to %sms", selected);
+        behavior.setDelay(selected, MILLISECONDS);
+        networkDelay.set(selected);
       }
     });
 
@@ -233,20 +228,17 @@ public final class DebugView extends FrameLayout {
     networkVarianceView.setAdapter(varianceAdapter);
     networkVarianceView.setSelection(
         NetworkVarianceAdapter.getPositionForValue(behavior.variancePercent()));
-    networkVarianceView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        int selected = varianceAdapter.getItem(position);
-        if (selected != behavior.variancePercent()) {
-          Timber.d("Setting network variance to %s%%", selected);
-          behavior.setVariancePercent(selected);
-          networkVariancePercent.set(selected);
-        } else {
-          Timber.d("Ignoring re-selection of network variance %s%%", selected);
-        }
-      }
 
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
+    RxAdapterView.itemSelections(networkVarianceView).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return varianceAdapter.getItem(position) != behavior.variancePercent();
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
+        int selected = varianceAdapter.getItem(position);
+        Timber.d("Setting network variance to %s%%", selected);
+        behavior.setVariancePercent(selected);
+        networkVariancePercent.set(selected);
       }
     });
 
@@ -254,20 +246,17 @@ public final class DebugView extends FrameLayout {
     networkErrorView.setAdapter(errorAdapter);
     networkErrorView.setSelection(
         NetworkErrorAdapter.getPositionForValue(behavior.failurePercent()));
-    networkErrorView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        int selected = errorAdapter.getItem(position);
-        if (selected != behavior.failurePercent()) {
-          Timber.d("Setting network error to %s%%", selected);
-          behavior.setFailurePercent(selected);
-          networkFailurePercent.set(selected);
-        } else {
-          Timber.d("Ignoring re-selection of network error %s%%", selected);
-        }
-      }
 
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
+    RxAdapterView.itemSelections(networkErrorView).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return errorAdapter.getItem(position) != behavior.failurePercent();
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
+        int selected = errorAdapter.getItem(position);
+        Timber.d("Setting network error to %s%%", selected);
+        behavior.setFailurePercent(selected);
+        networkFailurePercent.set(selected);
       }
     });
 
@@ -275,24 +264,23 @@ public final class DebugView extends FrameLayout {
     final ProxyAdapter proxyAdapter = new ProxyAdapter(getContext(), networkProxy);
     networkProxyView.setAdapter(proxyAdapter);
     networkProxyView.setSelection(currentProxyPosition);
-    networkProxyView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+    RxAdapterView.itemSelections(networkProxyView).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return !networkProxy.isSet() || position != ProxyAdapter.PROXY;
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
         if (position == ProxyAdapter.NONE) {
           Timber.d("Clearing network proxy");
           // TODO: Keep the custom proxy around so you can easily switch back and forth.
           networkProxy.delete();
           client.setProxy(null);
           apiClient.setProxy(null);
-        } else if (networkProxy.isSet() && position == ProxyAdapter.PROXY) {
-          Timber.d("Ignoring re-selection of network proxy %s", networkProxy.get());
         } else {
           Timber.d("New network proxy selected. Prompting for host.");
           showNewNetworkProxyDialog(proxyAdapter);
         }
-      }
-
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
       }
     });
 
@@ -362,19 +350,16 @@ public final class DebugView extends FrameLayout {
     spinner.setEnabled(isMockMode);
     spinner.setAdapter(adapter);
     spinner.setSelection(mockGithubService.getResponse(responseClass).ordinal());
-    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        T selected = adapter.getItem(position);
-        if (selected != mockGithubService.getResponse(responseClass)) {
-          Timber.d("Setting %s to %s", responseClass.getSimpleName(), selected);
-          mockGithubService.setResponse(responseClass, selected);
-        } else {
-          Timber.d("Ignoring re-selection of %s %s", responseClass.getSimpleName(), selected);
-        }
-      }
 
-      @Override public void onNothingSelected(AdapterView<?> parent) {
+    RxAdapterView.itemSelections(spinner).filter(new Func1<Integer, Boolean>() {
+      @Override public Boolean call(Integer position) {
+        return adapter.getItem(position) != mockGithubService.getResponse(responseClass);
+      }
+    }).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
+        T selected = adapter.getItem(position);
+        Timber.d("Setting %s to %s", responseClass.getSimpleName(), selected);
+        mockGithubService.setResponse(responseClass, selected);
       }
     });
   }
@@ -385,9 +370,9 @@ public final class DebugView extends FrameLayout {
     final int animationSpeedValue = animationSpeed.get();
     uiAnimationSpeedView.setSelection(
         AnimationSpeedAdapter.getPositionForValue(animationSpeedValue));
-    uiAnimationSpeedView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+    RxAdapterView.itemSelections(uiAnimationSpeedView).subscribe(new Action1<Integer>() {
+      @Override public void call(Integer position) {
         int selected = speedAdapter.getItem(position);
         if (selected != animationSpeed.get()) {
           Timber.d("Setting animation speed to %sx", selected);
@@ -396,9 +381,6 @@ public final class DebugView extends FrameLayout {
         } else {
           Timber.d("Ignoring re-selection of animation speed %sx", selected);
         }
-      }
-
-      @Override public void onNothingSelected(AdapterView<?> adapterView) {
       }
     });
     // Ensure the animation speed value is always applied across app restarts.
