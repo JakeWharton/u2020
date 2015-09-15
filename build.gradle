@@ -130,6 +130,7 @@ dependencies {
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.jakewharton.timber:timber:3.0.2'
   compile 'com.jakewharton.byteunits:byteunits:0.9.0'
+  compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
   internalDebugCompile 'com.jakewharton.madge:madge:1.1.1'
   internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
   internalDebugCompile 'com.jakewharton:process-phoenix:1.0.0'
@@ -145,7 +146,6 @@ dependencies {
   internalCompile 'com.mattprecious.telescope:telescope:1.4.0@aar'
 
   internalDebugCompile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
-  internalDebugCompile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 
   androidTestCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
