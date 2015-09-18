@@ -3,9 +3,10 @@ package com.jakewharton.u2020.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.data.api.ApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
-import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.moshi.Moshi;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -34,8 +35,13 @@ public final class DataModule {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
   }
 
-  @Provides @Singleton @AccessToken StringPreference provideAccessToken(SharedPreferences prefs) {
-    return new StringPreference(prefs, "access-token");
+  @Provides @Singleton RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
+    return RxSharedPreferences.create(prefs);
+  }
+
+  @Provides @Singleton @AccessToken
+  Preference<String> provideAccessToken(RxSharedPreferences prefs) {
+    return prefs.getString("access-token");
   }
 
   @Provides @Singleton Moshi provideMoshi() {

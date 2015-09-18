@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.LumberYard;
-import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.ui.bugreport.BugReportLens;
 import com.mattprecious.telescope.Lens;
 import com.mattprecious.telescope.TelescopeLayout;
@@ -25,11 +26,11 @@ import javax.inject.Singleton;
 @Singleton
 public final class TelescopeAppContainer implements AppContainer {
   private final LumberYard lumberYard;
-  private final BooleanPreference seenTelescopeDialog;
+  private final Preference<Boolean> seenTelescopeDialog;
 
-  @Inject public TelescopeAppContainer(LumberYard lumberYard, SharedPreferences preferences) {
+  @Inject public TelescopeAppContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
     this.lumberYard = lumberYard;
-    this.seenTelescopeDialog = new BooleanPreference(preferences, "internal-seen-telescope-dialog");
+    this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
   }
 
   @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;

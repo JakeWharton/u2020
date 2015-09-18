@@ -1,7 +1,7 @@
 package com.jakewharton.u2020.data;
 
 import android.content.Intent;
-import com.jakewharton.u2020.data.prefs.BooleanPreference;
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.ui.ExternalIntentActivity;
 
 /**
@@ -11,10 +11,10 @@ import com.jakewharton.u2020.ui.ExternalIntentActivity;
 public final class DebugIntentFactory implements IntentFactory {
   private final IntentFactory realIntentFactory;
   private final boolean isMockMode;
-  private final BooleanPreference captureIntents;
+  private final Preference<Boolean> captureIntents;
 
   public DebugIntentFactory(IntentFactory realIntentFactory, boolean isMockMode,
-      BooleanPreference captureIntents) {
+      Preference<Boolean> captureIntents) {
     this.realIntentFactory = realIntentFactory;
     this.isMockMode = isMockMode;
     this.captureIntents = captureIntents;

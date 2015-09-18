@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.jakewharton.u2020.R;
@@ -20,7 +21,6 @@ import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
-import com.jakewharton.u2020.data.prefs.BooleanPreference;
 import com.jakewharton.u2020.ui.AppContainer;
 import com.jakewharton.u2020.ui.bugreport.BugReportLens;
 import com.jakewharton.u2020.util.EmptyActivityLifecycleCallbacks;
@@ -44,11 +44,11 @@ import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 @Singleton
 public final class DebugAppContainer implements AppContainer {
   private final LumberYard lumberYard;
-  private final BooleanPreference seenDebugDrawer;
-  private final Observable<Boolean> pixelGridEnabled;
-  private final Observable<Boolean> pixelRatioEnabled;
-  private final Observable<Boolean> scalpelEnabled;
-  private final Observable<Boolean> scalpelWireframeEnabled;
+  private final Preference<Boolean> seenDebugDrawer;
+  private final Preference<Boolean> pixelGridEnabled;
+  private final Preference<Boolean> pixelRatioEnabled;
+  private final Preference<Boolean> scalpelEnabled;
+  private final Preference<Boolean> scalpelWireframeEnabled;
 
   static class ViewHolder {
     @Bind(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
@@ -59,11 +59,11 @@ public final class DebugAppContainer implements AppContainer {
   }
 
   @Inject public DebugAppContainer(LumberYard lumberYard,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer,
-      @PixelGridEnabled Observable<Boolean> pixelGridEnabled,
-      @PixelRatioEnabled Observable<Boolean> pixelRatioEnabled,
-      @ScalpelEnabled Observable<Boolean> scalpelEnabled,
-      @ScalpelWireframeEnabled Observable<Boolean> scalpelWireframeEnabled) {
+      @SeenDebugDrawer Preference<Boolean> seenDebugDrawer,
+      @PixelGridEnabled Preference<Boolean> pixelGridEnabled,
+      @PixelRatioEnabled Preference<Boolean> pixelRatioEnabled,
+      @ScalpelEnabled Preference<Boolean> scalpelEnabled,
+      @ScalpelWireframeEnabled Preference<Boolean> scalpelWireframeEnabled) {
     this.lumberYard = lumberYard;
     this.seenDebugDrawer = seenDebugDrawer;
     this.pixelGridEnabled = pixelGridEnabled;
@@ -132,12 +132,12 @@ public final class DebugAppContainer implements AppContainer {
   }
 
   private void setupMadge(final ViewHolder viewHolder, CompositeSubscription subscriptions) {
-    subscriptions.add(pixelGridEnabled.subscribe(new Action1<Boolean>() {
+    subscriptions.add(pixelGridEnabled.asObservable().subscribe(new Action1<Boolean>() {
       @Override public void call(Boolean enabled) {
         viewHolder.madgeFrameLayout.setOverlayEnabled(enabled);
       }
     }));
-    subscriptions.add(pixelRatioEnabled.subscribe(new Action1<Boolean>() {
+    subscriptions.add(pixelRatioEnabled.asObservable().subscribe(new Action1<Boolean>() {
       @Override public void call(Boolean enabled) {
         viewHolder.madgeFrameLayout.setOverlayRatioEnabled(enabled);
       }
@@ -145,12 +145,12 @@ public final class DebugAppContainer implements AppContainer {
   }
 
   private void setupScalpel(final ViewHolder viewHolder, CompositeSubscription subscriptions) {
-    subscriptions.add(scalpelEnabled.subscribe(new Action1<Boolean>() {
+    subscriptions.add(scalpelEnabled.asObservable().subscribe(new Action1<Boolean>() {
       @Override public void call(Boolean enabled) {
         viewHolder.content.setLayerInteractionEnabled(enabled);
       }
     }));
-    subscriptions.add(scalpelWireframeEnabled.subscribe(new Action1<Boolean>() {
+    subscriptions.add(scalpelWireframeEnabled.asObservable().subscribe(new Action1<Boolean>() {
       @Override public void call(Boolean enabled) {
         viewHolder.content.setDrawViews(!enabled);
       }

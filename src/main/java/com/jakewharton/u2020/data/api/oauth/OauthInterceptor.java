@@ -1,6 +1,6 @@
 package com.jakewharton.u2020.data.api.oauth;
 
-import com.jakewharton.u2020.data.prefs.StringPreference;
+import com.f2prateek.rx.preferences.Preference;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -9,9 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton public final class OauthInterceptor implements Interceptor {
-  private final StringPreference accessToken;
+  private final Preference<String> accessToken;
 
-  @Inject public OauthInterceptor(@AccessToken StringPreference accessToken) {
+  @Inject public OauthInterceptor(@AccessToken Preference<String> accessToken) {
     this.accessToken = accessToken;
   }
 

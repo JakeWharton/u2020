@@ -1,14 +1,12 @@
 package com.jakewharton.u2020.data.api;
 
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.NetworkDelay;
 import com.jakewharton.u2020.data.NetworkFailurePercent;
 import com.jakewharton.u2020.data.NetworkVariancePercent;
 import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
-import com.jakewharton.u2020.data.prefs.IntPreference;
-import com.jakewharton.u2020.data.prefs.LongPreference;
-import com.jakewharton.u2020.data.prefs.StringPreference;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
@@ -28,7 +26,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
     overrides = true
 )
 public final class DebugApiModule {
-  @Provides @Singleton HttpUrl provideHttpUrl(@ApiEndpoint StringPreference apiEndpoint) {
+  @Provides @Singleton HttpUrl provideHttpUrl(@ApiEndpoint Preference<String> apiEndpoint) {
     return HttpUrl.parse(apiEndpoint.get());
   }
 
@@ -39,9 +37,9 @@ public final class DebugApiModule {
     return client;
   }
 
-  @Provides @Singleton NetworkBehavior provideBehavior(@NetworkDelay LongPreference networkDelay,
-      @NetworkFailurePercent IntPreference networkFailurePercent,
-      @NetworkVariancePercent IntPreference networkVariancePercent) {
+  @Provides @Singleton NetworkBehavior provideBehavior(@NetworkDelay Preference<Long> networkDelay,
+      @NetworkFailurePercent Preference<Integer> networkFailurePercent,
+      @NetworkVariancePercent Preference<Integer> networkVariancePercent) {
     NetworkBehavior behavior = NetworkBehavior.create();
     behavior.setDelay(networkDelay.get(), MILLISECONDS);
     behavior.setFailurePercent(networkFailurePercent.get());
