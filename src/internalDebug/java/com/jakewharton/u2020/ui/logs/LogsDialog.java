@@ -1,10 +1,10 @@
 package com.jakewharton.u2020.ui.logs;
 
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.jakewharton.u2020.data.LumberYard;
@@ -79,7 +79,7 @@ public final class LogsDialog extends AlertDialog {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
             sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            Intents.maybeStartActivity(getContext(), sendIntent);
+            Intents.maybeStartChooser(getContext(), sendIntent);
           }
         });
   }
