@@ -25,6 +25,7 @@ final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHol
   public TrendingAdapter(Picasso picasso, RepositoryClickListener repositoryClickListener) {
     this.picasso = picasso;
     this.repositoryClickListener = repositoryClickListener;
+    setHasStableIds(true);
   }
 
   @Override public void call(List<Repository> repositories) {
@@ -52,20 +53,19 @@ final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHol
 
   public final class ViewHolder extends RecyclerView.ViewHolder {
     public final TrendingItemView itemView;
-    private Repository repository;
 
     public ViewHolder(TrendingItemView itemView) {
       super(itemView);
       this.itemView = itemView;
       this.itemView.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
+          Repository repository = repositories.get(getAdapterPosition());
           repositoryClickListener.onRepositoryClick(repository);
         }
       });
     }
 
     public void bindTo(Repository repository) {
-      this.repository = repository;
       itemView.bindTo(repository, picasso);
     }
   }
