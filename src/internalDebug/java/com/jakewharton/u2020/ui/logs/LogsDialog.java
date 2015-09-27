@@ -33,15 +33,11 @@ public final class LogsDialog extends AlertDialog {
 
     setTitle("Logs");
     setView(listView);
-    setButton(BUTTON_NEGATIVE, "Close", new OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        // NO-OP.
-      }
+    setButton(BUTTON_NEGATIVE, "Close", (dialog, which) -> {
+      // NO-OP.
     });
-    setButton(BUTTON_POSITIVE, "Share", new OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        share();
-      }
+    setButton(BUTTON_POSITIVE, "Share", (dialog, which) -> {
+      share();
     });
   }
 

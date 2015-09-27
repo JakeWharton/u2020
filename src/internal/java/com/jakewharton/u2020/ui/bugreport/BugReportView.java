@@ -33,11 +33,9 @@ public final class BugReportView extends LinearLayout {
     super.onFinishInflate();
     ButterKnife.bind(this);
 
-    titleView.setOnFocusChangeListener(new OnFocusChangeListener() {
-      @Override public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-          titleView.setError(Strings.isBlank(titleView.getText()) ? "Cannot be empty." : null);
-        }
+    titleView.setOnFocusChangeListener((v, hasFocus) -> {
+      if (!hasFocus) {
+        titleView.setError(Strings.isBlank(titleView.getText()) ? "Cannot be empty." : null);
       }
     });
     titleView.addTextChangedListener(new EmptyTextWatcher() {

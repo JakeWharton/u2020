@@ -113,13 +113,11 @@ public class ContextualDebugActions implements ViewGroup.OnHierarchyChangeListen
     Button button = (Button) LayoutInflater.from(drawerContext)
         .inflate(R.layout.debug_drawer_contextual_action, contextualListView, false);
     button.setText(action.name());
-    button.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        if (clickListener != null) {
-          clickListener.onClick(view);
-        }
-        action.run(child);
+    button.setOnClickListener(view -> {
+      if (clickListener != null) {
+        clickListener.onClick(view);
       }
+      action.run(child);
     });
     return button;
   }

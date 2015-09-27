@@ -93,11 +93,7 @@ public final class TrendingView extends LinearLayout
     ellipsis.start();
 
     toolbarView.setNavigationIcon(R.drawable.menu_icon);
-    toolbarView.setNavigationOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        drawerLayout.openDrawer(GravityCompat.START);
-      }
-    });
+    toolbarView.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
     timespanView.setAdapter(timespanAdapter);
     timespanView.setSelection(TrendingTimespan.WEEK.ordinal());
@@ -175,11 +171,9 @@ public final class TrendingView extends LinearLayout
 
     // For whatever reason, the SRL's spinner does not draw itself when we call setRefreshing(true)
     // unless it is posted.
-    post(new Runnable() {
-      @Override public void run() {
-        swipeRefreshView.setRefreshing(true);
-        timespanSubject.onNext(timespanAdapter.getItem(position));
-      }
+    post(() -> {
+      swipeRefreshView.setRefreshing(true);
+      timespanSubject.onNext(timespanAdapter.getItem(position));
     });
   }
 

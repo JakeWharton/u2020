@@ -84,11 +84,7 @@ public final class DebugAppContainer implements AppContainer {
 
     // Set up the contextual actions to watch views coming in and out of the content area.
     ContextualDebugActions contextualActions = debugView.getContextualDebugActions();
-    contextualActions.setActionClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        viewHolder.drawerLayout.closeDrawers();
-      }
-    });
+    contextualActions.setActionClickListener(v -> viewHolder.drawerLayout.closeDrawers());
     viewHolder.content.setOnHierarchyChangeListener(
         HierarchyTreeChangeListener.wrap(contextualActions));
 
@@ -104,11 +100,9 @@ public final class DebugAppContainer implements AppContainer {
 
     // If you have not seen the debug drawer before, show it with a message
     if (!seenDebugDrawer.get()) {
-      viewHolder.drawerLayout.postDelayed(new Runnable() {
-        @Override public void run() {
-          viewHolder.drawerLayout.openDrawer(GravityCompat.END);
-          Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
-        }
+      viewHolder.drawerLayout.postDelayed(() -> {
+        viewHolder.drawerLayout.openDrawer(GravityCompat.END);
+        Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
       }, 1000);
       seenDebugDrawer.set(true);
     }
@@ -132,28 +126,20 @@ public final class DebugAppContainer implements AppContainer {
   }
 
   private void setupMadge(final ViewHolder viewHolder, CompositeSubscription subscriptions) {
-    subscriptions.add(pixelGridEnabled.asObservable().subscribe(new Action1<Boolean>() {
-      @Override public void call(Boolean enabled) {
-        viewHolder.madgeFrameLayout.setOverlayEnabled(enabled);
-      }
+    subscriptions.add(pixelGridEnabled.asObservable().subscribe(enabled -> {
+      viewHolder.madgeFrameLayout.setOverlayEnabled(enabled);
     }));
-    subscriptions.add(pixelRatioEnabled.asObservable().subscribe(new Action1<Boolean>() {
-      @Override public void call(Boolean enabled) {
-        viewHolder.madgeFrameLayout.setOverlayRatioEnabled(enabled);
-      }
+    subscriptions.add(pixelRatioEnabled.asObservable().subscribe(enabled -> {
+      viewHolder.madgeFrameLayout.setOverlayRatioEnabled(enabled);
     }));
   }
 
   private void setupScalpel(final ViewHolder viewHolder, CompositeSubscription subscriptions) {
-    subscriptions.add(scalpelEnabled.asObservable().subscribe(new Action1<Boolean>() {
-      @Override public void call(Boolean enabled) {
-        viewHolder.content.setLayerInteractionEnabled(enabled);
-      }
+    subscriptions.add(scalpelEnabled.asObservable().subscribe(enabled -> {
+      viewHolder.content.setLayerInteractionEnabled(enabled);
     }));
-    subscriptions.add(scalpelWireframeEnabled.asObservable().subscribe(new Action1<Boolean>() {
-      @Override public void call(Boolean enabled) {
-        viewHolder.content.setDrawViews(!enabled);
-      }
+    subscriptions.add(scalpelWireframeEnabled.asObservable().subscribe(enabled -> {
+      viewHolder.content.setDrawViews(!enabled);
     }));
   }
 
