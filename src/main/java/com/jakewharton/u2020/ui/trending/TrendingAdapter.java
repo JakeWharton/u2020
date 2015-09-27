@@ -57,11 +57,9 @@ final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHol
     public ViewHolder(TrendingItemView itemView) {
       super(itemView);
       this.itemView = itemView;
-      this.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          Repository repository = repositories.get(getAdapterPosition());
-          repositoryClickListener.onRepositoryClick(repository);
-        }
+      this.itemView.setOnClickListener(v -> {
+        Repository repository = repositories.get(getAdapterPosition());
+        repositoryClickListener.onRepositoryClick(repository);
       });
     }
 

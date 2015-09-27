@@ -60,25 +60,23 @@ public final class MainActivity extends Activity {
     drawerLayout.setStatusBarBackgroundColor(statusBarColor);
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-    drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-      @Override public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-          case R.id.nav_search:
-            Toast.makeText(MainActivity.this, "Search!", LENGTH_SHORT).show();
-            break;
-          case R.id.nav_trending:
-            Toast.makeText(MainActivity.this, "Trending!", LENGTH_SHORT).show();
-            break;
-          default:
-            throw new IllegalStateException("Unknown navigation item: " + item.getTitle());
-        }
-
-        drawerLayout.closeDrawers();
-        // If we supported actual navigation, we would change what was checked and navigate there.
-        //item.setChecked(true);
-
-        return true;
+    drawer.setNavigationItemSelectedListener(item -> {
+      switch (item.getItemId()) {
+        case R.id.nav_search:
+          Toast.makeText(MainActivity.this, "Search!", LENGTH_SHORT).show();
+          break;
+        case R.id.nav_trending:
+          Toast.makeText(MainActivity.this, "Trending!", LENGTH_SHORT).show();
+          break;
+        default:
+          throw new IllegalStateException("Unknown navigation item: " + item.getTitle());
       }
+
+      drawerLayout.closeDrawers();
+      // If we supported actual navigation, we would change what was checked and navigate there.
+      //item.setChecked(true);
+
+      return true;
     });
 
     inflater.inflate(R.layout.trending_view, content);

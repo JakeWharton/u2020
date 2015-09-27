@@ -28,11 +28,9 @@ public final class BugReportDialog extends AlertDialog implements ReportDetailsL
     setTitle("Report a bug");
     setView(view);
     setButton(Dialog.BUTTON_NEGATIVE, "Cancel", (OnClickListener) null);
-    setButton(Dialog.BUTTON_POSITIVE, "Submit", new OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        if (listener != null) {
-          listener.onBugReportSubmit(view.getReport());
-        }
+    setButton(Dialog.BUTTON_POSITIVE, "Submit", (dialog, which) -> {
+      if (listener != null) {
+        listener.onBugReportSubmit(view.getReport());
       }
     });
   }

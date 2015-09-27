@@ -144,10 +144,8 @@ public final class DebugDataModule {
     if (isMockMode) {
       builder.addRequestHandler(new MockRequestHandler(behavior, app.getAssets()));
     }
-    builder.listener(new Picasso.Listener() {
-      @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-        Timber.e(exception, "Error while loading image " + uri);
-      }
+    builder.listener((picasso, uri, exception) -> {
+      Timber.e(exception, "Error while loading image " + uri);
     });
     return builder.build();
   }

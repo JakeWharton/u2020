@@ -1596,11 +1596,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
     private final int mAbsGravity;
     private ViewDragHelper mDragger;
 
-    private final Runnable mPeekRunnable = new Runnable() {
-      @Override public void run() {
-        peekDrawer();
-      }
-    };
+    private final Runnable mPeekRunnable = () -> peekDrawer();
 
     public ViewDragCallback(int gravity) {
       mAbsGravity = gravity;
