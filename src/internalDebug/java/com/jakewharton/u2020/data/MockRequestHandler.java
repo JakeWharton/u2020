@@ -1,5 +1,6 @@
 package com.jakewharton.u2020.data;
 
+import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,7 +70,10 @@ public final class MockRequestHandler extends RequestHandler {
     SystemClock.sleep(behavior.calculateDelay(MILLISECONDS));
 
     // Since we cache missed put it in the LRU.
-    long size = assetManager.openFd(imagePath).getLength();
+    AssetFileDescriptor fileDescriptor = assetManager.openFd(imagePath);
+    long size = fileDescriptor.getLength();
+    fileDescriptor.close();
+
     emulatedDiskCache.put(imagePath, size);
 
     // Grab the image stream and return it.
