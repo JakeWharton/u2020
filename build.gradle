@@ -131,7 +131,7 @@ dependencies {
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-  compile 'com.squareup.okhttp:okhttp:2.4.0'
+  compile 'com.squareup.okhttp:okhttp:2.5.0'
   compile 'com.squareup.picasso:picasso:2.5.2'
 
   compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
