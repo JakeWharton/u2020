@@ -13,7 +13,7 @@ buildscript {
       // Workaround for https://github.com/stanfy/spoon-gradle-plugin/issues/33
       exclude module: 'guava'
     }
-    classpath 'com.google.guava:guava:17.0'
+    classpath 'com.google.guava:guava:18.0'
     classpath 'me.tatarka:gradle-retrolambda:3.2.3'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
   }
