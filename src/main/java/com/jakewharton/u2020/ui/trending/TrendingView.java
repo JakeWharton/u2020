@@ -44,6 +44,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -142,7 +143,8 @@ public final class TrendingView extends LinearLayout
           SearchQuery trendingQuery = new SearchQuery.Builder() //
               .createdSince(trendingTimespan.createdSince()) //
               .build();
-          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC);
+          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC)
+              .subscribeOn(Schedulers.io());
         }
       };
 
