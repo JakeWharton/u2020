@@ -143,7 +143,8 @@ public final class TrendingView extends LinearLayout
           SearchQuery trendingQuery = new SearchQuery.Builder() //
               .createdSince(trendingTimespan.createdSince()) //
               .build();
-          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC).subscribeOn(Schedulers.io());
+          return githubService.repositories(trendingQuery, Sort.STARS, Order.DESC)
+              .subscribeOn(Schedulers.io());
         }
       };
 
