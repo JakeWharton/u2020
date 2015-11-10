@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -89,7 +89,7 @@ public final class TrendingView extends LinearLayout
     ButterKnife.bind(this);
 
     AnimationDrawable ellipsis =
-        (AnimationDrawable) getResources().getDrawable(R.drawable.dancing_ellipsis);
+        (AnimationDrawable) ContextCompat.getDrawable(getContext(), R.drawable.dancing_ellipsis);
     loadingMessageView.setCompoundDrawablesWithIntrinsicBounds(null, null, ellipsis, null);
     ellipsis.start();
 

@@ -2,7 +2,6 @@ package com.jakewharton.u2020.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.data.api.ApiModule;
