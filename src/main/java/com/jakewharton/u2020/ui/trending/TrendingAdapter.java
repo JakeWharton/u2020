@@ -2,7 +2,6 @@ package com.jakewharton.u2020.ui.trending;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Repository;

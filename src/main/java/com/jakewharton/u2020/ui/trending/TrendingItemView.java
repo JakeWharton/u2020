@@ -1,6 +1,7 @@
 package com.jakewharton.u2020.ui.trending;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
@@ -35,7 +36,7 @@ public final class TrendingItemView extends RelativeLayout {
 
     // TODO: Make this a singleton.
     avatarTransformation =
-        new CircleStrokeTransformation(context, getResources().getColor(R.color.avatar_stroke), 1);
+        new CircleStrokeTransformation(context, ContextCompat.getColor(context, R.color.avatar_stroke), 1);
   }
 
   @Override protected void onFinishInflate() {

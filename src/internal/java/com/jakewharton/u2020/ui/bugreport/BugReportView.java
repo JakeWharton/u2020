@@ -3,7 +3,6 @@ package com.jakewharton.u2020.ui.bugreport;
 import android.content.Context;
 import android.text.Editable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;

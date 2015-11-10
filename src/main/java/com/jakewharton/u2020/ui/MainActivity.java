@@ -12,7 +12,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
