@@ -11,12 +11,15 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 import retrofit.Retrofit;
 import retrofit.mock.MockRetrofit;
 import retrofit.mock.NetworkBehavior;
 import retrofit.mock.RxJavaBehaviorAdapter;
+import timber.log.Timber;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -30,8 +33,14 @@ public final class DebugApiModule {
     return HttpUrl.parse(apiEndpoint.get());
   }
 
+  @Provides @Singleton HttpLoggingInterceptor provideLoggingInterceptor() {
+    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
+    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+    return loggingInterceptor;
+  }
+
   @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
-      OauthInterceptor oauthInterceptor, LoggingInterceptor loggingInterceptor) {
+      OauthInterceptor oauthInterceptor, HttpLoggingInterceptor loggingInterceptor) {
     client = ApiModule.createApiClient(client, oauthInterceptor);
     client.interceptors().add(loggingInterceptor);
     return client;
