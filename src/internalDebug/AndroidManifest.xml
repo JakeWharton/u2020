@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
   <!-- Used for sharing logs and Spoon. -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -30,6 +33,15 @@
         <action android:name="com.jakewharton.u2020.intent.EXTERNAL_INTENT"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
+    </activity>
+    <activity
+        android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"
+        android:enabled="false"
+        android:label="@string/__leak_canary_display_activity_label"
+        android:taskAffinity="com.squareup.leakcanary"
+        android:theme="@style/__LeakCanary.Base"
+        >
+      <intent-filter tools:node="removeAll"/>
     </activity>
   </application>
 </manifest>

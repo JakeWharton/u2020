@@ -270,6 +270,14 @@
       android:layout_gravity="start|fill_horizontal"
       android:text="Show logs"
       />
+  <Button
+      android:id="@+id/debug_leaks_show"
+      android:layout_columnSpan="2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Leak analysis"
+      />
 
   <!-- BUILD INFORMATION SECTION -->
 

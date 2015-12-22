@@ -3,6 +3,7 @@ package com.jakewharton.u2020.ui.debug;
 import android.animation.ValueAnimator;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -47,6 +48,7 @@ import com.jakewharton.u2020.ui.logs.LogsDialog;
 import com.jakewharton.u2020.ui.misc.EnumAdapter;
 import com.jakewharton.u2020.util.Keyboards;
 import com.jakewharton.u2020.util.Strings;
+import com.squareup.leakcanary.internal.DisplayLeakActivity;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
@@ -384,6 +386,11 @@ public final class DebugView extends FrameLayout {
 
   @OnClick(R.id.debug_logs_show) void showLogs() {
     new LogsDialog(new ContextThemeWrapper(getContext(), R.style.Theme_U2020), lumberYard).show();
+  }
+
+  @OnClick(R.id.debug_leaks_show) void showLeaks() {
+    Intent intent = new Intent(getContext(), DisplayLeakActivity.class);
+    getContext().startActivity(intent);
   }
 
   private void setupBuildSection() {
