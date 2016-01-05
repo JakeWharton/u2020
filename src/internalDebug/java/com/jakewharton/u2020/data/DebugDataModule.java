@@ -2,7 +2,7 @@ package com.jakewharton.u2020.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.net.Uri;
+
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.u2020.IsInstrumentationTest;
@@ -145,7 +145,7 @@ public final class DebugDataModule {
       builder.addRequestHandler(new MockRequestHandler(behavior, app.getAssets()));
     }
     builder.listener((picasso, uri, exception) -> {
-      Timber.e(exception, "Error while loading image " + uri);
+      Timber.e(exception, "Error while loading image %s", uri);
     });
     return builder.build();
   }

@@ -154,7 +154,7 @@ public final class TrendingView extends LinearLayout
         Timber.e(result.error(), "Failed to get trending repositories");
       } else {
         Response<RepositoriesResponse> response = result.response();
-        Timber.e("Failed to get trending repositories. Server returned " + response.code());
+        Timber.e("Failed to get trending repositories. Server returned %d", response.code());
       }
       swipeRefreshView.setRefreshing(false);
       animatorView.setDisplayedChildId(R.id.trending_error);

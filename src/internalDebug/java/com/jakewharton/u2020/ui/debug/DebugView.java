@@ -358,28 +358,28 @@ public final class DebugView extends FrameLayout {
     uiPixelGridView.setChecked(gridEnabled);
     uiPixelRatioView.setEnabled(gridEnabled);
     uiPixelGridView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      Timber.d("Setting pixel grid overlay enabled to " + isChecked);
+      Timber.d("Setting pixel grid overlay enabled to %b", isChecked);
       pixelGridEnabled.set(isChecked);
       uiPixelRatioView.setEnabled(isChecked);
     });
 
     uiPixelRatioView.setChecked(pixelRatioEnabled.get());
     uiPixelRatioView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      Timber.d("Setting pixel scale overlay enabled to " + isChecked);
+      Timber.d("Setting pixel scale overlay enabled to %b", isChecked);
       pixelRatioEnabled.set(isChecked);
     });
 
     uiScalpelView.setChecked(scalpelEnabled.get());
     uiScalpelWireframeView.setEnabled(scalpelEnabled.get());
     uiScalpelView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      Timber.d("Setting scalpel interaction enabled to " + isChecked);
+      Timber.d("Setting scalpel interaction enabled to %b", isChecked);
       scalpelEnabled.set(isChecked);
       uiScalpelWireframeView.setEnabled(isChecked);
     });
 
     uiScalpelWireframeView.setChecked(scalpelWireframeEnabled.get());
     uiScalpelWireframeView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-      Timber.d("Setting scalpel wireframe enabled to " + isChecked);
+      Timber.d("Setting scalpel wireframe enabled to %b", isChecked);
       scalpelWireframeEnabled.set(isChecked);
     });
   }

@@ -113,7 +113,7 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
           builder.append(field.getName()).append('\n');
         }
       } catch (IllegalAccessException e) {
-        Timber.e(e, "Couldn't read value for: " + field.getName());
+        Timber.e(e, "Couldn't read value for: %s", field.getName());
       }
     }
 
