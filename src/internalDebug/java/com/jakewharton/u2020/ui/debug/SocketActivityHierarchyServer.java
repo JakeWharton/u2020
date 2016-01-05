@@ -464,7 +464,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
         out = Okio.buffer(Okio.sink(client));
 
         for (Entry<View, String> entry : mWindows.entrySet()) {
-          out.writeUtf8(Integer.toHexString(System.identityHashCode(entry.getKey())));
+          out.writeHexadecimalUnsignedLong(System.identityHashCode(entry.getKey()));
           out.writeUtf8CodePoint(' ');
           out.writeUtf8(entry.getValue());
           out.writeUtf8CodePoint('\n');
@@ -514,7 +514,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
             mWindowsLock.readLock().unlock();
           }
 
-          out.writeUtf8(Integer.toHexString(System.identityHashCode(focusedWindow)));
+          out.writeHexadecimalUnsignedLong(System.identityHashCode(focusedWindow));
           out.writeUtf8CodePoint(' ');
           out.writeUtf8(focusName);
         }
