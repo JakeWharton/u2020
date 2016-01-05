@@ -4,7 +4,7 @@ import com.jakewharton.u2020.data.api.model.RepositoriesResponse;
 import com.jakewharton.u2020.data.api.model.Repository;
 import java.util.Collections;
 import java.util.List;
-import retrofit.Result;
+import retrofit2.Result;
 import rx.functions.Func1;
 
 public final class SearchResultToRepositoryList implements Func1<Result<RepositoriesResponse>, List<Repository>> {

@@ -9,17 +9,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import retrofit.Response;
-import retrofit.Result;
-import retrofit.http.Query;
+import retrofit2.Result;
+import retrofit2.mock.BehaviorDelegate;
+import retrofit2.mock.Calls;
+import retrofit2.mock.MockRetrofit;
 import rx.Observable;
 
 @Singleton
 public final class MockGithubService implements GithubService {
+  private final BehaviorDelegate<GithubService> delegate;
   private final SharedPreferences preferences;
   private final Map<Class<? extends Enum<?>>, Enum<?>> responses = new LinkedHashMap<>();
 
-  @Inject MockGithubService(SharedPreferences preferences) {
+  @Inject MockGithubService(MockRetrofit mockRetrofit, SharedPreferences preferences) {
+    this.delegate = mockRetrofit.create(GithubService.class);
     this.preferences = preferences;
 
     // Initialize mock responses.
@@ -44,8 +47,8 @@ public final class MockGithubService implements GithubService {
     EnumPreferences.saveEnumValue(preferences, responseClass.getCanonicalName(), value);
   }
 
-  @Override public Observable<Result<RepositoriesResponse>> repositories(@Query("q") SearchQuery query,
-      @Query("sort") Sort sort, @Query("order") Order order) {
+  @Override public Observable<Result<RepositoriesResponse>> repositories(SearchQuery query,
+      Sort sort, Order order) {
     RepositoriesResponse response = getResponse(MockRepositoriesResponse.class).response;
 
     if (response.items != null) {
@@ -55,6 +58,6 @@ public final class MockGithubService implements GithubService {
       response = new RepositoriesResponse(items);
     }
 
-    return Observable.just(Result.response(Response.success(response)));
+    return delegate.returning(Calls.response(response)).repositories(query, sort, order);
   }
 }
