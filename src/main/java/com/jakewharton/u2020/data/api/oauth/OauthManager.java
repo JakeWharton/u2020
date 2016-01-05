@@ -5,14 +5,14 @@ import android.net.Uri;
 import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.data.IntentFactory;
 import com.squareup.moshi.Moshi;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import timber.log.Timber;
 
 @Singleton public final class OauthManager {
@@ -52,7 +52,7 @@ import timber.log.Timber;
       Request request = new Request.Builder() //
           .url("https://github.com/login/oauth/access_token") //
           .header("Accept", "application/json") //
-          .post(new FormEncodingBuilder() //
+          .post(new FormBody.Builder() //
               .add("client_id", CLIENT_ID) //
               .add("client_secret", CLIENT_SECRET) //
               .add("code", code) //

@@ -3,15 +3,15 @@ package com.jakewharton.u2020.data.api;
 import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
 import com.jakewharton.u2020.data.api.oauth.OauthService;
 import com.squareup.moshi.Moshi;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import retrofit.MoshiConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import retrofit2.MoshiConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
 
 @Module(
     complete = false,
@@ -21,7 +21,7 @@ import retrofit.RxJavaCallAdapterFactory;
     }
 )
 public final class ApiModule {
-  public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://api.github.com");
+  public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://api.github.com/");
 
   @Provides @Singleton HttpUrl provideBaseUrl() {
     return PRODUCTION_API_URL;
@@ -29,11 +29,11 @@ public final class ApiModule {
 
   @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
       OauthInterceptor oauthInterceptor) {
-    return createApiClient(client, oauthInterceptor);
+    return createApiClient(client, oauthInterceptor).build();
   }
 
-  @Provides @Singleton
-  Retrofit provideRetrofit(HttpUrl baseUrl, @Named("Api") OkHttpClient client, Moshi moshi) {
+  @Provides @Singleton Retrofit provideRetrofit(HttpUrl baseUrl, @Named("Api") OkHttpClient client,
+      Moshi moshi) {
     return new Retrofit.Builder() //
         .client(client) //
         .baseUrl(baseUrl) //
@@ -46,9 +46,8 @@ public final class ApiModule {
     return retrofit.create(GithubService.class);
   }
 
-  static OkHttpClient createApiClient(OkHttpClient client, OauthInterceptor oauthInterceptor) {
-    client = client.clone();
-    client.interceptors().add(oauthInterceptor);
-    return client;
+  static OkHttpClient.Builder createApiClient(OkHttpClient client, OauthInterceptor oauthInterceptor) {
+    return client.newBuilder()
+        .addInterceptor(oauthInterceptor);
   }
 }

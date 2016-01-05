@@ -2,15 +2,13 @@ package com.jakewharton.u2020.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
 import com.jakewharton.u2020.data.prefs.InetSocketAddressPreferenceAdapter;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
@@ -22,7 +20,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import retrofit.mock.NetworkBehavior;
+import okhttp3.OkHttpClient;
+import retrofit2.mock.NetworkBehavior;
 import timber.log.Timber;
 
 @Module(
@@ -52,10 +51,10 @@ public final class DebugDataModule {
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
       Preference<InetSocketAddress> networkProxyAddress) {
-    OkHttpClient client = DataModule.createOkHttpClient(app);
-    client.setSslSocketFactory(createBadSslSocketFactory());
-    client.setProxy(InetSocketAddressPreferenceAdapter.createProxy(networkProxyAddress.get()));
-    return client;
+    return DataModule.createOkHttpClient(app)
+        .sslSocketFactory(createBadSslSocketFactory())
+        .proxy(InetSocketAddressPreferenceAdapter.createProxy(networkProxyAddress.get()))
+        .build();
   }
 
   @Provides @Singleton @AccessToken Preference<String> provideAccessToken(RxSharedPreferences prefs,
@@ -140,7 +139,7 @@ public final class DebugDataModule {
 
   @Provides @Singleton Picasso providePicasso(OkHttpClient client, NetworkBehavior behavior,
       @IsMockMode boolean isMockMode, Application app) {
-    Picasso.Builder builder = new Picasso.Builder(app).downloader(new OkHttpDownloader(client));
+    Picasso.Builder builder = new Picasso.Builder(app).downloader(new OkHttp3Downloader(client));
     if (isMockMode) {
       builder.addRequestHandler(new MockRequestHandler(behavior, app.getAssets()));
     }

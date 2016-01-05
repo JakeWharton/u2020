@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
-import retrofit.mock.NetworkBehavior;
+import retrofit2.mock.NetworkBehavior;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

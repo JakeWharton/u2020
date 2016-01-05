@@ -5,7 +5,7 @@ import com.jakewharton.u2020.data.api.ApiModule;
 public enum ApiEndpoints {
   PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString()),
   // STAGING("Staging", "https://api.staging.github.com/"),
-  MOCK_MODE("Mock Mode", "http://localhost/mock"),
+  MOCK_MODE("Mock Mode", "http://localhost/mock/"),
   CUSTOM("Custom", null);
 
   public final String name;
