@@ -123,7 +123,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
     String name = activity.getTitle().toString();
     if (TextUtils.isEmpty(name)) {
       name = activity.getClass().getCanonicalName() +
-          "/0x" + System.identityHashCode(activity);
+          "/0x" + Integer.toHexString(System.identityHashCode(activity));
     } else {
       name += " (" + activity.getClass().getCanonicalName() + ")";
     }
