@@ -216,7 +216,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
     boolean result;
     BufferedSink out = null;
     try {
-      out = Okio.buffer(Okio.sink(client.getOutputStream()));
+      out = Okio.buffer(Okio.sink(client));
       out.writeUtf8(value);
       out.writeUtf8CodePoint('\n');
       out.flush();
@@ -319,7 +319,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
     public void run() {
       BufferedSource in = null;
       try {
-        in = Okio.buffer(Okio.source(mClient.getInputStream()));
+        in = Okio.buffer(Okio.source(mClient));
 
         final String request = in.readUtf8Line();
 
@@ -407,7 +407,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
             new UncloseableOutputStream(client.getOutputStream()));
 
         if (!client.isOutputShutdown()) {
-          out = Okio.buffer(Okio.sink(client.getOutputStream()));
+          out = Okio.buffer(Okio.sink(client));
           out.writeUtf8("DONE\n");
           out.flush();
         }
@@ -461,7 +461,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
       try {
         mWindowsLock.readLock().lock();
 
-        out = Okio.buffer(Okio.sink(client.getOutputStream()));
+        out = Okio.buffer(Okio.sink(client));
 
         for (Entry<View, String> entry : mWindows.entrySet()) {
           out.writeUtf8(Integer.toHexString(System.identityHashCode(entry.getKey())));
@@ -495,7 +495,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
 
       BufferedSink out = null;
       try {
-        out = Okio.buffer(Okio.sink(client.getOutputStream()));
+        out = Okio.buffer(Okio.sink(client));
 
         View focusedWindow = null;
 
@@ -553,7 +553,7 @@ public class SocketActivityHierarchyServer implements Runnable, ActivityHierarch
       addWindowListener(this);
       BufferedSink out = null;
       try {
-        out = Okio.buffer(Okio.sink(mClient.getOutputStream()));
+        out = Okio.buffer(Okio.sink(mClient));
         while (!Thread.interrupted()) {
           boolean needWindowListUpdate = false;
           boolean needFocusedWindowUpdate = false;
