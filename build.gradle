@@ -41,7 +41,7 @@ repositories {
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
 
 def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
@@ -73,8 +73,8 @@ android {
 
     signingConfig signingConfigs.u2020
 
-    buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
-    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+    buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
+    buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
 
     testInstrumentationRunner "com.jakewharton.u2020.U2020TestRunner"
   }

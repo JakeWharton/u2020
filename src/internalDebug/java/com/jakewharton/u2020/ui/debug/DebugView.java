@@ -59,6 +59,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.TemporalAccessor;
@@ -67,7 +68,6 @@ import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.threeten.bp.format.DateTimeFormatter.ISO_INSTANT;
 
 public final class DebugView extends FrameLayout {
   private static final DateTimeFormatter DATE_DISPLAY_FORMAT =
@@ -400,7 +400,7 @@ public final class DebugView extends FrameLayout {
     buildCodeView.setText(String.valueOf(BuildConfig.VERSION_CODE));
     buildShaView.setText(BuildConfig.GIT_SHA);
 
-    TemporalAccessor buildTime = ISO_INSTANT.parse(BuildConfig.BUILD_TIME);
+    TemporalAccessor buildTime = Instant.ofEpochSecond(BuildConfig.GIT_TIMESTAMP);
     buildDateView.setText(DATE_DISPLAY_FORMAT.format(buildTime));
   }
 
