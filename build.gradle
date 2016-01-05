@@ -144,7 +144,7 @@ dependencies {
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.jakewharton.timber:timber:4.0.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
-  compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
+  compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
   internalDebugCompile 'com.jakewharton.madge:madge:1.1.2'
   internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
   internalDebugCompile 'com.jakewharton:process-phoenix:1.0.2'
@@ -152,8 +152,8 @@ dependencies {
   internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
   productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
-  compile 'io.reactivex:rxjava:1.0.14'
-  compile 'io.reactivex:rxandroid:1.0.1'
+  compile 'io.reactivex:rxjava:1.1.0'
+  compile 'io.reactivex:rxandroid:1.1.0'
 
   compile 'com.jakewharton.threetenabp:threetenabp:1.0.2'
 
