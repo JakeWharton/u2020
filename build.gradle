@@ -8,7 +8,6 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:1.5.0'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
       // Workaround for https://github.com/stanfy/spoon-gradle-plugin/issues/33
       exclude module: 'guava'
@@ -29,7 +28,6 @@ def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'spoon'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -130,7 +128,7 @@ dependencies {
   compile 'com.android.support:design:23.1.1'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
   compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
   compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
