@@ -10,8 +10,8 @@ import javax.inject.Singleton;
     complete = false
 )
 public final class InternalReleaseUiModule {
-  @Provides @Singleton AppContainer provideAppContainer(
-      TelescopeAppContainer telescopeAppContainer) {
-    return telescopeAppContainer;
+  @Provides @Singleton ViewContainer provideViewContainer(
+      TelescopeViewContainer telescopeViewContainer) {
+    return telescopeViewContainer;
   }
 }

@@ -21,14 +21,12 @@ import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
 import com.jakewharton.u2020.data.SeenDebugDrawer;
-import com.jakewharton.u2020.ui.AppContainer;
+import com.jakewharton.u2020.ui.ViewContainer;
 import com.jakewharton.u2020.ui.bugreport.BugReportLens;
 import com.jakewharton.u2020.util.EmptyActivityLifecycleCallbacks;
 import com.mattprecious.telescope.TelescopeLayout;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import rx.Observable;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.content.Context.POWER_SERVICE;
@@ -38,11 +36,11 @@ import static android.os.PowerManager.ON_AFTER_RELEASE;
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 
 /**
- * An {@link AppContainer} for debug builds which wrap the content view with a sliding drawer on
- * the right that holds all of the debug information and settings.
+ * An {@link ViewContainer} for debug builds which wraps a sliding drawer on the right that holds
+ * all of the debug information and settings.
  */
 @Singleton
-public final class DebugAppContainer implements AppContainer {
+public final class DebugViewContainer implements ViewContainer {
   private final LumberYard lumberYard;
   private final Preference<Boolean> seenDebugDrawer;
   private final Preference<Boolean> pixelGridEnabled;
@@ -58,7 +56,7 @@ public final class DebugAppContainer implements AppContainer {
     @Bind(R.id.debug_content) ScalpelFrameLayout content;
   }
 
-  @Inject public DebugAppContainer(LumberYard lumberYard,
+  @Inject public DebugViewContainer(LumberYard lumberYard,
       @SeenDebugDrawer Preference<Boolean> seenDebugDrawer,
       @PixelGridEnabled Preference<Boolean> pixelGridEnabled,
       @PixelRatioEnabled Preference<Boolean> pixelRatioEnabled,
@@ -72,7 +70,7 @@ public final class DebugAppContainer implements AppContainer {
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
   }
 
-  @Override public ViewGroup bind(final Activity activity) {
+  @Override public ViewGroup forActivity(final Activity activity) {
     activity.setContentView(R.layout.debug_activity_frame);
 
     final ViewHolder viewHolder = new ViewHolder();

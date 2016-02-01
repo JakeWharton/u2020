@@ -12,8 +12,8 @@ import javax.inject.Singleton;
     library = true
 )
 public final class UiModule {
-  @Provides @Singleton AppContainer provideAppContainer() {
-    return AppContainer.DEFAULT;
+  @Provides @Singleton ViewContainer provideViewContainer() {
+    return ViewContainer.DEFAULT;
   }
 
   @Provides @Singleton ActivityHierarchyServer provideActivityHierarchyServer() {
