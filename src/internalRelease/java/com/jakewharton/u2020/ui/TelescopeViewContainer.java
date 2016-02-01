@@ -24,18 +24,18 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public final class TelescopeAppContainer implements AppContainer {
+public final class TelescopeViewContainer implements ViewContainer {
   private final LumberYard lumberYard;
   private final Preference<Boolean> seenTelescopeDialog;
 
-  @Inject public TelescopeAppContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
+  @Inject public TelescopeViewContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
     this.lumberYard = lumberYard;
     this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
   }
 
   @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
 
-  @Override public ViewGroup bind(final Activity activity) {
+  @Override public ViewGroup forActivity(final Activity activity) {
     activity.setContentView(R.layout.internal_activity_frame);
     ButterKnife.bind(this, activity);
 

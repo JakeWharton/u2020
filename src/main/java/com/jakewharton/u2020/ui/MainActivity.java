@@ -33,7 +33,7 @@ public final class MainActivity extends Activity {
 
   @BindColor(R.color.status_bar) int statusBarColor;
 
-  @Inject AppContainer appContainer;
+  @Inject ViewContainer viewContainer;
 
   private ObjectGraph activityGraph;
 
@@ -51,7 +51,7 @@ public final class MainActivity extends Activity {
     appGraph.inject(this);
     activityGraph = appGraph.plus(new MainActivityModule(this));
 
-    ViewGroup container = appContainer.bind(this);
+    ViewGroup container = viewContainer.forActivity(this);
 
     inflater.inflate(R.layout.main_activity, container);
     ButterKnife.bind(this, container);
