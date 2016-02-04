@@ -40,8 +40,25 @@ repositories {
   mavenCentral()
 }
 
-def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
+def gitSha() {
+  def p = 'git rev-parse --short HEAD'.execute([], project.rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
+
+def gitTimestamp() {
+  def p = 'git log -n 1 --format=%at'.execute([], rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
 
 def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
@@ -73,8 +90,8 @@ android {
 
     signingConfig signingConfigs.u2020
 
-    buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
-    buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
+    buildConfigField 'String', 'GIT_SHA', "\"${gitSha()}\""
+    buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp()}L"
 
     testInstrumentationRunner "com.jakewharton.u2020.U2020TestRunner"
   }
