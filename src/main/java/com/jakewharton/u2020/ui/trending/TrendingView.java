@@ -39,7 +39,7 @@ import com.jakewharton.u2020.util.Intents;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import retrofit2.Response;
-import retrofit2.Result;
+import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
