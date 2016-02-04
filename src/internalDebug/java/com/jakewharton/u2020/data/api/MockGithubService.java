@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import retrofit2.Result;
+import retrofit2.adapter.rxjava.Result;
 import retrofit2.mock.BehaviorDelegate;
 import retrofit2.mock.Calls;
 import retrofit2.mock.MockRetrofit;

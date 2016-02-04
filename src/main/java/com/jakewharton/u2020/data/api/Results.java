@@ -1,6 +1,6 @@
 package com.jakewharton.u2020.data.api;
 
-import retrofit2.Result;
+import retrofit2.adapter.rxjava.Result;
 import rx.functions.Func1;
 
 public final class Results {
