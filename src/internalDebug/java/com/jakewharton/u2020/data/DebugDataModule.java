@@ -163,7 +163,7 @@ public final class DebugDataModule {
         }
 
         @Override public X509Certificate[] getAcceptedIssuers() {
-          return null;
+          return new X509Certificate[0];
         }
       };
       context.init(null, new TrustManager[] { permissive }, null);
