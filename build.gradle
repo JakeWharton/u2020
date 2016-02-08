@@ -149,8 +149,8 @@ dependencies {
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-  compile 'com.squareup.okhttp3:okhttp:3.1.0'
-  compile 'com.squareup.okhttp3:logging-interceptor:3.1.0'
+  compile 'com.squareup.okhttp3:okhttp:3.1.1'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.1.1'
   compile 'com.squareup.picasso:picasso:2.5.2'
   compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.1'
   compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
