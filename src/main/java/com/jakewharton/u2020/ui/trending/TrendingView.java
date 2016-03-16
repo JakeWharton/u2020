@@ -125,11 +125,11 @@ public final class TrendingView extends LinearLayout
         .observeOn(AndroidSchedulers.mainThread()) //
         .share();
     subscriptions.add(result //
-        .filter(Results.isSuccess()) //
+        .filter(Results.isSuccessful()) //
         .map(SearchResultToRepositoryList.instance()) //
         .subscribe(trendingAdapter));
     subscriptions.add(result //
-        .filter(Funcs.not(Results.isSuccess())) //
+        .filter(Funcs.not(Results.isSuccessful())) //
         .subscribe(trendingError));
 
     // Load the default selection.
