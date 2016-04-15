@@ -79,6 +79,10 @@ public final class LumberYard {
           for (Entry entry : entries) {
             sink.writeUtf8(entry.prettyPrint()).writeByte('\n');
           }
+          // need to close before emiting file to the subscriber, because when subscriber receives data in the same thread
+          // the file may be truncated
+          sink.close();
+          sink = null;
 
           subscriber.onNext(output);
           subscriber.onCompleted();
