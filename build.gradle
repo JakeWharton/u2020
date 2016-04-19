@@ -7,7 +7,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.android.tools.build:gradle:2.0.0'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
       // Workaround for https://github.com/stanfy/spoon-gradle-plugin/issues/33
@@ -65,7 +65,7 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
   compileSdkVersion 23
-  buildToolsVersion '23.0.2'
+  buildToolsVersion '23.0.3'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -135,16 +135,16 @@ configurations {
 
 configurations.all {
   resolutionStrategy {
-    force 'com.android.support:support-annotations:23.1.1'
+    force 'com.android.support:support-annotations:23.3.0'
   }
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:23.1.1'
-  compile 'com.android.support:support-annotations:23.1.1'
-  compile 'com.android.support:appcompat-v7:23.1.1'
-  compile 'com.android.support:recyclerview-v7:23.1.1'
-  compile 'com.android.support:design:23.1.1'
+  compile 'com.android.support:support-v4:23.3.0'
+  compile 'com.android.support:support-annotations:23.3.0'
+  compile 'com.android.support:appcompat-v7:23.3.0'
+  compile 'com.android.support:recyclerview-v7:23.3.0'
+  compile 'com.android.support:design:23.3.0'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
