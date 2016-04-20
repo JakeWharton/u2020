@@ -1,5 +1,6 @@
 package com.jakewharton.u2020;
 
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
@@ -14,6 +15,7 @@ import static android.os.PowerManager.ON_AFTER_RELEASE;
 public final class U2020TestRunner extends AndroidJUnitRunner {
   private PowerManager.WakeLock wakeLock;
 
+  @SuppressLint("MissingPermission")
   @Override public void onStart() {
     // Inform the app we are an instrumentation test before the object graph is initialized.
     DebugU2020Module.instrumentationTest = true;
