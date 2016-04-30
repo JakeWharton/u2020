@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
@@ -33,7 +33,7 @@ public final class TelescopeViewContainer implements ViewContainer {
     this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
   }
 
-  @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
+  @BindView(R.id.telescope_container) TelescopeLayout telescopeLayout;
 
   @Override public ViewGroup forActivity(final Activity activity) {
     activity.setContentView(R.layout.internal_activity_frame);

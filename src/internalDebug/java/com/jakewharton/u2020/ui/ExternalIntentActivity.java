@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.ui.misc.Truss;
@@ -30,11 +30,11 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
     return intent;
   }
 
-  @Bind(R.id.toolbar) Toolbar toolbarView;
-  @Bind(R.id.action) TextView actionView;
-  @Bind(R.id.data) TextView dataView;
-  @Bind(R.id.extras) TextView extrasView;
-  @Bind(R.id.flags) TextView flagsView;
+  @BindView(R.id.toolbar) Toolbar toolbarView;
+  @BindView(R.id.action) TextView actionView;
+  @BindView(R.id.data) TextView dataView;
+  @BindView(R.id.extras) TextView extrasView;
+  @BindView(R.id.flags) TextView flagsView;
 
   private Intent baseIntent;
 

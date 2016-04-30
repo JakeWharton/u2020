@@ -9,7 +9,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.madge.MadgeFrameLayout;
@@ -49,11 +49,11 @@ public final class DebugViewContainer implements ViewContainer {
   private final Preference<Boolean> scalpelWireframeEnabled;
 
   static class ViewHolder {
-    @Bind(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
-    @Bind(R.id.debug_drawer) ViewGroup debugDrawer;
-    @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
-    @Bind(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
-    @Bind(R.id.debug_content) ScalpelFrameLayout content;
+    @BindView(R.id.debug_drawer_layout) DebugDrawerLayout drawerLayout;
+    @BindView(R.id.debug_drawer) ViewGroup debugDrawer;
+    @BindView(R.id.telescope_container) TelescopeLayout telescopeLayout;
+    @BindView(R.id.madge_container) MadgeFrameLayout madgeFrameLayout;
+    @BindView(R.id.debug_content) ScalpelFrameLayout content;
   }
 
   @Inject public DebugViewContainer(LumberYard lumberYard,

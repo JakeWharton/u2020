@@ -9,7 +9,7 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.api.model.Repository;
@@ -18,11 +18,11 @@ import com.jakewharton.u2020.ui.transform.CircleStrokeTransformation;
 import com.squareup.picasso.Picasso;
 
 public final class TrendingItemView extends RelativeLayout {
-  @Bind(R.id.trending_repository_avatar) ImageView avatarView;
-  @Bind(R.id.trending_repository_name) TextView nameView;
-  @Bind(R.id.trending_repository_description) TextView descriptionView;
-  @Bind(R.id.trending_repository_stars) TextView starsView;
-  @Bind(R.id.trending_repository_forks) TextView forksView;
+  @BindView(R.id.trending_repository_avatar) ImageView avatarView;
+  @BindView(R.id.trending_repository_name) TextView nameView;
+  @BindView(R.id.trending_repository_description) TextView descriptionView;
+  @BindView(R.id.trending_repository_stars) TextView starsView;
+  @BindView(R.id.trending_repository_forks) TextView forksView;
 
   private final CircleStrokeTransformation avatarTransformation;
   private final int descriptionColor;

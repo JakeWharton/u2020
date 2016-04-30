@@ -16,7 +16,7 @@ import android.view.ContextThemeWrapper;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
@@ -53,12 +53,12 @@ import static com.jakewharton.u2020.ui.misc.DividerItemDecoration.VERTICAL_LIST;
 
 public final class TrendingView extends LinearLayout
     implements SwipeRefreshLayout.OnRefreshListener, TrendingAdapter.RepositoryClickListener {
-  @Bind(R.id.trending_toolbar) Toolbar toolbarView;
-  @Bind(R.id.trending_timespan) Spinner timespanView;
-  @Bind(R.id.trending_animator) BetterViewAnimator animatorView;
-  @Bind(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
-  @Bind(R.id.trending_list) RecyclerView trendingView;
-  @Bind(R.id.trending_loading_message) TextView loadingMessageView;
+  @BindView(R.id.trending_toolbar) Toolbar toolbarView;
+  @BindView(R.id.trending_timespan) Spinner timespanView;
+  @BindView(R.id.trending_animator) BetterViewAnimator animatorView;
+  @BindView(R.id.trending_swipe_refresh) SwipeRefreshLayout swipeRefreshView;
+  @BindView(R.id.trending_list) RecyclerView trendingView;
+  @BindView(R.id.trending_loading_message) TextView loadingMessageView;
 
   @BindDimen(R.dimen.trending_divider_padding_start) float dividerPaddingStart;
 
