@@ -14,7 +14,7 @@ buildscript {
       exclude module: 'guava'
     }
     classpath 'com.google.guava:guava:17.0'
-    classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
   }
 
@@ -177,6 +177,8 @@ dependencies {
   internalCompile 'com.mattprecious.telescope:telescope:1.5.0@aar'
 
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
+
+  retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
 
   androidTestCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
