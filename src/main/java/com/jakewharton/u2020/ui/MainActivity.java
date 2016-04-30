@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 import com.jakewharton.u2020.R;
@@ -27,9 +27,9 @@ import javax.inject.Inject;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public final class MainActivity extends Activity {
-  @Bind(R.id.main_drawer_layout) DrawerLayout drawerLayout;
-  @Bind(R.id.main_navigation) NavigationView drawer;
-  @Bind(R.id.main_content) ViewGroup content;
+  @BindView(R.id.main_drawer_layout) DrawerLayout drawerLayout;
+  @BindView(R.id.main_navigation) NavigationView drawer;
+  @BindView(R.id.main_content) ViewGroup content;
 
   @BindColor(R.color.status_bar) int statusBarColor;
 

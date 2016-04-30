@@ -115,7 +115,6 @@ android {
     textReport true
     textOutput 'stdout'
     fatal 'UnusedResources'
-    warning 'ResourceType' //TODO remove eventually with ButterKnife 8.0 release
   }
 
   compileOptions {
@@ -158,7 +157,8 @@ dependencies {
   compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
   internalDebugCompile 'com.squareup.retrofit2:retrofit-mock:2.0.0'
 
-  compile 'com.jakewharton:butterknife:7.0.1'
+  compile 'com.jakewharton:butterknife:8.0.1'
+  apt 'com.jakewharton:butterknife-compiler:8.0.1'
   compile 'com.jakewharton.timber:timber:4.0.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
   compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
