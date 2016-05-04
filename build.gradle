@@ -132,18 +132,28 @@ configurations {
   internalDebugCompile
 }
 
+def supportLibraries = configurations.create("supportCompile")
+def supportLibraryVersion = '23.3.0'
+
 configurations.all {
-  resolutionStrategy {
-    force 'com.android.support:support-annotations:23.3.0'
+  resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    if (details.requested.group == 'com.android.support' && details.requested.name != 'multidex') {
+      // We want to force all support libraries to use the same version, even if they're transitive.
+      details.useVersion supportLibraryVersion
+    }
   }
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:23.3.0'
-  compile 'com.android.support:support-annotations:23.3.0'
-  compile 'com.android.support:appcompat-v7:23.3.0'
-  compile 'com.android.support:recyclerview-v7:23.3.0'
-  compile 'com.android.support:design:23.3.0'
+  supportCompile "com.android.support:support-v4:$supportLibraryVersion"
+  supportCompile "com.android.support:support-annotations:$supportLibraryVersion"
+  supportCompile "com.android.support:appcompat-v7:$supportLibraryVersion"
+  supportCompile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+  supportCompile "com.android.support:design:$supportLibraryVersion"
+
+  compile supportLibraries
+  testCompile supportLibraries
+  androidTestCompile supportLibraries
 
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'
