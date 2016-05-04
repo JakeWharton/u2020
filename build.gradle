@@ -214,3 +214,8 @@ android.applicationVariants.all { variant ->
 android.testVariants.all { variant ->
   tasks.getByName('assemble').dependsOn variant.assemble
 }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.13'
+  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
