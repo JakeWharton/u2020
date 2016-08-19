@@ -3,7 +3,7 @@ U+2020
 
 A sample Android app which showcases advanced usage of Dagger among other open source libraries.
 
-[Watch the corresponding talk][parleys] or [view the slides][slides].
+[Watch the corresponding talk][video] or [view the slides][slides].
 
 The `ObjectGraph` is created in the `U2020App`'s `onCreate` method. The `Modules` class provides a
 single method, `list`, which returns the list of module instances to use.
@@ -105,5 +105,5 @@ License
     limitations under the License.
 
 
- [parleys]: http://parleys.com/play/529bde2ce4b0e619540cc3ae
+ [video]: https://www.youtube.com/watch?v=0XHx9jtxIxU
  [slides]: https://speakerdeck.com/jakewharton/android-apps-with-dagger-devoxx-2013
