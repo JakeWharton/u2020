@@ -75,6 +75,7 @@ Libraries
  * ProcessPhoenix - https://github.com/JakeWharton/ProcessPhoenix
  * Scalpel - http://github.com/JakeWharton/scalpel
  * LeakCanary - http://github.com/square/leakcanary
+ * Telescope &ndash; https://github.com/mattprecious/telescope
 
 
 
