@@ -7,8 +7,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.0.0'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    classpath 'com.android.tools.build:gradle:2.2.0'
     classpath('com.stanfy.spoon:spoon-gradle-plugin:1.0.3') {
       // Workaround for https://github.com/stanfy/spoon-gradle-plugin/issues/33
       exclude module: 'guava'
@@ -29,7 +28,6 @@ def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'spoon'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -146,7 +144,7 @@ dependencies {
   compile 'com.android.support:design:23.3.0'
 
   compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.2'
 
   compile 'com.squareup.okhttp3:okhttp:3.2.0'
   compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
@@ -158,7 +156,7 @@ dependencies {
   internalDebugCompile 'com.squareup.retrofit2:retrofit-mock:2.0.0'
 
   compile 'com.jakewharton:butterknife:8.0.1'
-  apt 'com.jakewharton:butterknife-compiler:8.0.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
   compile 'com.jakewharton.timber:timber:4.0.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
   compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
