@@ -9,7 +9,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:2.2.2'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
-    classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+    classpath 'me.tatarka:gradle-retrolambda:3.3.1'
   }
 }
 
