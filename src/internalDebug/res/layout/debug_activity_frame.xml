@@ -12,7 +12,6 @@
     android:id="@+id/telescope_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:progressColor="@color/bugreport_frame"
     >
     <com.jakewharton.madge.MadgeFrameLayout
         android:id="@+id/madge_container"
