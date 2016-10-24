@@ -10,7 +10,9 @@ buildscript {
     classpath 'com.android.tools.build:gradle:2.2.2'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
     classpath 'me.tatarka:gradle-retrolambda:3.3.1'
+    classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
   }
+  configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 // Manifest version information!
