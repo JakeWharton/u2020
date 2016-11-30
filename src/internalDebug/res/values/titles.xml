@@ -2,5 +2,4 @@
 <resources>
   <string name="application_name">U+2020 Sample Internal Debug</string>
   <string name="launcher_name">U+2020 Internal (D)</string>
-  <string name="leak_canary_display_activity_label">U+2020 (D) Leaks</string>
 </resources>
