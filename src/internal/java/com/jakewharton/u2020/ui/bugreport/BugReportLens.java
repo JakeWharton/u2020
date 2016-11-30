@@ -26,7 +26,7 @@ import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
  * Pops a dialog asking for more information about the bug report and then creates an email with a
  * JIRA-formatted body.
  */
-public final class BugReportLens implements Lens, ReportListener {
+public final class BugReportLens extends Lens implements ReportListener {
   private final Activity context;
   private final LumberYard lumberYard;
 
