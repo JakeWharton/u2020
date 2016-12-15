@@ -10,9 +10,7 @@ buildscript {
     classpath 'com.android.tools.build:gradle:2.2.3'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
     classpath 'me.tatarka:gradle-retrolambda:3.4.0'
-    classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
   }
-  configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 // Manifest version information!
@@ -106,6 +104,7 @@ android {
   lintOptions {
     textReport true
     textOutput 'stdout'
+    fatal 'UnusedResources'
   }
 
   compileOptions {
