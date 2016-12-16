@@ -161,7 +161,7 @@ dependencies {
   internalCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
   productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
-  compile 'io.reactivex:rxjava:1.2.3'
+  compile 'io.reactivex:rxjava:1.2.4'
   compile 'io.reactivex:rxandroid:1.2.1'
 
   compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
