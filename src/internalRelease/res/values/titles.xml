@@ -2,5 +2,5 @@
 <resources>
   <string name="application_name">U+2020 Sample Internal</string>
   <string name="launcher_name">U+2020 Internal</string>
-  <string name="__leak_canary_display_activity_label">U+2020 Leaks</string>
+  <string name="leak_canary_display_activity_label">U+2020 Leaks</string>
 </resources>

@@ -5,10 +5,11 @@ jdk:
 
 android:
   components:
-    - platform-tools
     - tools
-    - android-23
-    - build-tools-23.0.3
+    - tools
+    - platform-tools
+    - build-tools-25.0.2
+    - android-25
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-19
 
