@@ -1,14 +1,11 @@
 package com.jakewharton.u2020.ui;
 
 import android.support.v4.widget.DrawerLayout;
-
 import com.jakewharton.u2020.U2020Module;
 import com.jakewharton.u2020.ui.trending.TrendingView;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 
 @Module(
     addsTo = U2020Module.class,

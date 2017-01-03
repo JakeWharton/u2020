@@ -6,19 +6,19 @@ import android.os.Build;
 import android.support.v4.app.ShareCompat;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
-
 import com.jakewharton.u2020.BuildConfig;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.util.Intents;
 import com.jakewharton.u2020.util.Strings;
 import com.mattprecious.telescope.Lens;
-
 import java.io.File;
-
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.os.Build.VERSION.RELEASE;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.util.DisplayMetrics.*;
 import static com.jakewharton.u2020.ui.bugreport.BugReportDialog.ReportListener;
 import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
 
@@ -27,20 +27,20 @@ import static com.jakewharton.u2020.ui.bugreport.BugReportView.Report;
  * JIRA-formatted body.
  */
 public final class BugReportLens extends Lens implements ReportListener {
-  private final Activity context;
+  private final Activity activity;
   private final LumberYard lumberYard;
 
   private File screenshot;
 
-  public BugReportLens(Activity context, LumberYard lumberYard) {
-    this.context = context;
+  public BugReportLens(Activity activity, LumberYard lumberYard) {
+    this.activity = activity;
     this.lumberYard = lumberYard;
   }
 
   @Override public void onCapture(File screenshot) {
     this.screenshot = screenshot;
 
-    BugReportDialog dialog = new BugReportDialog(context);
+    BugReportDialog dialog = new BugReportDialog(activity);
     dialog.setReportListener(this);
     dialog.show();
   }
@@ -48,21 +48,21 @@ public final class BugReportLens extends Lens implements ReportListener {
   @Override public void onBugReportSubmit(final Report report) {
     if (report.includeLogs) {
       lumberYard.save()
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(new Subscriber<File>() {
-            @Override public void onCompleted() {
-              // NO-OP.
-            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<File>() {
+                  @Override public void onCompleted() {
+                    // NO-OP.
+                  }
 
-            @Override public void onError(Throwable e) {
-              Toast.makeText(context, "Couldn't attach the logs.", Toast.LENGTH_SHORT).show();
-              submitReport(report, null);
-            }
+                  @Override public void onError(Throwable e) {
+                    Toast.makeText(activity, "Couldn't attach the logs.", Toast.LENGTH_SHORT).show();
+                    submitReport(report, null);
+                  }
 
-            @Override public void onNext(File logs) {
-              submitReport(report, logs);
-            }
+                  @Override public void onNext(File logs) {
+                    submitReport(report, logs);
+                  }
           });
     } else {
       submitReport(report, null);
@@ -70,10 +70,10 @@ public final class BugReportLens extends Lens implements ReportListener {
   }
 
   private void submitReport(Report report, File logs) {
-    DisplayMetrics dm = context.getResources().getDisplayMetrics();
+    DisplayMetrics dm = activity.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(dm);
 
-    ShareCompat.IntentBuilder intent = ShareCompat.IntentBuilder.from(context)
+    ShareCompat.IntentBuilder intent = ShareCompat.IntentBuilder.from(activity)
             .setType("message/rfc822")
     // TODO: .addEmailTo("u2020-bugs@blackhole.io")
             .setSubject(report.title);
@@ -101,8 +101,8 @@ public final class BugReportLens extends Lens implements ReportListener {
         .append("dpi (")
         .append(densityBucket)
         .append(")\n");
-    body.append("Release: ").append(Build.VERSION.RELEASE).append('\n');
-    body.append("API: ").append(Build.VERSION.SDK_INT).append('\n');
+    body.append("Release: ").append(RELEASE).append('\n');
+    body.append("API: ").append(SDK_INT).append('\n');
     body.append("{panel}");
 
     intent.setText(body.toString());
@@ -114,24 +114,24 @@ public final class BugReportLens extends Lens implements ReportListener {
       intent.addStream(Uri.fromFile(logs));
     }
 
-    Intents.maybeStartActivity(context, intent.getIntent());
+    Intents.maybeStartActivity(activity, intent.getIntent());
   }
 
   private static String getDensityString(DisplayMetrics displayMetrics) {
     switch (displayMetrics.densityDpi) {
-      case DisplayMetrics.DENSITY_LOW:
+      case DENSITY_LOW:
         return "ldpi";
-      case DisplayMetrics.DENSITY_MEDIUM:
+      case DENSITY_MEDIUM:
         return "mdpi";
-      case DisplayMetrics.DENSITY_HIGH:
+      case DENSITY_HIGH:
         return "hdpi";
-      case DisplayMetrics.DENSITY_XHIGH:
+      case DENSITY_XHIGH:
         return "xhdpi";
-      case DisplayMetrics.DENSITY_XXHIGH:
+      case DENSITY_XXHIGH:
         return "xxhdpi";
-      case DisplayMetrics.DENSITY_XXXHIGH:
+      case DENSITY_XXXHIGH:
         return "xxxhdpi";
-      case DisplayMetrics.DENSITY_TV:
+      case DENSITY_TV:
         return "tvdpi";
       default:
         return String.valueOf(displayMetrics.densityDpi);

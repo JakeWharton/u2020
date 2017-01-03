@@ -2,10 +2,10 @@ package com.jakewharton.u2020.ui;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import com.squareup.spoon.Spoon;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.squareup.spoon.Spoon;
 
 import static android.os.SystemClock.sleep;
 import static java.util.concurrent.TimeUnit.SECONDS;
