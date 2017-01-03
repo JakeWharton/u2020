@@ -48,21 +48,21 @@ public final class BugReportLens extends Lens implements ReportListener {
   @Override public void onBugReportSubmit(final Report report) {
     if (report.includeLogs) {
       lumberYard.save()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<File>() {
-                  @Override public void onCompleted() {
-                    // NO-OP.
-                  }
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new Subscriber<File>() {
+            @Override public void onCompleted() {
+              // NO-OP.
+            }
 
-                  @Override public void onError(Throwable e) {
-                    Toast.makeText(activity, "Couldn't attach the logs.", Toast.LENGTH_SHORT).show();
-                    submitReport(report, null);
-                  }
+            @Override public void onError(Throwable e) {
+              Toast.makeText(activity, "Couldn't attach the logs.", Toast.LENGTH_SHORT).show();
+              submitReport(report, null);
+            }
 
-                  @Override public void onNext(File logs) {
-                    submitReport(report, logs);
-                  }
+            @Override public void onNext(File logs) {
+              submitReport(report, logs);
+            }
           });
     } else {
       submitReport(report, null);
@@ -73,9 +73,9 @@ public final class BugReportLens extends Lens implements ReportListener {
     DisplayMetrics dm = activity.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(dm);
 
-    ShareCompat.IntentBuilder intent = ShareCompat.IntentBuilder.from(activity)
-            .setType("message/rfc822")
-    // TODO: .addEmailTo("u2020-bugs@blackhole.io")
+    ShareCompat.IntentBuilder intent =
+        ShareCompat.IntentBuilder.from(activity).setType("message/rfc822")
+            // TODO: .addEmailTo("u2020-bugs@blackhole.io")
             .setSubject(report.title);
 
     StringBuilder body = new StringBuilder();
