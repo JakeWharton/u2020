@@ -21,6 +21,9 @@ public final class U2020App extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
+    if (LeakCanary.isInAnalyzerProcess(this)) {
+      return;
+    }
     AndroidThreeTen.init(this);
     LeakCanary.install(this);
 
