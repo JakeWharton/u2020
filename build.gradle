@@ -128,38 +128,48 @@ configurations.all {
   }
 }
 
+ext {
+  supportLibVersion = '25.3.0'
+  daggerVersion = '1.2.5'
+  okhttp3Version = '3.6.0'
+  retrofit2Version = '2.2.0'
+  butterKnifeVersion = '8.5.1'
+  leakCanaryVersion = '1.5'
+  espressoVersion = '2.2.2'
+}
+
 dependencies {
-  compile 'com.android.support:support-v4:25.1.0'
-  compile 'com.android.support:support-annotations:25.1.0'
-  compile 'com.android.support:appcompat-v7:25.1.0'
-  compile 'com.android.support:recyclerview-v7:25.1.0'
-  compile 'com.android.support:design:25.1.0'
+  compile "com.android.support:support-v4:$supportLibVersion"
+  compile "com.android.support:support-annotations:$supportLibVersion"
+  compile "com.android.support:appcompat-v7:$supportLibVersion"
+  compile "com.android.support:recyclerview-v7:$supportLibVersion"
+  compile "com.android.support:design:$supportLibVersion"
 
-  compile 'com.squareup.dagger:dagger:1.2.5'
-  annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.5'
+  compile "com.squareup.dagger:dagger:$daggerVersion"
+  annotationProcessor "com.squareup.dagger:dagger-compiler:$daggerVersion"
 
-  compile 'com.squareup.okhttp3:okhttp:3.5.0'
-  compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+  compile "com.squareup.okhttp3:okhttp:$okhttp3Version"
+  compile "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
   compile 'com.squareup.okio:okio:1.11.0'
   compile 'com.squareup.picasso:picasso:2.5.2'
   compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-  compile 'com.squareup.retrofit2:retrofit:2.1.0'
-  compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-  compile 'com.squareup.moshi:moshi:1.3.1'
-  internalDebugCompile 'com.squareup.retrofit2:retrofit-mock:2.1.0'
+  compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
+  compile "com.squareup.retrofit2:converter-moshi:$retrofit2Version"
+  compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"
+  compile 'com.squareup.moshi:moshi:1.4.0'
+  internalDebugCompile "com.squareup.retrofit2:retrofit-mock:$retrofit2Version"
 
-  compile 'com.jakewharton:butterknife:8.4.0'
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-  compile 'com.jakewharton.timber:timber:4.4.0'
+  compile "com.jakewharton:butterknife:$butterKnifeVersion"
+  annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+  compile 'com.jakewharton.timber:timber:4.5.1'
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
-  compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+  compile 'com.jakewharton.rxbinding:rxbinding:1.0.1'
   internalDebugCompile 'com.jakewharton.madge:madge:1.1.4'
   internalDebugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
   internalDebugCompile 'com.jakewharton:process-phoenix:1.1.1'
 
-  internalCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-  productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+  internalCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+  productionCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
   compile 'io.reactivex:rxjava:1.2.4'
   compile 'io.reactivex:rxandroid:1.2.1'
@@ -171,8 +181,8 @@ dependencies {
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
 
   androidTestCompile 'junit:junit:4.12'
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+  androidTestCompile "com.android.support.test.espresso:espresso-core:$espressoVersion"
+  androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
     exclude group: 'com.android.support'
   }
   androidTestCompile 'com.android.support.test:runner:0.5'
