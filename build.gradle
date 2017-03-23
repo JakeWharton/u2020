@@ -122,12 +122,6 @@ configurations {
   internalDebugCompile
 }
 
-configurations.all {
-  resolutionStrategy {
-    force 'com.android.support:support-annotations:25.1.0'
-  }
-}
-
 ext {
   supportLibVersion = '25.3.0'
   daggerVersion = '1.2.5'
@@ -136,6 +130,12 @@ ext {
   butterKnifeVersion = '8.5.1'
   leakCanaryVersion = '1.5'
   espressoVersion = '2.2.2'
+}
+
+configurations.all {
+  resolutionStrategy {
+    force "com.android.support:support-annotations:$supportLibVersion"
+  }
 }
 
 dependencies {
