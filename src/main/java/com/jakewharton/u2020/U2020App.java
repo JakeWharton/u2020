@@ -1,6 +1,11 @@
 package com.jakewharton.u2020;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
+import android.os.StrictMode.ThreadPolicy;
+import android.os.StrictMode.VmPolicy;
 import android.support.annotation.NonNull;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.jakewharton.u2020.data.Injector;
@@ -29,6 +34,21 @@ public final class U2020App extends Application {
 
     if (BuildConfig.DEBUG) {
       Timber.plant(new DebugTree());
+
+      // ActivityThread does not allow setting StrictMode during Application#onCreate.
+      // Post it to run as soon as possible after this method.
+      new Handler(Looper.getMainLooper()).postAtFrontOfQueue(() -> {
+        StrictMode.setVmPolicy(new VmPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .penaltyDeath()
+            .build());
+        StrictMode.setThreadPolicy(new ThreadPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .penaltyDeath()
+            .build());
+      });
     } else {
       // TODO Crashlytics.start(this);
       // TODO Timber.plant(new CrashlyticsTree());

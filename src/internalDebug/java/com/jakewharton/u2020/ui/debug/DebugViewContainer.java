@@ -3,7 +3,9 @@ package com.jakewharton.u2020.ui.debug;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.PowerManager;
+import android.os.StrictMode;
 import android.support.v4.view.GravityCompat;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -93,7 +95,13 @@ public final class DebugViewContainer implements ViewContainer {
       }
     });
 
-    TelescopeLayout.cleanUp(activity); // Clean up any old screenshots.
+    // Clean up any old screenshots.
+    new AsyncTask<Void, Void, Void>() {
+      @Override protected Void doInBackground(Void... params) {
+        TelescopeLayout.cleanUp(activity);
+        return null;
+      }
+    }.execute();
     viewHolder.telescopeLayout.setLens(new BugReportLens(activity, lumberYard));
 
     // If you have not seen the debug drawer before, show it with a message
