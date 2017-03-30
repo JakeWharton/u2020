@@ -1487,9 +1487,8 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
     return super.onKeyUp(keyCode, event);
   }
 
-  @Override
-  protected void onRestoreInstanceState(Parcelable state) {
-    final SavedState ss = (SavedState) state;
+  @Override protected void onRestoreInstanceState(Parcelable state) {
+    SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(ss.getSuperState());
 
     if (ss.openDrawerGravity != Gravity.NO_GRAVITY) {
@@ -1503,24 +1502,16 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
     setDrawerLockMode(ss.lockModeRight, Gravity.RIGHT);
   }
 
-  @Override
-  protected Parcelable onSaveInstanceState() {
-    final Parcelable superState = super.onSaveInstanceState();
-    final SavedState ss = new SavedState(superState);
-
-    final View openDrawer = findOpenDrawer();
-    if (openDrawer != null) {
-      ss.openDrawerGravity = ((LayoutParams) openDrawer.getLayoutParams()).gravity;
-    }
-
-    ss.lockModeLeft = mLockModeLeft;
-    ss.lockModeRight = mLockModeRight;
-
-    return ss;
+  @Override protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    View openDrawer = findOpenDrawer();
+    int openDrawerGravity =
+        openDrawer != null ? ((LayoutParams) openDrawer.getLayoutParams()).gravity
+            : Gravity.NO_GRAVITY;
+    return new SavedState(superState, openDrawerGravity, mLockModeLeft, mLockModeRight);
   }
 
-  @Override
-  public void addView(View child, int index, ViewGroup.LayoutParams params) {
+  @Override public void addView(View child, int index, ViewGroup.LayoutParams params) {
     super.addView(child, index, params);
 
     final View openDrawer = findOpenDrawer();
@@ -1559,34 +1550,39 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
    * State persisted across instances
    */
   protected static class SavedState extends BaseSavedState {
-    int openDrawerGravity = Gravity.NO_GRAVITY;
-    int lockModeLeft = LOCK_MODE_UNLOCKED;
-    int lockModeRight = LOCK_MODE_UNLOCKED;
+    final int openDrawerGravity;
+    final int lockModeLeft;
+    final int lockModeRight;
+
+    public SavedState(Parcelable superState, int openDrawerGravity, int lockModeLeft,
+        int lockModeRight) {
+      super(superState);
+      this.openDrawerGravity = openDrawerGravity;
+      this.lockModeLeft = lockModeLeft;
+      this.lockModeRight = lockModeRight;
+    }
 
     public SavedState(Parcel in) {
       super(in);
       openDrawerGravity = in.readInt();
+      lockModeLeft = in.readInt();
+      lockModeRight = in.readInt();
     }
 
-    public SavedState(Parcelable superState) {
-      super(superState);
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
       super.writeToParcel(dest, flags);
       dest.writeInt(openDrawerGravity);
+      dest.writeInt(lockModeLeft);
+      dest.writeInt(lockModeRight);
     }
 
     public static final Parcelable.Creator<SavedState> CREATOR =
         new Parcelable.Creator<SavedState>() {
-          @Override
-          public SavedState createFromParcel(Parcel source) {
+          @Override public SavedState createFromParcel(Parcel source) {
             return new SavedState(source);
           }
 
-          @Override
-          public SavedState[] newArray(int size) {
+          @Override public SavedState[] newArray(int size) {
             return new SavedState[size];
           }
         };
