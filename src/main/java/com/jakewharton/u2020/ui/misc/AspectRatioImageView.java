@@ -2,13 +2,14 @@ package com.jakewharton.u2020.ui.misc;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.jakewharton.u2020.R;
 
 import static android.view.View.MeasureSpec.EXACTLY;
 
-public final class AspectRatioImageView extends ImageView {
+public final class AspectRatioImageView extends AppCompatImageView {
   private final int widthRatio;
   private final int heightRatio;
 
