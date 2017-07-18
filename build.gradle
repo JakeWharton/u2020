@@ -3,13 +3,13 @@ buildscript {
     //maven {
     //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
     //}
+    google()
     mavenCentral()
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.3'
+    classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
-    classpath 'me.tatarka:gradle-retrolambda:3.4.0'
   }
 }
 
@@ -21,7 +21,6 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
 apply plugin: 'spoon'
-apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
   //maven {
@@ -93,10 +92,14 @@ android {
   }
 
   productFlavors {
+    flavorDimensions 'environment'
+
     internal {
+      dimension 'environment'
       applicationId 'com.jakewharton.u2020.internal'
     }
     production {
+      dimension 'environment'
       applicationId 'com.jakewharton.u2020'
     }
   }

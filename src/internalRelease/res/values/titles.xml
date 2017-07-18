@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="application_name">U+2020 Sample Internal</string>
   <string name="launcher_name">U+2020 Internal</string>
-  <string name="leak_canary_display_activity_label">U+2020 Leaks</string>
+  <!-- TODO remove suppression when https://issuetracker.google.com/issues/63809793 is fixed. -->
+  <string name="leak_canary_display_activity_label" tools:ignore="UnusedResources">U+2020 Leaks</string>
 </resources>

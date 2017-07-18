@@ -17,6 +17,7 @@
 
 package com.jakewharton.u2020.ui.debug;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -54,6 +55,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /** This is a fork of DrawerLayout which propagates insets without applying them. */
+@SuppressLint("all")
 public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
   private static final String TAG = "DrawerLayout";
 
