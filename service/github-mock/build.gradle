@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+  api project(':service:github')
+  api deps.retrofit.mock
+}

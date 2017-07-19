@@ -70,4 +70,9 @@ public final class DebugApiModule {
   @Provides @Singleton MockResponseSupplier provideResponseSupplier(SharedPreferences preferences) {
     return new SharedPreferencesMockResponseSupplier(preferences);
   }
+
+  @Provides @Singleton MockGithubService provideMockGitHubService(MockRetrofit mockRetrofit,
+      MockResponseSupplier responseSupplier) {
+    return new MockGithubService(mockRetrofit, responseSupplier);
+  }
 }
