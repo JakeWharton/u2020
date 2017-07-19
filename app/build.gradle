@@ -121,9 +121,8 @@ dependencies {
   implementation deps.okio
   implementation deps.picasso
   implementation deps.picassoOkHttpDownloader
-  implementation deps.retrofit.core
+  implementation project(':service:github')
   implementation deps.retrofit.moshi
-  implementation deps.retrofit.rxjava
   implementation deps.moshi
   internalDebugImplementation deps.retrofit.mock
 

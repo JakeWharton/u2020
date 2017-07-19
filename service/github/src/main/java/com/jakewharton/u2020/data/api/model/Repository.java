@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import org.threeten.bp.Instant;
 
-import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public final class Repository {
   @NonNull public final String name;
@@ -19,13 +19,13 @@ public final class Repository {
   public final Instant updated_at;
 
   private Repository(Builder builder) {
-    this.name = checkNotNull(builder.name, "name == null");
-    this.owner = checkNotNull(builder.owner, "owner == null");
+    this.name = requireNonNull(builder.name, "name == null");
+    this.owner = requireNonNull(builder.owner, "owner == null");
     this.description = builder.description;
     this.watchers = builder.stars;
     this.forks = builder.forks;
-    this.html_url = checkNotNull(builder.htmlUrl, "html_url == null");
-    this.updated_at = checkNotNull(builder.updatedAt, "updated_at == null");
+    this.html_url = requireNonNull(builder.htmlUrl, "html_url == null");
+    this.updated_at = requireNonNull(builder.updatedAt, "updated_at == null");
   }
 
   @Override public String toString() {

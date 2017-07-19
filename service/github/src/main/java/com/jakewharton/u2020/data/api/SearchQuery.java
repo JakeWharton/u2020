@@ -2,14 +2,14 @@ package com.jakewharton.u2020.data.api;
 
 import org.threeten.bp.LocalDate;
 
-import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.threeten.bp.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 public final class SearchQuery {
   private final LocalDate createdSince;
 
   private SearchQuery(Builder builder) {
-    this.createdSince = checkNotNull(builder.createdSince, "createdSince == null");
+    this.createdSince = requireNonNull(builder.createdSince, "createdSince == null");
   }
 
   @Override public String toString() {
