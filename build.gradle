@@ -7,10 +7,10 @@ buildscript {
 
       'supportLibrary': '26.0.0-beta2',
       'dagger': '1.2.5',
-      'okhttp': '3.6.0',
-      'retrofit': '2.2.0',
-      'butterKnife': '8.5.1',
-      'leakCanary': '1.5',
+      'okhttp': '3.8.1',
+      'retrofit': '2.3.0',
+      'butterKnife': '8.7.0',
+      'leakCanary': '1.5.1',
       'espresso': '2.2.2',
       'astl': '0.5',
   ]
@@ -31,7 +31,7 @@ buildscript {
           'core': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
           'logger': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
       ],
-      'okio': 'com.squareup.okio:okio:1.11.0',
+      'okio': 'com.squareup.okio:okio:1.13.0',
       'picasso': 'com.squareup.picasso:picasso:2.5.2',
       'picassoOkHttpDownloader': 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0',
       'retrofit': [
@@ -40,7 +40,7 @@ buildscript {
           'moshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
           'rxjava': "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}",
       ],
-      'moshi': 'com.squareup.moshi:moshi:1.4.0',
+      'moshi': 'com.squareup.moshi:moshi:1.5.0',
       'butterKnife': [
           'runtime': "com.jakewharton:butterknife:${versions.butterKnife}",
           'compiler': "com.jakewharton:butterknife-compiler:${versions.butterKnife}",
@@ -50,17 +50,17 @@ buildscript {
       'rxbinding': 'com.jakewharton.rxbinding:rxbinding:1.0.1',
       'madge': 'com.jakewharton.madge:madge:1.1.4',
       'scalpel': 'com.jakewharton.scalpel:scalpel:1.1.2',
-      'processPhoenix': 'com.jakewharton:process-phoenix:1.1.1',
+      'processPhoenix': 'com.jakewharton:process-phoenix:2.0.0',
       'leakCanary': [
           'real': "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
           'noOp': "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakCanary}",
       ],
       'rx': [
-          'core': 'io.reactivex:rxjava:1.2.4',
+          'core': 'io.reactivex:rxjava:1.3.0',
           'android': 'io.reactivex:rxandroid:1.2.1',
           'preferences': 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
       ],
-      'threeTenAbp': 'com.jakewharton.threetenabp:threetenabp:1.0.4',
+      'threeTenAbp': 'com.jakewharton.threetenabp:threetenabp:1.0.5',
       'telescope': 'com.mattprecious.telescope:telescope:2.1.0',
       'junit': 'junit:junit:4.12',
       'espresso': [
@@ -71,8 +71,8 @@ buildscript {
           'runner': "com.android.support.test:runner:${versions.astl}",
           'rules': "com.android.support.test:rules:${versions.astl}",
       ],
-      'spoon': 'com.squareup.spoon:spoon-client:1.7.0',
-      'truth': 'com.google.truth:truth:0.30',
+      'spoon': 'com.squareup.spoon:spoon-client:1.7.1',
+      'truth': 'com.google.truth:truth:0.34',
   ]
 
   repositories {
