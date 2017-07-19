@@ -1,5 +1,6 @@
 package com.jakewharton.u2020.data.api;
 
+import android.content.SharedPreferences;
 import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.IsMockMode;
@@ -64,5 +65,9 @@ public final class DebugApiModule {
   @Provides @Singleton GithubService provideGithubService(Retrofit retrofit,
       @IsMockMode boolean isMockMode, MockGithubService mockService) {
     return isMockMode ? mockService : retrofit.create(GithubService.class);
+  }
+
+  @Provides @Singleton MockResponseSupplier provideResponseSupplier(SharedPreferences preferences) {
+    return new SharedPreferencesMockResponseSupplier(preferences);
   }
 }
