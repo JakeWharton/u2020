@@ -1,0 +1,162 @@
+// Manifest version information!
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+apply plugin: 'com.android.application'
+apply plugin: 'spoon'
+
+def gitSha() {
+  def p = 'git rev-parse --short HEAD'.execute([], project.rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
+
+def gitTimestamp() {
+  def p = 'git log -n 1 --format=%at'.execute([], rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim()
+}
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  signingConfigs {
+    u2020 {
+      storeFile rootProject.file('u2020.keystore')
+      storePassword 'android'
+      keyAlias 'android'
+      keyPassword 'android'
+    }
+  }
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    signingConfig signingConfigs.u2020
+
+    buildConfigField 'String', 'GIT_SHA', "\"${gitSha()}\""
+    buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp()}L"
+
+    testInstrumentationRunner 'com.jakewharton.u2020.U2020TestRunner'
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix '.debug'
+    }
+  }
+
+  productFlavors {
+    flavorDimensions 'environment'
+
+    internal {
+      dimension 'environment'
+      applicationId 'com.jakewharton.u2020.internal'
+    }
+    production {
+      dimension 'environment'
+      applicationId 'com.jakewharton.u2020'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  packagingOptions {
+    exclude 'LICENSE.txt'
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    fatal 'UnusedResources'
+  }
+}
+
+// TODO remove eventually: http://b.android.com/162285
+configurations {
+  internalDebugImplementation
+}
+
+dependencies {
+  implementation deps.support.v4
+  implementation deps.support.annotations
+  implementation deps.support.appCompat
+  implementation deps.support.recyclerView
+  implementation deps.support.design
+
+  implementation deps.dagger.runtime
+  annotationProcessor deps.dagger.compiler
+
+  implementation deps.okhttp.core
+  implementation deps.okhttp.logger
+  implementation deps.okio
+  implementation deps.picasso
+  implementation deps.picassoOkHttpDownloader
+  implementation deps.retrofit.core
+  implementation deps.retrofit.moshi
+  implementation deps.retrofit.rxjava
+  implementation deps.moshi
+  internalDebugImplementation deps.retrofit.mock
+
+  implementation deps.butterKnife.runtime
+  annotationProcessor deps.butterKnife.compiler
+  implementation deps.timber
+  implementation deps.byteUnits
+  implementation deps.rxbinding
+  internalDebugImplementation deps.madge
+  internalDebugImplementation deps.scalpel
+  internalDebugImplementation deps.processPhoenix
+
+  internalImplementation deps.leakCanary.real
+  productionImplementation deps.leakCanary.noOp
+
+  implementation deps.rx.core
+  implementation deps.rx.android
+
+  implementation deps.threeTenAbp
+
+  internalImplementation deps.telescope
+
+  implementation deps.rx.preferences
+
+  androidTestImplementation deps.junit
+  androidTestImplementation deps.espresso.core
+  androidTestImplementation deps.espresso.contrib
+  androidTestImplementation deps.astl.runner
+  androidTestImplementation deps.astl.rules
+  androidTestImplementation deps.spoon
+
+  testImplementation deps.junit
+  testImplementation deps.truth
+}
+
+def installAll = tasks.create('installAll')
+installAll.description = 'Install all applications.'
+android.applicationVariants.all { variant ->
+  installAll.dependsOn(variant.install)
+  // Ensure we end up in the same group as the other install tasks.
+  installAll.group = variant.install.group
+}
+
+// The default 'assemble' task only applies to normal variants. Add test variants as well.
+android.testVariants.all { variant ->
+  tasks.getByName('assemble').dependsOn variant.assemble
+}

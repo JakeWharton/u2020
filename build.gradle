@@ -1,214 +1,107 @@
 buildscript {
+  ext.versions = [
+      'compileSdk': 26,
+      'buildTools': '26.0.0',
+      'minSdk': 15,
+      'targetSdk': 25,
+
+      'supportLibrary': '26.0.0-beta2',
+      'dagger': '1.2.5',
+      'okhttp': '3.6.0',
+      'retrofit': '2.2.0',
+      'butterKnife': '8.5.1',
+      'leakCanary': '1.5',
+      'espresso': '2.2.2',
+      'astl': '0.5',
+  ]
+
+  ext.deps = [
+      'support': [
+          'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
+          'v4': "com.android.support:support-v4:${versions.supportLibrary}",
+          'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
+          'design': "com.android.support:design:${versions.supportLibrary}",
+          'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
+      ],
+      'dagger': [
+          'runtime': "com.squareup.dagger:dagger:${versions.dagger}",
+          'compiler': "com.squareup.dagger:dagger-compiler:${versions.dagger}",
+      ],
+      'okhttp': [
+          'core': "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+          'logger': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+      ],
+      'okio': 'com.squareup.okio:okio:1.11.0',
+      'picasso': 'com.squareup.picasso:picasso:2.5.2',
+      'picassoOkHttpDownloader': 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0',
+      'retrofit': [
+          'core': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+          'mock': "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}",
+          'moshi': "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
+          'rxjava': "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}",
+      ],
+      'moshi': 'com.squareup.moshi:moshi:1.4.0',
+      'butterKnife': [
+          'runtime': "com.jakewharton:butterknife:${versions.butterKnife}",
+          'compiler': "com.jakewharton:butterknife-compiler:${versions.butterKnife}",
+      ],
+      'timber': 'com.jakewharton.timber:timber:4.5.1',
+      'byteUnits': 'com.jakewharton.byteunits:byteunits:0.9.1',
+      'rxbinding': 'com.jakewharton.rxbinding:rxbinding:1.0.1',
+      'madge': 'com.jakewharton.madge:madge:1.1.4',
+      'scalpel': 'com.jakewharton.scalpel:scalpel:1.1.2',
+      'processPhoenix': 'com.jakewharton:process-phoenix:1.1.1',
+      'leakCanary': [
+          'real': "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+          'noOp': "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakCanary}",
+      ],
+      'rx': [
+          'core': 'io.reactivex:rxjava:1.2.4',
+          'android': 'io.reactivex:rxandroid:1.2.1',
+          'preferences': 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
+      ],
+      'threeTenAbp': 'com.jakewharton.threetenabp:threetenabp:1.0.4',
+      'telescope': 'com.mattprecious.telescope:telescope:2.1.0',
+      'junit': 'junit:junit:4.12',
+      'espresso': [
+          'core': "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+          'contrib': "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+      ],
+      'astl': [
+          'runner': "com.android.support.test:runner:${versions.astl}",
+          'rules': "com.android.support.test:rules:${versions.astl}",
+      ],
+      'spoon': 'com.squareup.spoon:spoon-client:1.7.0',
+      'truth': 'com.google.truth:truth:0.30',
+  ]
+
   repositories {
-    //maven {
-    //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    //}
     google()
     mavenCentral()
     jcenter()
   }
+
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
   }
 }
 
-// Manifest version information!
-def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 0
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-
-apply plugin: 'com.android.application'
-apply plugin: 'spoon'
-
-repositories {
-  //maven {
-  //  url 'https://oss.sonatype.org/content/repositories/snapshots/'
-  //}
-  google()
-  mavenCentral()
-}
-
-def gitSha() {
-  def p = 'git rev-parse --short HEAD'.execute([], project.rootDir)
-  p.waitFor()
-  if (p.exitValue() != 0) {
-    throw new RuntimeException(p.errorStream.text)
+subprojects {
+  repositories {
+    google()
+    mavenCentral()
+    jcenter()
   }
 
-  return p.text.trim()
-}
-
-def gitTimestamp() {
-  def p = 'git log -n 1 --format=%at'.execute([], rootDir)
-  p.waitFor()
-  if (p.exitValue() != 0) {
-    throw new RuntimeException(p.errorStream.text)
-  }
-
-  return p.text.trim()
-}
-
-def isCi = 'true'.equals(System.getenv('CI'))
-def preDexEnabled = 'true'.equals(System.getProperty('pre-dex', 'true'))
-
-android {
-  compileSdkVersion 26
-  buildToolsVersion '26.0.0'
-
-  dexOptions {
-    // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-    preDexLibraries = preDexEnabled && !isCi
-  }
-
-  signingConfigs {
-    u2020 {
-      storeFile file('u2020.keystore')
-      storePassword 'android'
-      keyAlias 'android'
-      keyPassword 'android'
-    }
-  }
-
-  defaultConfig {
-    minSdkVersion 15
-    targetSdkVersion 25
-
-    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-
-    signingConfig signingConfigs.u2020
-
-    buildConfigField 'String', 'GIT_SHA', "\"${gitSha()}\""
-    buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp()}L"
-
-    testInstrumentationRunner 'com.jakewharton.u2020.U2020TestRunner'
-  }
-
-  buildTypes {
-    debug {
-      applicationIdSuffix '.debug'
-    }
-  }
-
-  productFlavors {
-    flavorDimensions 'environment'
-
-    internal {
-      dimension 'environment'
-      applicationId 'com.jakewharton.u2020.internal'
-    }
-    production {
-      dimension 'environment'
-      applicationId 'com.jakewharton.u2020'
-    }
-  }
-
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-    fatal 'UnusedResources'
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  packagingOptions {
-    exclude 'LICENSE.txt'
-  }
-}
-
-// TODO remove eventually: http://b.android.com/162285
-configurations {
-  internalDebugImplementation
-}
-
-ext {
-  supportLibVersion = '26.0.0-beta2'
-  daggerVersion = '1.2.5'
-  okhttp3Version = '3.6.0'
-  retrofit2Version = '2.2.0'
-  butterKnifeVersion = '8.5.1'
-  leakCanaryVersion = '1.5'
-  espressoVersion = '2.2.2'
-}
-
-configurations.all {
-  resolutionStrategy {
-    eachDependency { details ->
-      // Force all of the primary support libraries to use the same version.
-      if (details.requested.group == 'com.android.support') {
-        details.useVersion supportLibVersion
+  configurations.all {
+    resolutionStrategy {
+      eachDependency { details ->
+        // Force all of the primary support libraries to use the same version.
+        if (details.requested.group == 'com.android.support') {
+          details.useVersion versions.supportLibrary
+        }
       }
     }
   }
-}
-
-dependencies {
-  implementation "com.android.support:support-v4:$supportLibVersion"
-  implementation "com.android.support:support-annotations:$supportLibVersion"
-  implementation "com.android.support:appcompat-v7:$supportLibVersion"
-  implementation "com.android.support:recyclerview-v7:$supportLibVersion"
-  implementation "com.android.support:design:$supportLibVersion"
-
-  implementation "com.squareup.dagger:dagger:$daggerVersion"
-  annotationProcessor "com.squareup.dagger:dagger-compiler:$daggerVersion"
-
-  implementation "com.squareup.okhttp3:okhttp:$okhttp3Version"
-  implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
-  implementation 'com.squareup.okio:okio:1.11.0'
-  implementation 'com.squareup.picasso:picasso:2.5.2'
-  implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-  implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
-  implementation "com.squareup.retrofit2:converter-moshi:$retrofit2Version"
-  implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"
-  implementation 'com.squareup.moshi:moshi:1.4.0'
-  internalDebugImplementation "com.squareup.retrofit2:retrofit-mock:$retrofit2Version"
-
-  implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-  annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
-  implementation 'com.jakewharton.timber:timber:4.5.1'
-  implementation 'com.jakewharton.byteunits:byteunits:0.9.1'
-  implementation 'com.jakewharton.rxbinding:rxbinding:1.0.1'
-  internalDebugImplementation 'com.jakewharton.madge:madge:1.1.4'
-  internalDebugImplementation 'com.jakewharton.scalpel:scalpel:1.1.2'
-  internalDebugImplementation 'com.jakewharton:process-phoenix:1.1.1'
-
-  internalImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-  productionImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-
-  implementation 'io.reactivex:rxjava:1.2.4'
-  implementation 'io.reactivex:rxandroid:1.2.1'
-
-  implementation 'com.jakewharton.threetenabp:threetenabp:1.0.4'
-
-  internalImplementation 'com.mattprecious.telescope:telescope:2.1.0'
-
-  implementation 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
-
-  androidTestImplementation 'junit:junit:4.12'
-  androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
-  androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoVersion"
-  androidTestImplementation 'com.android.support.test:runner:0.5'
-  androidTestImplementation 'com.android.support.test:rules:0.5'
-  androidTestImplementation 'com.squareup.spoon:spoon-client:1.7.0'
-
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'com.google.truth:truth:0.30'
-}
-
-def installAll = tasks.create('installAll')
-installAll.description = 'Install all applications.'
-android.applicationVariants.all { variant ->
-  installAll.dependsOn(variant.install)
-  // Ensure we end up in the same group as the other install tasks.
-  installAll.group = variant.install.group
-}
-
-// The default 'assemble' task only applies to normal variants. Add test variants as well.
-android.testVariants.all { variant ->
-  tasks.getByName('assemble').dependsOn variant.assemble
 }
