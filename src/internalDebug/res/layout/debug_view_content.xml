@@ -385,6 +385,44 @@
 
   <TextView
       android:layout_gravity="start|center_vertical"
+      android:text="   (dp)"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <TextView
+      android:id="@+id/debug_device_resolution_dp"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.U2020.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_real_resolution_label"
+      android:layout_gravity="start|center_vertical"
+      android:text="Real Resolution"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <TextView
+      android:id="@+id/debug_device_real_resolution"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.U2020.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_real_resolution_dp_label"
+      android:layout_gravity="start|center_vertical"
+      android:text="   (dp)"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <TextView
+      android:id="@+id/debug_device_real_resolution_dp"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.U2020.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
       android:text="Density"
       style="@style/Widget.U2020.DebugDrawer.RowTitle"
       />

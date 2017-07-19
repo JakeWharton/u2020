@@ -1,16 +1,20 @@
 package com.jakewharton.u2020.ui.debug;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -101,6 +105,11 @@ public final class DebugView extends FrameLayout {
   @BindView(R.id.debug_device_make) TextView deviceMakeView;
   @BindView(R.id.debug_device_model) TextView deviceModelView;
   @BindView(R.id.debug_device_resolution) TextView deviceResolutionView;
+  @BindView(R.id.debug_device_resolution_dp) TextView deviceResolutionDpView;
+  @BindView(R.id.debug_device_real_resolution_label) TextView deviceRealResolutionLabelView;
+  @BindView(R.id.debug_device_real_resolution) TextView deviceRealResolutionView;
+  @BindView(R.id.debug_device_real_resolution_dp_label) TextView deviceRealResolutionDpLabelView;
+  @BindView(R.id.debug_device_real_resolution_dp) TextView deviceRealResolutionDpView;
   @BindView(R.id.debug_device_density) TextView deviceDensityView;
   @BindView(R.id.debug_device_release) TextView deviceReleaseView;
   @BindView(R.id.debug_device_api) TextView deviceApiView;
@@ -407,12 +416,37 @@ public final class DebugView extends FrameLayout {
   private void setupDeviceSection() {
     DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
     String densityBucket = getDensityString(displayMetrics);
+
     deviceMakeView.setText(Strings.truncateAt(Build.MANUFACTURER, 20));
     deviceModelView.setText(Strings.truncateAt(Build.MODEL, 20));
     deviceResolutionView.setText(displayMetrics.heightPixels + "x" + displayMetrics.widthPixels);
+    deviceResolutionDpView.setText(sizeInDp(displayMetrics.heightPixels, displayMetrics.widthPixels,
+                                            displayMetrics.density));
     deviceDensityView.setText(displayMetrics.densityDpi + "dpi (" + densityBucket + ")");
     deviceReleaseView.setText(Build.VERSION.RELEASE);
     deviceApiView.setText(String.valueOf(Build.VERSION.SDK_INT));
+    setupRealSize(displayMetrics.density);
+  }
+
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+  private void setupRealSize(float density) {
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      Point point = new Point();
+      WindowManager windowManager = (WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE);
+      Display display = windowManager.getDefaultDisplay();
+      display.getRealSize(point);
+      deviceRealResolutionView.setText(point.y + "x" + point.x);
+      deviceRealResolutionDpView.setText(sizeInDp(point.y, point.x, density));
+    } else {
+      deviceRealResolutionLabelView.setVisibility(View.GONE);
+      deviceRealResolutionView.setVisibility(View.GONE);
+      deviceRealResolutionDpLabelView.setVisibility(View.GONE);
+      deviceRealResolutionDpView.setVisibility(View.GONE);
+    }
+  }
+
+  private String sizeInDp(int height, int width, float density) {
+    return Math.round(height / density) + "dp x " + Math.round(width / density) + "dp";
   }
 
   private void setupPicassoSection() {
