@@ -54,8 +54,8 @@ def isCi = 'true'.equals(System.getenv('CI'))
 def preDexEnabled = 'true'.equals(System.getProperty('pre-dex', 'true'))
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion '25.0.2'
+  compileSdkVersion 26
+  buildToolsVersion '26.0.0'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -127,7 +127,7 @@ configurations {
 }
 
 ext {
-  supportLibVersion = '25.3.0'
+  supportLibVersion = '26.0.0-beta2'
   daggerVersion = '1.2.5'
   okhttp3Version = '3.6.0'
   retrofit2Version = '2.2.0'
