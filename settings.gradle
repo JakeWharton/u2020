@@ -1,3 +1,4 @@
 rootProject.name = 'u2020'
 
 include ':app'
+include ':service:github'

@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+  api deps.support.annotations
+  api deps.rx.core
+  api deps.retrofit.core
+  api deps.retrofit.rxjava
+  api deps.threeTenAbp
+}
