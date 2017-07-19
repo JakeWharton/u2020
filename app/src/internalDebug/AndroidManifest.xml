@@ -38,7 +38,7 @@
         android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"
         android:enabled="false"
         android:label="@string/leak_canary_display_activity_label"
-        android:taskAffinity="com.squareup.leakcanary"
+        android:taskAffinity="com.squareup.leakcanary.${applicationId}"
         android:theme="@style/leak_canary_LeakCanary.Base"
         >
       <intent-filter tools:node="removeAll"/>

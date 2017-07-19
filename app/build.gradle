@@ -53,6 +53,15 @@ android {
     buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp()}L"
 
     testInstrumentationRunner 'com.jakewharton.u2020.U2020TestRunner'
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments = [
+            // TODO remove when http://b.android.com/187527 is supported by ButterKnife.
+            'butterknife.minSdk': getMinSdkVersion().getApiString()
+        ]
+      }
+    }
   }
 
   buildTypes {
