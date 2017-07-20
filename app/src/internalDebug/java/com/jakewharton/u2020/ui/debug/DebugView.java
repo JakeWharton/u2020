@@ -40,8 +40,8 @@ import com.jakewharton.u2020.data.PixelGridEnabled;
 import com.jakewharton.u2020.data.PixelRatioEnabled;
 import com.jakewharton.u2020.data.ScalpelEnabled;
 import com.jakewharton.u2020.data.ScalpelWireframeEnabled;
-import com.jakewharton.u2020.data.api.MockGithubService;
 import com.jakewharton.u2020.data.api.MockRepositoriesResponse;
+import com.jakewharton.u2020.data.api.MockResponseSupplier;
 import com.jakewharton.u2020.data.prefs.InetSocketAddressPreferenceAdapter;
 import com.jakewharton.u2020.ui.debug.ContextualDebugActions.DebugAction;
 import com.jakewharton.u2020.ui.logs.LogsDialog;
@@ -140,7 +140,7 @@ public final class DebugView extends FrameLayout {
   @Inject @NetworkDelay Preference<Long> networkDelay;
   @Inject @NetworkFailurePercent Preference<Integer> networkFailurePercent;
   @Inject @NetworkVariancePercent Preference<Integer> networkVariancePercent;
-  @Inject MockGithubService mockGithubService;
+  @Inject MockResponseSupplier mockResponseSupplier;
   @Inject Application app;
   @Inject Set<DebugAction> debugActions;
 
@@ -327,14 +327,14 @@ public final class DebugView extends FrameLayout {
     final EnumAdapter<T> adapter = new EnumAdapter<>(getContext(), responseClass);
     spinner.setEnabled(isMockMode);
     spinner.setAdapter(adapter);
-    spinner.setSelection(mockGithubService.getResponse(responseClass).ordinal());
+    spinner.setSelection(mockResponseSupplier.get(responseClass).ordinal());
 
     RxAdapterView.itemSelections(spinner)
         .map(adapter::getItem)
-        .filter(item -> item != mockGithubService.getResponse(responseClass))
+        .filter(item -> item != mockResponseSupplier.get(responseClass))
         .subscribe(selected -> {
           Timber.d("Setting %s to %s", responseClass.getSimpleName(), selected);
-          mockGithubService.setResponse(responseClass, selected);
+          mockResponseSupplier.set(selected);
         });
   }
 

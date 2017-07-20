@@ -124,6 +124,7 @@ dependencies {
   implementation project(':service:github')
   implementation deps.retrofit.moshi
   implementation deps.moshi
+  internalDebugImplementation project(':service:github-mock')
   internalDebugImplementation deps.retrofit.mock
 
   implementation deps.butterKnife.runtime
