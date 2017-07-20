@@ -4,9 +4,6 @@
     <item name="colorAccent">@color/accent</item>
     <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
   </style>
-  <style name="Theme.U2020.External" parent="Theme.U2020">
-    <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
-  </style>
 
   <style name="Widget.U2020.DebugDrawer.Header" parent="None">
     <item name="android:paddingBottom">2dp</item>
@@ -30,20 +27,5 @@
   <style name="Widget.U2020.DebugDrawer.RowValue" parent="Widget.U2020.DebugDrawer.RowWidget">
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="android:textSize">16sp</item>
-  </style>
-
-  <style name="Widget.U2020.ExternalIntent.Header" parent="None">
-    <item name="android:paddingBottom">8dp</item>
-    <item name="android:paddingLeft">16dp</item>
-    <item name="android:paddingRight">16dp</item>
-    <item name="android:paddingTop">16dp</item>
-    <item name="android:textColor">?android:attr/textColorPrimary</item>
-    <item name="android:textSize">18sp</item>
-  </style>
-  <style name="Widget.U2020.ExternalIntent.Body" parent="None">
-    <item name="android:paddingLeft">32dp</item>
-    <item name="android:paddingRight">32dp</item>
-    <item name="android:textColor">?android:attr/textColorSecondary</item>
-    <item name="android:textSize">14sp</item>
   </style>
 </resources>

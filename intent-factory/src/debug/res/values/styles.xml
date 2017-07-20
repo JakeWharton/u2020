@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="CapturedIntentNone"/>
+
+  <style name="Widget.U2020.CapturedIntent.Header" parent="CapturedIntentNone">
+    <item name="android:paddingBottom">8dp</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+    <item name="android:paddingTop">16dp</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">18sp</item>
+  </style>
+  <style name="Widget.U2020.CapturedIntent.Body" parent="CapturedIntentNone">
+    <item name="android:paddingLeft">32dp</item>
+    <item name="android:paddingRight">32dp</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">14sp</item>
+  </style>
+</resources>

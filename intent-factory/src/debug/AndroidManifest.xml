@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application>
+    <activity
+        android:name="com.jakewharton.u2020.intentfactory.CapturedIntentActivity"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:label="Captured Intent"
+        >
+      <intent-filter>
+        <action android:name="com.jakewharton.u2020.intent.EXTERNAL_INTENT"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

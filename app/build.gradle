@@ -107,6 +107,8 @@ configurations {
 }
 
 dependencies {
+  implementation project(':intent-factory')
+
   implementation deps.support.v4
   implementation deps.support.annotations
   implementation deps.support.appCompat

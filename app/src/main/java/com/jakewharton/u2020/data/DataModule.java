@@ -7,6 +7,7 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jakewharton.u2020.data.api.ApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
+import com.jakewharton.u2020.intentfactory.IntentFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;
 import dagger.Module;

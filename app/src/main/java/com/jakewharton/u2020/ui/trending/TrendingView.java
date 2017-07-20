@@ -21,7 +21,7 @@ import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
 import com.jakewharton.u2020.data.Funcs;
 import com.jakewharton.u2020.data.Injector;
-import com.jakewharton.u2020.data.IntentFactory;
+import com.jakewharton.u2020.intentfactory.IntentFactory;
 import com.jakewharton.u2020.data.api.GithubService;
 import com.jakewharton.u2020.data.api.Order;
 import com.jakewharton.u2020.data.api.Results;

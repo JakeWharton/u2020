@@ -1,4 +1,4 @@
-package com.jakewharton.u2020.data;
+package com.jakewharton.u2020.intentfactory;
 
 import android.content.Intent;
 import android.net.Uri;
