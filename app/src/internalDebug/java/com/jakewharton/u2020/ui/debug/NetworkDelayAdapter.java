@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 
-import static butterknife.ButterKnife.findById;
-
 class NetworkDelayAdapter extends BindableAdapter<Long> {
   private static final long[] VALUES = {
       250, 500, 1000, 2000, 3000, 5000
@@ -44,7 +42,7 @@ class NetworkDelayAdapter extends BindableAdapter<Long> {
   }
 
   @Override public void bindView(Long item, int position, View view) {
-    TextView tv = findById(view, android.R.id.text1);
+    TextView tv = view.findViewById(android.R.id.text1);
     tv.setText(item + "ms");
   }
 

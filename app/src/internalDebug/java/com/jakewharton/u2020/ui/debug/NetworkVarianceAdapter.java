@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 
-import static butterknife.ButterKnife.findById;
-
 class NetworkVarianceAdapter extends BindableAdapter<Integer> {
   private static final int[] VALUES = {
       20, 40, 60
@@ -44,7 +42,7 @@ class NetworkVarianceAdapter extends BindableAdapter<Integer> {
   }
 
   @Override public void bindView(Integer item, int position, View view) {
-    TextView tv = findById(view, android.R.id.text1);
+    TextView tv = view.findViewById(android.R.id.text1);
     tv.setText("±" + item + "%");
   }
 
