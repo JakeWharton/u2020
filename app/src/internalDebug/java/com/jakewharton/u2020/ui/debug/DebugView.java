@@ -66,7 +66,6 @@ import org.threeten.bp.temporal.TemporalAccessor;
 import retrofit2.mock.NetworkBehavior;
 import timber.log.Timber;
 
-import static butterknife.ButterKnife.findById;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public final class DebugView extends FrameLayout {
@@ -506,7 +505,7 @@ public final class DebugView extends FrameLayout {
     final int originalSelection = networkProxyAddress.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
-    final EditText hostView = findById(view, R.id.debug_drawer_network_proxy_host);
+    final EditText hostView = view.findViewById(R.id.debug_drawer_network_proxy_host);
 
     if(networkProxyAddress.isSet()) {
       String host = networkProxyAddress.get().getHostName();
@@ -541,7 +540,7 @@ public final class DebugView extends FrameLayout {
 
   private void showCustomEndpointDialog(final int originalSelection, String defaultUrl) {
     View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_endpoint, null);
-    final EditText url = findById(view, R.id.debug_drawer_network_endpoint_url);
+    final EditText url = view.findViewById(R.id.debug_drawer_network_endpoint_url);
     url.setText(defaultUrl);
     url.setSelection(url.length());
 
