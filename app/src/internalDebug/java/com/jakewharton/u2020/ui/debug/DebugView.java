@@ -347,7 +347,7 @@ public final class DebugView extends FrameLayout {
 
     RxAdapterView.itemSelections(uiAnimationSpeedView)
         .map(speedAdapter::getItem)
-        .filter(item -> item != animationSpeed.get())
+        .filter(item -> !item.equals(animationSpeed.get()))
         .subscribe(selected -> {
           Timber.d("Setting animation speed to %sx", selected);
           animationSpeed.set(selected);

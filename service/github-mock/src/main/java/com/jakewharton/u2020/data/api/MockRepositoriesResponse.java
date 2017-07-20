@@ -35,6 +35,7 @@ public enum MockRepositoriesResponse {
   EMPTY("Empty", new RepositoriesResponse(null));
 
   public final String name;
+  @SuppressWarnings("ImmutableEnumChecker") // TODO make this @Immutable.
   public final RepositoriesResponse response;
 
   MockRepositoriesResponse(String name, RepositoriesResponse response) {

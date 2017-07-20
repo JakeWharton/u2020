@@ -53,6 +53,7 @@ import timber.log.Timber;
  * <p>To use this view server, your application must require the INTERNET
  * permission.</p>
  */
+@SuppressWarnings({"MissingOverride", "FutureReturnValueIgnored"})
 public class SocketActivityHierarchyServer implements Runnable, ActivityHierarchyServer {
   /**
    * The default port used to start view servers.

@@ -20,6 +20,8 @@ final class SharedPreferencesMockResponseSupplier implements MockResponseSupplie
 
   @SuppressLint("ApplySharedPref") // Persist to disk because we might kill the process next.
   @Override public void set(Enum<?> value) {
-    preferences.edit().putString(value.getClass().getCanonicalName(), value.name()).commit();
+    preferences.edit()
+        .putString(value.getDeclaringClass().getCanonicalName(), value.name())
+        .commit();
   }
 }
