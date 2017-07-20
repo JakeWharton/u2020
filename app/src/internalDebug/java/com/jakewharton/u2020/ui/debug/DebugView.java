@@ -33,6 +33,8 @@ import com.jakewharton.u2020.data.Injector;
 import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.LumberYard;
 import com.jakewharton.u2020.data.NetworkDelay;
+import com.jakewharton.u2020.data.NetworkErrorCode;
+import com.jakewharton.u2020.data.NetworkErrorPercent;
 import com.jakewharton.u2020.data.NetworkFailurePercent;
 import com.jakewharton.u2020.data.NetworkVariancePercent;
 import com.jakewharton.u2020.data.PicassoDebugging;
@@ -79,7 +81,9 @@ public final class DebugView extends FrameLayout {
   @BindView(R.id.debug_network_endpoint_edit) View endpointEditView;
   @BindView(R.id.debug_network_delay) Spinner networkDelayView;
   @BindView(R.id.debug_network_variance) Spinner networkVarianceView;
+  @BindView(R.id.debug_network_failure) Spinner networkFailureView;
   @BindView(R.id.debug_network_error) Spinner networkErrorView;
+  @BindView(R.id.debug_network_error_code) Spinner networkErrorCodeView;
   @BindView(R.id.debug_network_proxy) Spinner networkProxyView;
   @BindView(R.id.debug_network_logging) Spinner networkLoggingView;
 
@@ -137,8 +141,10 @@ public final class DebugView extends FrameLayout {
   @Inject @ScalpelWireframeEnabled Preference<Boolean> scalpelWireframeEnabled;
   @Inject NetworkBehavior behavior;
   @Inject @NetworkDelay Preference<Long> networkDelay;
-  @Inject @NetworkFailurePercent Preference<Integer> networkFailurePercent;
   @Inject @NetworkVariancePercent Preference<Integer> networkVariancePercent;
+  @Inject @NetworkFailurePercent Preference<Integer> networkFailurePercent;
+  @Inject @NetworkErrorPercent Preference<Integer> networkErrorPercent;
+  @Inject Preference<NetworkErrorCode> networkErrorCode;
   @Inject MockResponseSupplier mockResponseSupplier;
   @Inject Application app;
   @Inject Set<DebugAction> debugActions;
@@ -224,18 +230,46 @@ public final class DebugView extends FrameLayout {
           networkVariancePercent.set(selected);
         });
 
-    final NetworkErrorAdapter errorAdapter = new NetworkErrorAdapter(getContext());
+    final NetworkPercentageAdapter failureAdapter = new NetworkPercentageAdapter(getContext());
+    networkFailureView.setAdapter(failureAdapter);
+    networkFailureView.setSelection(
+        NetworkPercentageAdapter.getPositionForValue(behavior.failurePercent()));
+
+    RxAdapterView.itemSelections(networkFailureView)
+        .map(failureAdapter::getItem)
+        .filter(item -> item != behavior.failurePercent())
+        .subscribe(selected -> {
+          Timber.d("Setting network failure to %s%%", selected);
+          behavior.setFailurePercent(selected);
+          networkFailurePercent.set(selected);
+        });
+
+    final NetworkPercentageAdapter errorAdapter = new NetworkPercentageAdapter(getContext());
     networkErrorView.setAdapter(errorAdapter);
     networkErrorView.setSelection(
-        NetworkErrorAdapter.getPositionForValue(behavior.failurePercent()));
+        NetworkPercentageAdapter.getPositionForValue(behavior.errorPercent()));
 
     RxAdapterView.itemSelections(networkErrorView)
         .map(errorAdapter::getItem)
-        .filter(item -> item != behavior.failurePercent())
+        .filter(item -> item != behavior.errorPercent())
         .subscribe(selected -> {
           Timber.d("Setting network error to %s%%", selected);
-          behavior.setFailurePercent(selected);
-          networkFailurePercent.set(selected);
+          behavior.setErrorPercent(selected);
+          networkErrorPercent.set(selected);
+        });
+
+    final EnumAdapter<NetworkErrorCode> errorCodeAdapter =
+        new EnumAdapter<>(getContext(), NetworkErrorCode.class);
+    networkErrorCodeView.setAdapter(errorCodeAdapter);
+    networkErrorCodeView.setSelection(networkErrorCode.get().ordinal());
+
+    RxAdapterView.itemSelections(networkErrorCodeView)
+        .map(errorCodeAdapter::getItem)
+        .filter(item -> item != networkErrorCode.get())
+        .subscribe(selected -> {
+          Timber.d("Setting network error code to %s%%", selected);
+          networkErrorCode.set(selected);
+          // No need to update 'behavior' as the factory already pulls from the preference.
         });
 
     int currentProxyPosition = networkProxyAddress.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
@@ -274,7 +308,9 @@ public final class DebugView extends FrameLayout {
       // Disable network controls if we are not in mock mode.
       networkDelayView.setEnabled(false);
       networkVarianceView.setEnabled(false);
+      networkFailureView.setEnabled(false);
       networkErrorView.setEnabled(false);
+      networkErrorCodeView.setEnabled(false);
     }
 
     // We use the JSON rest adapter as the source of truth for the log level.

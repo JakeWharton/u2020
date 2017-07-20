@@ -5,6 +5,8 @@ import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.u2020.data.ApiEndpoint;
 import com.jakewharton.u2020.data.IsMockMode;
 import com.jakewharton.u2020.data.NetworkDelay;
+import com.jakewharton.u2020.data.NetworkErrorCode;
+import com.jakewharton.u2020.data.NetworkErrorPercent;
 import com.jakewharton.u2020.data.NetworkFailurePercent;
 import com.jakewharton.u2020.data.NetworkVariancePercent;
 import com.jakewharton.u2020.data.api.oauth.OauthInterceptor;
@@ -14,7 +16,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.mock.MockRetrofit;
 import retrofit2.mock.NetworkBehavior;
@@ -46,12 +50,17 @@ public final class DebugApiModule {
   }
 
   @Provides @Singleton NetworkBehavior provideBehavior(@NetworkDelay Preference<Long> networkDelay,
+      @NetworkVariancePercent Preference<Integer> networkVariancePercent,
       @NetworkFailurePercent Preference<Integer> networkFailurePercent,
-      @NetworkVariancePercent Preference<Integer> networkVariancePercent) {
+      @NetworkErrorPercent Preference<Integer> networkErrorPercent,
+      Preference<NetworkErrorCode> networkErrorCode) {
     NetworkBehavior behavior = NetworkBehavior.create();
     behavior.setDelay(networkDelay.get(), MILLISECONDS);
-    behavior.setFailurePercent(networkFailurePercent.get());
     behavior.setVariancePercent(networkVariancePercent.get());
+    behavior.setFailurePercent(networkFailurePercent.get());
+    behavior.setErrorPercent(networkErrorPercent.get());
+    behavior.setErrorFactory(
+        () -> Response.error(networkErrorCode.get().code, ResponseBody.create(null, new byte[0])));
     return behavior;
   }
 

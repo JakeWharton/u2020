@@ -126,11 +126,31 @@
 
   <TextView
       android:layout_gravity="start|center_vertical"
+      android:text="Failure"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <Spinner
+      android:id="@+id/debug_network_failure"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
       android:text="Error"
       style="@style/Widget.U2020.DebugDrawer.RowTitle"
       />
   <Spinner
       android:id="@+id/debug_network_error"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      />
+  <Space
+      android:layout_gravity="start|center_vertical"
+      style="@style/Widget.U2020.DebugDrawer.RowTitle"
+      />
+  <Spinner
+      android:id="@+id/debug_network_error_code"
       android:layout_width="0dp"
       android:layout_gravity="start|center_vertical|fill_horizontal"
       />
