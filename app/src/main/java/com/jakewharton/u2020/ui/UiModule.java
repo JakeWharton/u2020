@@ -15,8 +15,4 @@ public final class UiModule {
   @Provides @Singleton ViewContainer provideViewContainer() {
     return ViewContainer.DEFAULT;
   }
-
-  @Provides @Singleton ActivityHierarchyServer provideActivityHierarchyServer() {
-    return ActivityHierarchyServer.NONE;
-  }
 }
