@@ -87,6 +87,17 @@ public final class DebugDataModule {
     return preferences.getInteger("debug_network_failure_percent", 3);
   }
 
+  @Provides @Singleton @NetworkErrorPercent
+  Preference<Integer> provideNetworkErrorPercent(RxSharedPreferences preferences) {
+    return preferences.getInteger("debug_network_error_percent", 0);
+  }
+
+  @Provides @Singleton
+  Preference<NetworkErrorCode> provideNetworkErrorCode(RxSharedPreferences preferences) {
+    return preferences.getEnum("debug_network_error_code", NetworkErrorCode.HTTP_500,
+        NetworkErrorCode.class);
+  }
+
   @Provides @Singleton @NetworkVariancePercent
   Preference<Integer> provideNetworkVariancePercent(RxSharedPreferences preferences) {
     return preferences.getInteger("debug_network_variance_percent", 40);

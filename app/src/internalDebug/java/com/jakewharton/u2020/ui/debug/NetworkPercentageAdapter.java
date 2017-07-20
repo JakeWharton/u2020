@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jakewharton.u2020.ui.misc.BindableAdapter;
 
-class NetworkErrorAdapter extends BindableAdapter<Integer> {
+class NetworkPercentageAdapter extends BindableAdapter<Integer> {
   private static final int[] VALUES = {
-      0, 3, 10, 25, 50, 75, 100
+      0, 1, 3, 10, 25, 50, 75, 100
   };
 
-  public static int getPositionForValue(int value) {
+  static int getPositionForValue(int value) {
     for (int i = 0; i < VALUES.length; i++) {
       if (VALUES[i] == value) {
         return i;
@@ -21,7 +21,7 @@ class NetworkErrorAdapter extends BindableAdapter<Integer> {
     return 1; // Default to 3% if something changes.
   }
 
-  NetworkErrorAdapter(Context context) {
+  NetworkPercentageAdapter(Context context) {
     super(context);
   }
 
