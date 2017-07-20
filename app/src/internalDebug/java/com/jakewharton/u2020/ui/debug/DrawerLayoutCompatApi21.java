@@ -17,6 +17,7 @@
 
 package com.jakewharton.u2020.ui.debug;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,6 +32,7 @@ import android.view.WindowInsets;
  * Provides functionality for DrawerLayout unique to API 21
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+@SuppressLint("RtlHardcoded")
 class DrawerLayoutCompatApi21 {
 
   private static final int[] THEME_ATTRS = {

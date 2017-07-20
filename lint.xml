@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- http://tools.android.com/tips/lint-checks -->
+<lint>
+  <issue id="UnusedResources" severity="error"/>
+  <issue id="ParcelClassLoader" severity="error"/>
+  <issue id="HardcodedText" severity="error"/>
+  <issue id="HardwareIds" severity="error"/>
+  <issue id="DefaultLocale" severity="error"/>
+  <issue id="CheckResult" severity="error"/>
+  <issue id="ObsoleteSdkInt" severity="error"/>
+  <issue id="VisibleForTests" severity="error"/>
+  <issue id="IconDipSize" severity="error"/>
+  <issue id="IconDuplicatesConfig" severity="error"/>
+  <issue id="ObsoleteLayoutParam" severity="error"/>
+  <issue id="InefficientWeight" severity="error"/>
+  <issue id="RtlHardcoded" severity="error"/>
+  <issue id="InvalidPackage" severity="error">
+    <ignore regexp="okio-.*jar"/>
+    <ignore regexp="retrofit-.*.jar"/>
+  </issue>
+  <issue id="TypographyEllipsis" severity="error"/>
+  <issue id="SimpleDateFormat" severity="error"/>
+  <issue id="ThrowableNotAtBeginning" severity="error"/>
+  <issue id="BinaryOperationInTimber" severity="error"/>
+  <issue id="WifiManagerPotentialLeak" severity="error"/>
+</lint>
