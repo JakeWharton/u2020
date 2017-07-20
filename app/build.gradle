@@ -95,7 +95,7 @@ android {
   lintOptions {
     textReport true
     textOutput 'stdout'
-    fatal 'UnusedResources'
+    lintConfig rootProject.file('lint.xml')
     // We run a full lint analysis as build part in CI, so skip vital checks for assemble tasks.
     checkReleaseBuilds false
   }

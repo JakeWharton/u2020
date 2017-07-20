@@ -1,9 +1,7 @@
 package com.jakewharton.u2020.ui.trending;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,8 +14,8 @@ import android.view.ContextThemeWrapper;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.BindView;
 import butterknife.BindDimen;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import com.jakewharton.u2020.R;
@@ -113,7 +111,7 @@ public final class TrendingView extends LinearLayout
 
     trendingView.setLayoutManager(new LinearLayoutManager(getContext()));
     trendingView.addItemDecoration(
-        new DividerItemDecoration(getContext(), VERTICAL_LIST, dividerPaddingStart, safeIsRtl()));
+        new DividerItemDecoration(getContext(), VERTICAL_LIST, dividerPaddingStart, isRtl()));
     trendingView.setAdapter(trendingAdapter);
   }
 
@@ -187,11 +185,7 @@ public final class TrendingView extends LinearLayout
     Intents.maybeStartActivity(getContext(), intentFactory.createUrlIntent(repository.html_url));
   }
 
-  private boolean safeIsRtl() {
-    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && isRtl();
-  }
-
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) private boolean isRtl() {
+  private boolean isRtl() {
     return getLayoutDirection() == LAYOUT_DIRECTION_RTL;
   }
 }

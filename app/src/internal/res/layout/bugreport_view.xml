@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    tools:ignore="HardcodedText"
     >
   <EditText
       android:id="@+id/title"

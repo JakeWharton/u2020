@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:columnCount="2"
-    tools:ignore="UselessParent">
+    tools:ignore="UselessParent,HardcodedText"
+    >
   <LinearLayout
       android:layout_columnSpan="2"
       android:layout_width="0dp"
@@ -18,8 +19,8 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
-        android:layout_marginRight="8dp"
-        android:gravity="center_vertical|right"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical|end"
         android:orientation="vertical"
         >
       <TextView
@@ -94,7 +95,7 @@
         android:id="@+id/debug_network_endpoint_edit"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:src="@drawable/debug_drawer_icon_edit"
         android:background="?android:attr/actionBarItemBackground"
         android:visibility="gone"
