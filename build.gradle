@@ -1,4 +1,6 @@
 buildscript {
+  ext.isCi = Boolean.parseBoolean(System.getProperty('CI', 'false'))
+
   ext.versions = [
       'compileSdk': 26,
       'buildTools': '26.0.0',
@@ -13,6 +15,7 @@ buildscript {
       'leakCanary': '1.5.1',
       'espresso': '2.2.2',
       'astl': '0.5',
+      'errorProne': '2.0.21',
   ]
 
   ext.deps = [
@@ -73,17 +76,22 @@ buildscript {
       ],
       'spoon': 'com.squareup.spoon:spoon-client:1.7.1',
       'truth': 'com.google.truth:truth:0.34',
+      'errorProneAnnotations': "com.google.errorprone:error_prone_annotations:${versions.errorProne}",
   ]
 
   repositories {
     google()
     mavenCentral()
     jcenter()
+    maven {
+      url 'https://plugins.gradle.org/m2'
+    }
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
+    classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.10'
   }
 }
 
@@ -101,7 +109,29 @@ subprojects {
         if (details.requested.group == 'com.android.support') {
           details.useVersion versions.supportLibrary
         }
+        // Force all the error-prone dependencies to use the same version.
+        if (details.requested.group == 'com.google.errorprone'
+            && details.requested.name.startsWith('error_prone_')) {
+          details.useVersion versions.errorProne
+        }
       }
+    }
+  }
+
+  if (isCi) {
+    project.apply(plugin: 'net.ltgt.errorprone')
+
+    project.tasks.withType(JavaCompile) {
+      options.compilerArgs += [
+          '-Xep:UnnecessaryDefaultInEnumSwitch:ERROR',
+          '-Xep:TypeParameterUnusedInFormals:ERROR',
+          '-Xep:MissingOverride:ERROR',
+          '-Xep:ClassCanBeStatic:ERROR',
+          '-Xep:OperatorPrecedence:ERROR',
+          '-Xep:ReferenceEquality:ERROR',
+          '-Xep:FloatingPointLiteralPrecision:ERROR',
+          '-Xep:SimpleDateFormatConstant:ERROR',
+      ]
     }
   }
 }

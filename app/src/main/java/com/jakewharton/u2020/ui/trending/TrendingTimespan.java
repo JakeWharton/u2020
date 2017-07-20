@@ -12,6 +12,7 @@ enum TrendingTimespan {
 
   private final String name;
   private final long duration;
+  @SuppressWarnings("ImmutableEnumChecker") // TODO https://github.com/google/error-prone/pull/686
   private final TemporalUnit durationUnit;
 
   TrendingTimespan(String name, int duration, TemporalUnit durationUnit) {

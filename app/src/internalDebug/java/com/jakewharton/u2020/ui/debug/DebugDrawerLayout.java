@@ -56,6 +56,7 @@ import java.util.List;
 
 /** This is a fork of DrawerLayout which propagates insets without applying them. */
 @SuppressLint("all")
+@SuppressWarnings({"ClassCanBeStatic", "OperatorPrecedence", "ShortCircuitBoolean", "MissingOverride"})
 public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
   private static final String TAG = "DrawerLayout";
 

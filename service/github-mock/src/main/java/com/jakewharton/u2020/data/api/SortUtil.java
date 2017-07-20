@@ -30,8 +30,6 @@ final class SortUtil {
       case UPDATED:
         Collections.sort(repositories, order == ASC ? UPDATED_ASC : UPDATED_DESC);
         break;
-      default:
-        throw new IllegalArgumentException("Unknown sort: " + sort);
     }
   }
 

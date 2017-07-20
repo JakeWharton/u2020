@@ -51,19 +51,19 @@ final class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.ViewHol
   }
 
   public final class ViewHolder extends RecyclerView.ViewHolder {
-    public final TrendingItemView itemView;
+    public final TrendingItemView view;
 
-    public ViewHolder(TrendingItemView itemView) {
-      super(itemView);
-      this.itemView = itemView;
-      this.itemView.setOnClickListener(v -> {
+    public ViewHolder(TrendingItemView view) {
+      super(view);
+      this.view = view;
+      this.view.setOnClickListener(v -> {
         Repository repository = repositories.get(getAdapterPosition());
         repositoryClickListener.onRepositoryClick(repository);
       });
     }
 
     public void bindTo(Repository repository) {
-      itemView.bindTo(repository, picasso);
+      view.bindTo(repository, picasso);
     }
   }
 }
