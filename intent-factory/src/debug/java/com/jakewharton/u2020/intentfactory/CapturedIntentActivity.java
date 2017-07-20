@@ -1,28 +1,26 @@
-package com.jakewharton.u2020.ui;
+package com.jakewharton.u2020.intentfactory;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.RestrictTo;
+import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.view.MenuItem;
+import android.util.Log;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.jakewharton.u2020.R;
-import com.jakewharton.u2020.ui.misc.Truss;
-import com.jakewharton.u2020.util.Intents;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import timber.log.Timber;
 
-public final class ExternalIntentActivity extends Activity implements Toolbar.OnMenuItemClickListener {
+import static android.support.annotation.RestrictTo.Scope.LIBRARY;
+
+@RestrictTo(LIBRARY)
+public final class CapturedIntentActivity extends AppCompatActivity {
   public static final String ACTION = "com.jakewharton.u2020.intent.EXTERNAL_INTENT";
   public static final String EXTRA_BASE_INTENT = "debug_base_intent";
 
-  public static Intent createIntent(Intent baseIntent) {
+  static Intent createIntent(Intent baseIntent) {
     Intent intent = new Intent();
     intent.setAction(ACTION);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -30,39 +28,33 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
     return intent;
   }
 
-  @BindView(R.id.toolbar) Toolbar toolbarView;
-  @BindView(R.id.action) TextView actionView;
-  @BindView(R.id.data) TextView dataView;
-  @BindView(R.id.extras) TextView extrasView;
-  @BindView(R.id.flags) TextView flagsView;
+  private TextView actionView;
+  private TextView dataView;
+  private TextView extrasView;
+  private TextView flagsView;
 
   private Intent baseIntent;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.debug_external_intent_activity);
-    ButterKnife.bind(this);
-
-    toolbarView.inflateMenu(R.menu.debug_external_intent);
-    toolbarView.setOnMenuItemClickListener(this);
 
     baseIntent = getIntent().getParcelableExtra(EXTRA_BASE_INTENT);
+
+    setContentView(R.layout.captured_intent);
+    actionView = findViewById(R.id.action);
+    dataView = findViewById(R.id.data);
+    extrasView = findViewById(R.id.extras);
+    flagsView = findViewById(R.id.flags);
+
+    findViewById(R.id.launch).setOnClickListener(view -> {
+      startActivity(baseIntent);
+      finish();
+    });
+
     fillAction();
     fillData();
     fillExtras();
     fillFlags();
-  }
-
-  @Override public boolean onMenuItemClick(MenuItem menuItem) {
-    switch (menuItem.getItemId()) {
-      case R.id.debug_launch:
-        if (Intents.maybeStartActivity(this, baseIntent)) {
-          finish();
-        }
-        return true;
-      default:
-        return false;
-    }
   }
 
   private void fillAction() {
@@ -80,7 +72,7 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
     if (extras == null) {
       extrasView.setText("None!");
     } else {
-      Truss truss = new Truss();
+      SpannableStringBuilder text = new SpannableStringBuilder();
       for (String key : extras.keySet()) {
         Object value = extras.get(key);
 
@@ -91,13 +83,13 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
           valueString = value.toString();
         }
 
-        truss.pushSpan(new StyleSpan(Typeface.BOLD));
-        truss.append(key).append(":\n");
-        truss.popSpan();
-        truss.append(valueString).append("\n\n");
+        int start = text.length();
+        text.append(key).append(":\n");
+        text.setSpan(new StyleSpan(Typeface.BOLD), start, text.length(), 0);
+        text.append(valueString).append("\n\n");
       }
 
-      extrasView.setText(truss.build());
+      extrasView.setText(text);
     }
   }
 
@@ -113,7 +105,7 @@ public final class ExternalIntentActivity extends Activity implements Toolbar.On
           builder.append(field.getName()).append('\n');
         }
       } catch (IllegalAccessException e) {
-        Timber.e(e, "Couldn't read value for: %s", field.getName());
+        Log.e("CapturedIntentActivity", "Couldn't read value for: " + field.getName(), e);
       }
     }
 

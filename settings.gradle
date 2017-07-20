@@ -1,5 +1,6 @@
 rootProject.name = 'u2020'
 
 include ':app'
+include ':intent-factory'
 include ':service:github'
 include ':service:github-mock'

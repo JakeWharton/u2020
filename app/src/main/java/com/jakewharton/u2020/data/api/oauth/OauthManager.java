@@ -3,7 +3,7 @@ package com.jakewharton.u2020.data.api.oauth;
 import android.content.Intent;
 import android.net.Uri;
 import com.f2prateek.rx.preferences.Preference;
-import com.jakewharton.u2020.data.IntentFactory;
+import com.jakewharton.u2020.intentfactory.IntentFactory;
 import com.squareup.moshi.Moshi;
 import java.io.IOException;
 import javax.inject.Inject;

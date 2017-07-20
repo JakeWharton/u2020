@@ -26,15 +26,6 @@
       </intent-filter>
     </activity>
     <activity
-        android:name="com.jakewharton.u2020.ui.ExternalIntentActivity"
-        android:theme="@style/Theme.U2020.External"
-        >
-      <intent-filter>
-        <action android:name="com.jakewharton.u2020.intent.EXTERNAL_INTENT"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-    <activity
         android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"
         android:enabled="false"
         android:label="@string/leak_canary_display_activity_label"

@@ -9,6 +9,8 @@ import com.jakewharton.u2020.IsInstrumentationTest;
 import com.jakewharton.u2020.data.api.DebugApiModule;
 import com.jakewharton.u2020.data.api.oauth.AccessToken;
 import com.jakewharton.u2020.data.prefs.InetSocketAddressPreferenceAdapter;
+import com.jakewharton.u2020.intentfactory.CapturingIntentFactory;
+import com.jakewharton.u2020.intentfactory.IntentFactory;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
@@ -46,7 +48,7 @@ public final class DebugDataModule {
 
   @Provides @Singleton IntentFactory provideIntentFactory(@IsMockMode boolean isMockMode,
       @CaptureIntents Preference<Boolean> captureIntents) {
-    return new DebugIntentFactory(IntentFactory.REAL, isMockMode, captureIntents);
+    return new CapturingIntentFactory(IntentFactory.REAL, () -> isMockMode && captureIntents.get());
   }
 
   @Provides @Singleton OkHttpClient provideOkHttpClient(Application app,
