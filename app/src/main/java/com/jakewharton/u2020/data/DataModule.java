@@ -28,7 +28,7 @@ import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
     library = true
 )
 public final class DataModule {
-  static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
+  static final long DISK_CACHE_SIZE = MEGABYTES.toBytes(50);
 
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return app.getSharedPreferences("u2020", MODE_PRIVATE);
