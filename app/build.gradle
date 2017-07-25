@@ -41,6 +41,7 @@ android {
   }
 
   defaultConfig {
+    applicationId 'com.jakewharton.u2020'
     minSdkVersion versions.minSdk
     targetSdkVersion versions.targetSdk
 
@@ -75,11 +76,10 @@ android {
 
     internal {
       dimension 'environment'
-      applicationId 'com.jakewharton.u2020.internal'
+      applicationIdSuffix 'internal'
     }
     production {
       dimension 'environment'
-      applicationId 'com.jakewharton.u2020'
     }
   }
 
