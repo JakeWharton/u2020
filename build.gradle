@@ -3,7 +3,7 @@ buildscript {
 
   ext.versions = [
       'compileSdk': 26,
-      'buildTools': '26.0.0',
+      'buildTools': '26.0.1',
       'minSdk': 19,
       'targetSdk': 25,
 
@@ -89,9 +89,9 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
+    classpath 'com.android.tools.build:gradle:3.0.0-alpha8'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
-    classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.10'
+    classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.11'
   }
 }
 
