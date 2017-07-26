@@ -7,7 +7,7 @@ buildscript {
       'minSdk': 19,
       'targetSdk': 25,
 
-      'supportLibrary': '26.0.0-beta2',
+      'supportLibrary': '26.0.0',
       'dagger': '1.2.5',
       'okhttp': '3.8.1',
       'retrofit': '2.3.0',
@@ -106,7 +106,9 @@ subprojects {
     resolutionStrategy {
       eachDependency { details ->
         // Force all of the primary support libraries to use the same version.
-        if (details.requested.group == 'com.android.support') {
+        if (details.requested.group == 'com.android.support'
+            && details.requested.name != 'multidex'
+            && details.requested.name != 'multidex-instrumentation') {
           details.useVersion versions.supportLibrary
         }
         // Force all the error-prone dependencies to use the same version.
