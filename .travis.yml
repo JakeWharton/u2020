@@ -3,6 +3,11 @@ language: android
 jdk:
  - oraclejdk8
 
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer # Updates JDK 8 to the latest available.
+
 android:
   components:
     # Update tools and then platform-tools explicitly so lint gets an updated database. Can be removed once 3.0 is out.
