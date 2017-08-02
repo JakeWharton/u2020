@@ -90,6 +90,7 @@ android {
 
   packagingOptions {
     exclude 'LICENSE.txt'
+    exclude 'META-INF/rxjava.properties'
   }
 
   lintOptions {
