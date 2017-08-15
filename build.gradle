@@ -11,7 +11,7 @@ buildscript {
       'dagger': '1.2.5',
       'okhttp': '3.8.1',
       'retrofit': '2.3.0',
-      'butterKnife': '8.7.0',
+      'butterKnife': '8.8.1',
       'leakCanary': '1.5.1',
       'espresso': '2.2.2',
       'astl': '0.5',
