@@ -15,7 +15,7 @@ buildscript {
       'leakCanary': '1.5.1',
       'espresso': '2.2.2',
       'astl': '0.5',
-      'errorProne': '2.1.0',
+      'errorProne': '2.1.1',
   ]
 
   ext.deps = [
