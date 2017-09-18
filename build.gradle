@@ -7,7 +7,7 @@ buildscript {
       'minSdk': 19,
       'targetSdk': 25,
 
-      'supportLibrary': '26.0.0',
+      'supportLibrary': '26.0.2',
       'dagger': '1.2.5',
       'okhttp': '3.8.1',
       'retrofit': '2.3.0',
