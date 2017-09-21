@@ -7,5 +7,7 @@
   <color name="text_color_secondary">#89000000</color>
   <color name="avatar_stroke">#1a000000</color>
   <color name="timespan_title_text">#ffffffff</color>
+  <color name="selectable_background">#00000000</color>
   <color name="selectable_background_pressed">#1f000000</color>
+  <color name="selectable_background_mask">#ffffffff</color>
 </resources>
