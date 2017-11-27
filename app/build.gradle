@@ -123,7 +123,6 @@ dependencies {
   annotationProcessor deps.dagger.compiler
 
   implementation deps.okhttp.core
-  implementation deps.okhttp.logger
   implementation deps.okio
   implementation deps.picasso
   implementation deps.picassoOkHttpDownloader
@@ -131,6 +130,7 @@ dependencies {
   implementation deps.retrofit.moshi
   implementation deps.moshi
   internalDebugImplementation project(':service:github-mock')
+  internalDebugImplementation deps.okhttp.logger
   internalDebugImplementation deps.retrofit.mock
 
   implementation deps.butterKnife.runtime
