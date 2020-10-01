@@ -31,7 +31,7 @@ a false endpoint named "Mock Mode" which simulates an in-memory server inside th
 Mode" eases manual testing and also provides a static set of data to write instrumentation tests
 against.
 
-"Mock Mode" can be queried when modules are configuring their dependencies which is what allows
+"Mock Mode" can be queried when modules are configuring their dependencies, which is what allows
 simulating the remote server in-memory.
 ```java
 @Singleton class MockFoo() {
