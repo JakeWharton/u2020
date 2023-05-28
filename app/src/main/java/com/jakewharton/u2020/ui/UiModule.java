@@ -4,15 +4,12 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(
-    injects = {
-        MainActivity.class,
-    },
-    complete = false,
-    library = true
-)
+@Module(injects = { MainActivity.class }, complete = false, library = true)
 public final class UiModule {
-  @Provides @Singleton ViewContainer provideViewContainer() {
-    return ViewContainer.DEFAULT;
-  }
+
+    @Provides
+    @Singleton
+    ViewContainer provideViewContainer() {
+        return ViewContainer.DEFAULT;
+    }
 }

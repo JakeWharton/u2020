@@ -25,61 +25,62 @@ import javax.inject.Singleton;
 
 @Singleton
 public final class TelescopeViewContainer implements ViewContainer {
-  private final LumberYard lumberYard;
-  private final Preference<Boolean> seenTelescopeDialog;
 
-  @Inject public TelescopeViewContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
-    this.lumberYard = lumberYard;
-    this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
-  }
+    private final LumberYard lumberYard;
 
-  @BindView(R.id.telescope_container) TelescopeLayout telescopeLayout;
+    private final Preference<Boolean> seenTelescopeDialog;
 
-  @Override public ViewGroup forActivity(final Activity activity) {
-    activity.setContentView(R.layout.internal_activity_frame);
-    ButterKnife.bind(this, activity);
-
-    TelescopeLayout.cleanUp(activity); // Clean up any old screenshots.
-    telescopeLayout.setLens(new BugReportLens(activity, lumberYard));
-
-    // If you have not seen the telescope dialog before, show it.
-    if (!seenTelescopeDialog.get()) {
-      telescopeLayout.postDelayed(new Runnable() {
-        @Override public void run() {
-          if (activity.isFinishing()) {
-            return;
-          }
-
-          seenTelescopeDialog.set(true);
-          showTelescopeDialog(activity);
-        }
-      }, 1000);
+    @Inject
+    public TelescopeViewContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
+        this.lumberYard = lumberYard;
+        this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
     }
 
-    return telescopeLayout;
-  }
+    @BindView(R.id.telescope_container)
+    TelescopeLayout telescopeLayout;
 
-  public void showTelescopeDialog(final Activity activity) {
-    LayoutInflater inflater = LayoutInflater.from(activity);
-    TelescopeLayout content =
-        (TelescopeLayout) inflater.inflate(R.layout.telescope_tutorial_dialog, null);
-    final AlertDialog dialog =
-        new AlertDialog.Builder(activity).setView(content).setCancelable(false).create();
+    @Override
+    public ViewGroup forActivity(final Activity activity) {
+        activity.setContentView(R.layout.internal_activity_frame);
+        ButterKnife.bind(this, activity);
+        // Clean up any old screenshots.
+        TelescopeLayout.cleanUp(activity);
+        telescopeLayout.setLens(new BugReportLens(activity, lumberYard));
+        // If you have not seen the telescope dialog before, show it.
+        if (!seenTelescopeDialog.get()) {
+            telescopeLayout.postDelayed(new Runnable() {
 
-    content.setLens(new Lens() {
-      @Override public void onCapture(File file) {
-        dialog.dismiss();
+                @Override
+                public void run() {
+                    if (activity.isFinishing()) {
+                        return;
+                    }
+                    seenTelescopeDialog.set(true);
+                    showTelescopeDialog(activity);
+                }
+            }, 1000);
+        }
+        return telescopeLayout;
+    }
 
-        Context toastContext = new ContextThemeWrapper(activity, android.R.style.Theme_DeviceDefault_Dialog);
-        LayoutInflater toastInflater = LayoutInflater.from(toastContext);
-        Toast toast = Toast.makeText(toastContext, "", Toast.LENGTH_SHORT);
-        View toastView = toastInflater.inflate(R.layout.telescope_tutorial_toast, null);
-        toast.setView(toastView);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-      }
-    });
+    public void showTelescopeDialog(final Activity activity) {
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        TelescopeLayout content = (TelescopeLayout) inflater.inflate(R.layout.telescope_tutorial_dialog, null);
+        final AlertDialog dialog = new AlertDialog.Builder(activity).setView(content).setCancelable(false).create();
+        content.setLens(new Lens() {
 
-    dialog.show();
-  }
+            @Override
+            public void onCapture(File file) {
+                dialog.dismiss();
+                Context toastContext = new ContextThemeWrapper(activity, android.R.style.Theme_DeviceDefault_Dialog);
+                LayoutInflater toastInflater = LayoutInflater.from(toastContext);
+                Toast toast = Toast.makeText(toastContext, "", Toast.LENGTH_SHORT);
+                View toastView = toastInflater.inflate(R.layout.telescope_tutorial_toast, null);
+                toast.setView(toastView);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
+        dialog.show();
+    }
 }

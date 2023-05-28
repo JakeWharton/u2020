@@ -8,18 +8,21 @@ import com.jakewharton.u2020.data.Injector;
 import dagger.ObjectGraph;
 
 public final class DebugActivity extends Activity {
-  private ObjectGraph appGraph;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    appGraph = Injector.obtain(getApplication());
-    setContentView(R.layout.debug_activity);
-  }
+    private ObjectGraph appGraph;
 
-  @Override public Object getSystemService(@NonNull String name) {
-    if (Injector.matchesService(name)) {
-      return appGraph;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        appGraph = Injector.obtain(getApplication());
+        setContentView(R.layout.debug_activity);
     }
-    return super.getSystemService(name);
-  }
+
+    @Override
+    public Object getSystemService(@NonNull String name) {
+        if (Injector.matchesService(name)) {
+            return appGraph;
+        }
+        return super.getSystemService(name);
+    }
 }

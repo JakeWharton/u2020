@@ -8,19 +8,21 @@ import retrofit2.adapter.rxjava.Result;
 import rx.functions.Func1;
 
 public final class SearchResultToRepositoryList implements Func1<Result<RepositoriesResponse>, List<Repository>> {
-  private static volatile SearchResultToRepositoryList instance;
 
-  public static SearchResultToRepositoryList instance() {
-    if (instance == null) {
-      instance = new SearchResultToRepositoryList();
+    private static volatile SearchResultToRepositoryList instance;
+
+    public static SearchResultToRepositoryList instance() {
+        if (instance == null) {
+            instance = new SearchResultToRepositoryList();
+        }
+        return instance;
     }
-    return instance;
-  }
 
-  @Override public List<Repository> call(Result<RepositoriesResponse> result) {
-    RepositoriesResponse repositoriesResponse = result.response().body();
-    return repositoriesResponse.items == null //
-        ? Collections.<Repository>emptyList() //
-        : repositoriesResponse.items;
-  }
+    @Override
+    public List<Repository> call(Result<RepositoriesResponse> result) {
+        RepositoriesResponse repositoriesResponse = result.response().body();
+        return //
+        repositoriesResponse.items == null ? //
+        Collections.<Repository>emptyList() : repositoriesResponse.items;
+    }
 }

@@ -6,27 +6,32 @@ import org.threeten.bp.temporal.ChronoUnit;
 import org.threeten.bp.temporal.TemporalUnit;
 
 enum TrendingTimespan {
-  DAY("today", 1, ChronoUnit.DAYS),
-  WEEK("last week", 1, ChronoUnit.WEEKS),
-  MONTH("last month", 1, ChronoUnit.MONTHS);
 
-  private final String name;
-  private final long duration;
-  @SuppressWarnings("ImmutableEnumChecker") // TODO https://github.com/google/error-prone/pull/686
-  private final TemporalUnit durationUnit;
+    DAY("today", 1, ChronoUnit.DAYS), WEEK("last week", 1, ChronoUnit.WEEKS), MONTH("last month", 1, ChronoUnit.MONTHS);
 
-  TrendingTimespan(String name, int duration, TemporalUnit durationUnit) {
-    this.name = name;
-    this.duration = duration;
-    this.durationUnit = durationUnit;
-  }
+    private final String name;
 
-  /** Returns a {@code LocalDate} to use with {@link SearchQuery.Builder#createdSince(LocalDate)}. */
-  public LocalDate createdSince() {
-    return LocalDate.now().minus(duration, durationUnit);
-  }
+    private final long duration;
 
-  @Override public String toString() {
-    return name;
-  }
+    // TODO https://github.com/google/error-prone/pull/686
+    @SuppressWarnings("ImmutableEnumChecker")
+    private final TemporalUnit durationUnit;
+
+    TrendingTimespan(String name, int duration, TemporalUnit durationUnit) {
+        this.name = name;
+        this.duration = duration;
+        this.durationUnit = durationUnit;
+    }
+
+    /**
+     * Returns a {@code LocalDate} to use with {@link SearchQuery.Builder#createdSince(LocalDate)}.
+     */
+    public LocalDate createdSince() {
+        return LocalDate.now().minus(duration, durationUnit);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

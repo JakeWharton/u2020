@@ -23,65 +23,65 @@ import retrofit2.Retrofit;
 import retrofit2.mock.MockRetrofit;
 import retrofit2.mock.NetworkBehavior;
 import timber.log.Timber;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-@Module(
-    complete = false,
-    library = true,
-    overrides = true
-)
+@Module(complete = false, library = true, overrides = true)
 public final class DebugApiModule {
-  @Provides @Singleton HttpUrl provideHttpUrl(@ApiEndpoint Preference<String> apiEndpoint) {
-    return HttpUrl.parse(apiEndpoint.get());
-  }
 
-  @Provides @Singleton HttpLoggingInterceptor provideLoggingInterceptor() {
-    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
-    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-    return loggingInterceptor;
-  }
+    @Provides
+    @Singleton
+    HttpUrl provideHttpUrl(@ApiEndpoint Preference<String> apiEndpoint) {
+        return HttpUrl.parse(apiEndpoint.get());
+    }
 
-  @Provides @Singleton @Named("Api") OkHttpClient provideApiClient(OkHttpClient client,
-      OauthInterceptor oauthInterceptor, HttpLoggingInterceptor loggingInterceptor) {
-    return ApiModule.createApiClient(client, oauthInterceptor)
-        .addInterceptor(loggingInterceptor)
-        .build();
-  }
+    @Provides
+    @Singleton
+    HttpLoggingInterceptor provideLoggingInterceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        return loggingInterceptor;
+    }
 
-  @Provides @Singleton NetworkBehavior provideBehavior(@NetworkDelay Preference<Long> networkDelay,
-      @NetworkVariancePercent Preference<Integer> networkVariancePercent,
-      @NetworkFailurePercent Preference<Integer> networkFailurePercent,
-      @NetworkErrorPercent Preference<Integer> networkErrorPercent,
-      Preference<NetworkErrorCode> networkErrorCode) {
-    NetworkBehavior behavior = NetworkBehavior.create();
-    behavior.setDelay(networkDelay.get(), MILLISECONDS);
-    behavior.setVariancePercent(networkVariancePercent.get());
-    behavior.setFailurePercent(networkFailurePercent.get());
-    behavior.setErrorPercent(networkErrorPercent.get());
-    behavior.setErrorFactory(
-        () -> Response.error(networkErrorCode.get().code, ResponseBody.create(null, new byte[0])));
-    return behavior;
-  }
+    @Provides
+    @Singleton
+    @Named("Api")
+    OkHttpClient provideApiClient(OkHttpClient client, OauthInterceptor oauthInterceptor, HttpLoggingInterceptor loggingInterceptor) {
+        return ApiModule.createApiClient(client, oauthInterceptor).addInterceptor(loggingInterceptor).build();
+    }
 
-  @Provides @Singleton MockRetrofit provideMockRetrofit(Retrofit retrofit,
-      NetworkBehavior behavior) {
-    return new MockRetrofit.Builder(retrofit)
-        .networkBehavior(behavior)
-        .build();
-  }
+    @Provides
+    @Singleton
+    NetworkBehavior provideBehavior(@NetworkDelay Preference<Long> networkDelay, @NetworkVariancePercent Preference<Integer> networkVariancePercent, @NetworkFailurePercent Preference<Integer> networkFailurePercent, @NetworkErrorPercent Preference<Integer> networkErrorPercent, Preference<NetworkErrorCode> networkErrorCode) {
+        NetworkBehavior behavior = NetworkBehavior.create();
+        behavior.setDelay(networkDelay.get(), MILLISECONDS);
+        behavior.setVariancePercent(networkVariancePercent.get());
+        behavior.setFailurePercent(networkFailurePercent.get());
+        behavior.setErrorPercent(networkErrorPercent.get());
+        behavior.setErrorFactory(() -> Response.error(networkErrorCode.get().code, ResponseBody.create(null, new byte[0])));
+        return behavior;
+    }
 
-  @Provides @Singleton GithubService provideGithubService(Retrofit retrofit,
-      @IsMockMode boolean isMockMode, MockGithubService mockService) {
-    return isMockMode ? mockService : retrofit.create(GithubService.class);
-  }
+    @Provides
+    @Singleton
+    MockRetrofit provideMockRetrofit(Retrofit retrofit, NetworkBehavior behavior) {
+        return new MockRetrofit.Builder(retrofit).networkBehavior(behavior).build();
+    }
 
-  @Provides @Singleton MockResponseSupplier provideResponseSupplier(SharedPreferences preferences) {
-    return new SharedPreferencesMockResponseSupplier(preferences);
-  }
+    @Provides
+    @Singleton
+    GithubService provideGithubService(Retrofit retrofit, @IsMockMode boolean isMockMode, MockGithubService mockService) {
+        return isMockMode ? mockService : retrofit.create(GithubService.class);
+    }
 
-  @Provides @Singleton MockGithubService provideMockGitHubService(MockRetrofit mockRetrofit,
-      MockResponseSupplier responseSupplier) {
-    return new MockGithubService(mockRetrofit, responseSupplier);
-  }
+    @Provides
+    @Singleton
+    MockResponseSupplier provideResponseSupplier(SharedPreferences preferences) {
+        return new SharedPreferencesMockResponseSupplier(preferences);
+    }
+
+    @Provides
+    @Singleton
+    MockGithubService provideMockGitHubService(MockRetrofit mockRetrofit, MockResponseSupplier responseSupplier) {
+        return new MockGithubService(mockRetrofit, responseSupplier);
+    }
 }

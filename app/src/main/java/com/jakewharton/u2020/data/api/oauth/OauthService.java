@@ -7,19 +7,23 @@ import dagger.ObjectGraph;
 import javax.inject.Inject;
 
 public final class OauthService extends IntentService {
-  @Inject OauthManager oauthManager;
 
-  public OauthService() {
-    super(OauthService.class.getSimpleName());
-  }
+    @Inject
+    OauthManager oauthManager;
 
-  @Override public void onCreate() {
-    super.onCreate();
-    ObjectGraph appGraph = Injector.obtain(getApplication());
-    appGraph.inject(this);
-  }
+    public OauthService() {
+        super(OauthService.class.getSimpleName());
+    }
 
-  @Override protected void onHandleIntent(Intent intent) {
-    oauthManager.handleResult(intent.getData());
-  }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ObjectGraph appGraph = Injector.obtain(getApplication());
+        appGraph.inject(this);
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        oauthManager.handleResult(intent.getData());
+    }
 }

@@ -18,62 +18,67 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.threeten.bp.Clock;
 import timber.log.Timber;
-
 import static android.content.Context.MODE_PRIVATE;
 import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 
-@Module(
-    includes = ApiModule.class,
-    complete = false,
-    library = true
-)
+@Module(includes = ApiModule.class, complete = false, library = true)
 public final class DataModule {
-  static final long DISK_CACHE_SIZE = MEGABYTES.toBytes(50);
 
-  @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
-    return app.getSharedPreferences("u2020", MODE_PRIVATE);
-  }
+    static final long DISK_CACHE_SIZE = MEGABYTES.toBytes(50);
 
-  @Provides @Singleton RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
-    return RxSharedPreferences.create(prefs);
-  }
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences(Application app) {
+        return app.getSharedPreferences("u2020", MODE_PRIVATE);
+    }
 
-  @Provides @Singleton @AccessToken
-  Preference<String> provideAccessToken(RxSharedPreferences prefs) {
-    return prefs.getString("access-token");
-  }
+    @Provides
+    @Singleton
+    RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
+        return RxSharedPreferences.create(prefs);
+    }
 
-  @Provides @Singleton Moshi provideMoshi() {
-    return new Moshi.Builder()
-        .add(new InstantAdapter())
-        .build();
-  }
+    @Provides
+    @Singleton
+    @AccessToken
+    Preference<String> provideAccessToken(RxSharedPreferences prefs) {
+        return prefs.getString("access-token");
+    }
 
-  @Provides @Singleton Clock provideClock() {
-    return Clock.systemDefaultZone();
-  }
+    @Provides
+    @Singleton
+    Moshi provideMoshi() {
+        return new Moshi.Builder().add(new InstantAdapter()).build();
+    }
 
-  @Provides @Singleton IntentFactory provideIntentFactory() {
-    return IntentFactory.REAL;
-  }
+    @Provides
+    @Singleton
+    Clock provideClock() {
+        return Clock.systemDefaultZone();
+    }
 
-  @Provides @Singleton OkHttpClient provideOkHttpClient(Application app) {
-    return createOkHttpClient(app).build();
-  }
+    @Provides
+    @Singleton
+    IntentFactory provideIntentFactory() {
+        return IntentFactory.REAL;
+    }
 
-  @Provides @Singleton Picasso providePicasso(Application app, OkHttpClient client) {
-    return new Picasso.Builder(app)
-        .downloader(new OkHttp3Downloader(client))
-        .listener((picasso, uri, e) -> Timber.e(e, "Failed to load image: %s", uri))
-        .build();
-  }
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient(Application app) {
+        return createOkHttpClient(app).build();
+    }
 
-  static OkHttpClient.Builder createOkHttpClient(Application app) {
-    // Install an HTTP cache in the application cache directory.
-    File cacheDir = new File(app.getCacheDir(), "http");
-    Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
+    @Provides
+    @Singleton
+    Picasso providePicasso(Application app, OkHttpClient client) {
+        return new Picasso.Builder(app).downloader(new OkHttp3Downloader(client)).listener((picasso, uri, e) -> Timber.e(e, "Failed to load image: %s", uri)).build();
+    }
 
-    return new OkHttpClient.Builder()
-        .cache(cache);
-  }
+    static OkHttpClient.Builder createOkHttpClient(Application app) {
+        // Install an HTTP cache in the application cache directory.
+        File cacheDir = new File(app.getCacheDir(), "http");
+        Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
+        return new OkHttpClient.Builder().cache(cache);
+    }
 }

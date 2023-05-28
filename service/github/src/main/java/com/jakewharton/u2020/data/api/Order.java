@@ -1,16 +1,17 @@
 package com.jakewharton.u2020.data.api;
 
 public enum Order {
-  ASC("asc"),
-  DESC("desc");
 
-  private final String value;
+    ASC("asc"), DESC("desc");
 
-  Order(String value) {
-    this.value = value;
-  }
+    private final String value;
 
-  @Override public String toString() {
-    return value;
-  }
+    Order(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }
